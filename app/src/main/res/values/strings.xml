@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">Neon-CoopAchievement</string>
+
+    <string name="save">save</string>
+    <string name="delete">delete</string>
+
+    <!--Game Configuration-->
+    <string name="game_config_game_name">Game Name:</string>
+    <string name="game_config_bad_score">Bad Score:</string>
+    <string name="game_config_good_score">Good Score:</string>
+
+    <!--Add/Edit individual game-->
+    <string name="game_config_sum_of_scores">Sum of scores:</string>
+    <string name="game_config_num_players"># of players:</string>
 </resources>
