@@ -2,16 +2,19 @@ package ca.cmpt276.neon_coopachievement.model;
 
 import androidx.annotation.NonNull;
 
-import ca.cmpt276.neon_coopachievement.R;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Game {
 
+    private LocalDateTime time;
     private int numPlayers;
     private int finalTotalScore;
 
     public Game(int numPlayers, int finalTotalScore) {
         this.numPlayers = numPlayers;
         this.finalTotalScore = finalTotalScore;
+        this.time  = LocalDateTime.now();
     }
 
     public int getNumPlayers() {
@@ -33,6 +36,8 @@ public class Game {
     @NonNull
     @Override
     public String toString() {
-        return numPlayers + " player(s) achieved a total score of " + finalTotalScore;
+        DateTimeFormatter f = DateTimeFormatter.ofPattern("MMM dd @ HH:mm a -");
+        return time.format(f) + numPlayers +
+                " player(s) achieved a total score of " + finalTotalScore;
     }
 }
