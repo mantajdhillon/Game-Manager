@@ -12,4 +12,5 @@
     <!--Add/Edit individual game-->
     <string name="game_config_sum_of_scores">Sum of scores:</string>
     <string name="game_config_num_players"># of players:</string>
+
 </resources>
