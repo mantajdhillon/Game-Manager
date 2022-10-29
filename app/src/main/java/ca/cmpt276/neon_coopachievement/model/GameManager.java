@@ -32,6 +32,10 @@ public class GameManager {
         return gamesStored;
     }
 
+    public int getGame(int index){
+        return games.get(index);
+    }
+
     public String getAchievement(int index){
         return achievements.get(index);
     }
@@ -51,21 +55,25 @@ public class GameManager {
     }
 
     // deleteGame: deletes a game from the games array
-    public void deleteGame(int game){
+    public boolean deleteGame(int toDelete){
         boolean found = false;
+        if(gamesStored == 0){
+            return found;
+        }
         int remove = 0;
-        for(int i=0; i<game; i++){
-            if(i == game){
+        for(int i=0; i<gamesStored; i++){
+            if(games.get(i) == toDelete){
                 remove = i;
+                found = true;
                 break;
             }
         }
         if(found){
             games.remove(remove);
+            gamesStored--;
         }
-        else{
-            throw new InvalidParameterException("Game not found!");
-        }
+
+        return found;
 
     }
 
