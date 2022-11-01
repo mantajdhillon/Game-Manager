@@ -1,7 +1,7 @@
 package ca.cmpt276.neon_coopachievement.model;
 
 public class Achievement {
-    private static final byte MAX_ACHIEVEMENTS = 10;
+    private static final byte MAX_ACHIEVEMENTS = 8;
 
     private double[] achievementBoundaries;
     private String[] achievementNames;
@@ -10,13 +10,14 @@ public class Achievement {
         if (low > high) {
             throw new RuntimeException("Low score can not be greater than high score");
         }
+        achievementBoundaries = new double[MAX_ACHIEVEMENTS+1];
+
         double diff = (double) (high - low) / MAX_ACHIEVEMENTS;
         double d = low;
-        achievementBoundaries = new double[MAX_ACHIEVEMENTS];
-        for (int i = 0; i < MAX_ACHIEVEMENTS; i++) {
+        for (int i = 0; i < achievementBoundaries.length; i++) {
+            achievementBoundaries[i] = d * numPlayers;
             d += diff;
-            achievementBoundaries[i] = d;
-            System.out.println("Tier " + (i + 1) + ") " + d + " * " + numPlayers + " = " + d * numPlayers);
+            System.out.println("Tier " + (i+1) + ") " + achievementBoundaries[i]);
         }
         setAchievementNames();
     }
@@ -30,14 +31,26 @@ public class Achievement {
         };
     }
 
-    public double[] getAchievementBoundaries() {
-        return achievementBoundaries;
+    public double getAchievementBoundary(int i) {
+        return achievementBoundaries[i];
     }
 
     public String getAchievementName(int i) {
-        return achievementNames[i];
+        return achievementNames[i - 1];
+    }
+
+    public int getRank(int totalScore) {
+        int rank = 1;
+        int i = 0;
+        while (i < achievementBoundaries.length &&
+                totalScore > achievementBoundaries[i]) {
+            rank++;
+            i++;
+        }
+        return rank;
     }
 
 }
+
 
 

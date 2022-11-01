@@ -21,6 +21,8 @@ public class Game {
         this.numPlayers = numPlayers;
         this.finalTotalScore = finalTotalScore;
         this.time  = LocalDateTime.now();
+        this.poorScore = poorScore;
+        this.greatScore = greatScore;
         setRank();
     }
 
@@ -28,9 +30,7 @@ public class Game {
     // expected good and bad player scores.
     private void setRank() {
         this.achievements = new Achievement(poorScore, greatScore, numPlayers);
-        for (int i = 0; i < MAX_ACHIEVEMENTS; i++) {
-
-        }
+        rank = achievements.getRank(finalTotalScore);
     }
 
     public int getNumPlayers() {
