@@ -35,8 +35,12 @@ public class Achievement {
         return achievementBoundaries[i];
     }
 
-    public String getAchievementName(int rank) {
-        return achievementNames[rank - 1];
+    public String getAchievementName(int gameRank) {
+        if (gameRank < 1 || gameRank > MAX_ACHIEVEMENTS) {
+            throw new ArrayIndexOutOfBoundsException
+                    ("Rank of a game must be valid: between " + 1 + " and " + MAX_ACHIEVEMENTS);
+        }
+        return achievementNames[gameRank - 1];
     }
 
     public int getRank(int totalScore) {
