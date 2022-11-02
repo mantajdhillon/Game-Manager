@@ -28,6 +28,10 @@ public class Achievement {
         }
     }
 
+    public String[] getAchievementNames() {
+        return achievementNames;
+    }
+
     public double getAchievementBoundary(int i) {
         return achievementBoundaries[i];
     }
