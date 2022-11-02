@@ -1,7 +1,7 @@
 package ca.cmpt276.neon_coopachievement.model;
 
 public class Achievement {
-    private static final byte MAX_ACHIEVEMENTS = 8;
+    private static final byte MAX_ACHIEVEMENTS = 10;
 
     private double[] achievementBoundaries;
     private String[] achievementNames;
@@ -10,9 +10,9 @@ public class Achievement {
         if (low > high) {
             throw new RuntimeException("Low score can not be greater than high score");
         }
-        achievementBoundaries = new double[MAX_ACHIEVEMENTS+1];
+        achievementBoundaries = new double[MAX_ACHIEVEMENTS-1];
 
-        double diff = (double) (high - low) / MAX_ACHIEVEMENTS;
+        double diff = (double) (high - low) / (MAX_ACHIEVEMENTS-2);
         double d = low;
         for (int i = 0; i < achievementBoundaries.length; i++) {
             achievementBoundaries[i] = d * numPlayers;
