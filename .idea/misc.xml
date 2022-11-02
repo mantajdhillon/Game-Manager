@@ -5,8 +5,14 @@
       <map>
         <entry key="..\:/Users/tempe/AndroidStudioProjects/CoopAchievement/app/src/main/res/layout/activity_achievement.xml" value="0.25" />
         <entry key="..\:/Users/tempe/AndroidStudioProjects/CoopAchievement/app/src/main/res/layout/activity_category.xml" value="0.25" />
-        <entry key="..\:/Users/tempe/AndroidStudioProjects/CoopAchievement/app/src/main/res/layout/activity_game.xml" value="0.25" />
+        <entry key="..\:/Users/tempe/AndroidStudioProjects/CoopAchievement/app/src/main/res/layout/activity_category_config.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/tempe/AndroidStudioProjects/CoopAchievement/app/src/main/res/layout/activity_game.xml" value="0.5" />
+        <entry key="..\:/Users/tempe/AndroidStudioProjects/CoopAchievement/app/src/main/res/layout/activity_game_config.xml" value="0.2755208333333333" />
         <entry key="..\:/Users/tempe/AndroidStudioProjects/CoopAchievement/app/src/main/res/layout/items.xml" value="0.1" />
+        <entry key="..\:/Users/tempe/AndroidStudioProjects/CoopAchievement/app/src/main/res/layout/msg_num_player_input_layout.xml" value="0.25" />
+        <entry key="..\:/Users/tempe/AndroidStudioProjects/CoopAchievement/app/src/main/res/layout/num_player_input_msg.xml" value="0.25" />
+        <entry key="..\:/Users/tempe/AndroidStudioProjects/CoopAchievement/app/src/main/res/menu/menu2.xml" value="0.1" />
+        <entry key="..\:/Users/tempe/AndroidStudioProjects/CoopAchievement/app/src/main/res/menu/menu_achievement.xml" value="0.1" />
       </map>
     </option>
   </component>
