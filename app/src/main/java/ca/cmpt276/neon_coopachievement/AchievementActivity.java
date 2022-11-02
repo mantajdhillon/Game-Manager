@@ -7,42 +7,32 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
-public class GameConfigActivity extends AppCompatActivity {
+public class AchievementActivity extends AppCompatActivity {
 
-    private static final String ACTIVITY_TITLE = "Add game";
+    public static final String ACTIVITY_TITLE = "Achievements";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game_config);
+        setContentView(R.layout.activity_achievement);
 
-        // Set up Action Bar
         ActionBar ab = getSupportActionBar();
         ab.setTitle(ACTIVITY_TITLE);
         ab.setDisplayHomeAsUpEnabled(true);
 
-        // Set up buttons
-        setUpSaveBtn();
-        setUpDeleteBtn();
-    }
+        String[] ranks = {"Goofy Goblins", "Majestic Unicorns", "Fabulous Dragons", "Brilliant Pixies"};
 
-    private void setUpSaveBtn() {
-        Button saveBtn = findViewById(R.id.btnSaveGame);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                this,
+                R.layout.items,
+                ranks);
 
-        saveBtn.setOnClickListener(view -> Toast.makeText(this,
-                "Should save game",
-                Toast.LENGTH_SHORT).show());
-    }
-
-    private void setUpDeleteBtn() {
-        Button deleteBtn = findViewById(R.id.btnDeleteGame);
-
-        deleteBtn.setOnClickListener(view -> Toast.makeText(this,
-                "Should delete game",
-                Toast.LENGTH_SHORT).show());
+        ListView achievements = findViewById(R.id.achievementList);
+        achievements.setAdapter(adapter);
     }
 
     @Override
