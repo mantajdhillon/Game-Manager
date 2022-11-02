@@ -35,8 +35,8 @@ public class Achievement {
         return achievementBoundaries[i];
     }
 
-    public String getAchievementName(int i) {
-        return achievementNames[i - 1];
+    public String getAchievementName(int rank) {
+        return achievementNames[rank - 1];
     }
 
     public int getRank(int totalScore) {
