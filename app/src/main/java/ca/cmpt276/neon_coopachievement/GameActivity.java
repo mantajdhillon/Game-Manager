@@ -3,14 +3,10 @@ package ca.cmpt276.neon_coopachievement;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,21 +25,24 @@ public class GameActivity extends AppCompatActivity {
 
     public static final String ACTIVITY_TITLE = "Games";
 
+    // TODO: replace with category manager size
+    private static final int SIZE_OF_GAME_CATEGORY_MANAGER = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-
         TextView numPlayersMsg = findViewById(R.id.numPlayersMsg);
         numPlayersMsg.setVisibility(View.INVISIBLE);
+
         EditText numPlayersInput = findViewById(R.id.numPlayersInput);
         numPlayersInput.setEnabled(false);
         numPlayersInput.setVisibility(View.INVISIBLE);
+
         Button goBtn = findViewById(R.id.gotoAchievements);
         goBtn.setEnabled(false);
         goBtn.setVisibility(View.INVISIBLE);
-
 
         ActionBar ab = getSupportActionBar();
         ab.setTitle(ACTIVITY_TITLE);
@@ -50,7 +50,7 @@ public class GameActivity extends AppCompatActivity {
 
         String[] games = {"Game 1", "Game 2", "Game 3"};
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this,
                 R.layout.items,
                 games);
@@ -58,9 +58,25 @@ public class GameActivity extends AppCompatActivity {
         ListView playedGames = findViewById(R.id.gameList);
         playedGames.setAdapter(adapter);
 
+        setUpEmptyState();
         setupAddGameBtn();
         setupViewAchievementsBtn();
         gameClickCallback();
+    }
+
+    // Configure the empty state when there are no more games
+    private void setUpEmptyState() {
+        ImageView emptyStateIcon = findViewById(R.id.ivEmptyStateGameActivity);
+        TextView emptyStateDesc = findViewById(R.id.tvEmptyStateDescGameActivity);
+
+        // Display only if the category manager is 0
+        if (SIZE_OF_GAME_CATEGORY_MANAGER == 0) {
+            emptyStateIcon.setVisibility(View.VISIBLE);
+            emptyStateDesc.setVisibility(View.VISIBLE);
+        } else {
+            emptyStateIcon.setVisibility(View.INVISIBLE);
+            emptyStateDesc.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void setupAddGameBtn() {
@@ -100,6 +116,7 @@ public class GameActivity extends AppCompatActivity {
             }
         });
     }
+
     private void setupGoAchievementsBtn() {
         Button goBtn = findViewById(R.id.gotoAchievements);
         goBtn.setOnClickListener(new View.OnClickListener() {
