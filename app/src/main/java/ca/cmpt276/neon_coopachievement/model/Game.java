@@ -7,30 +7,18 @@ import java.time.format.DateTimeFormatter;
 
 public class Game {
 
-    private static final byte MAX_ACHIEVEMENTS = 10;
-
-    private LocalDateTime time;
+    private final LocalDateTime time;
     private int numPlayers;
     private int finalTotalScore;
-    private Achievement achievements;
-    private int poorScore;
-    private int greatScore;
-    private int rank;
+    private final Achievement achievements;
+    private final int rank;
 
     public Game(int numPlayers, int finalTotalScore, int poorScore, int greatScore) {
         this.numPlayers = numPlayers;
         this.finalTotalScore = finalTotalScore;
         this.time  = LocalDateTime.now();
-        this.poorScore = poorScore;
-        this.greatScore = greatScore;
-        setRank();
-    }
-
-    //TODO : Create function to determine the rank level based on the number of players and
-    // expected good and bad player scores.
-    private void setRank() {
         this.achievements = new Achievement(poorScore, greatScore, numPlayers);
-        rank = achievements.getRank(finalTotalScore);
+        this.rank = achievements.getRank(finalTotalScore);
     }
 
     public int getNumPlayers() {
