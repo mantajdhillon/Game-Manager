@@ -12,5 +12,6 @@
     <!--Add/Edit individual game-->
     <string name="game_config_sum_of_scores">Sum of scores:</string>
     <string name="game_config_num_players"># of players:</string>
-
+    <string name="msg_num_of_players">Number of Players?</string>
+    <string name="invalid_num_players_msg">Must Enter a number greater than 1</string>
 </resources>
