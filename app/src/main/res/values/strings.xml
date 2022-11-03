@@ -1,17 +1,22 @@
 <resources>
     <string name="app_name">Neon-CoopAchievement</string>
 
-    <string name="save">save</string>
-    <string name="delete">delete</string>
+    <!--Game Activity-->
+    <string name="game_activity_empty_state_desc">No games found!\nClick the + to add a new game.</string>
 
-    <!--Game Configuration-->
+    <!--Category Activity-->
+    <string name="category_activity_empty_state_desc">No game categories found!\nClick the + to add a new game category.</string>
+
+    <!--Add/Edit individual game-->
     <string name="game_config_game_name">Game Name:</string>
     <string name="game_config_bad_score">Bad Score:</string>
     <string name="game_config_good_score">Good Score:</string>
-
-    <!--Add/Edit individual game-->
     <string name="game_config_sum_of_scores">Sum of scores:</string>
     <string name="game_config_num_players"># of players:</string>
+
+    <!--Other-->
+    <string name="save">save</string>
+    <string name="delete">delete</string>
     <string name="msg_num_of_players">Number of Players?</string>
-    <string name="invalid_num_players_msg">Must Enter a number greater than 1</string>
+    <string name="invalid_num_players_msg">Must enter a number greater than 1</string>
 </resources>

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -17,6 +18,9 @@ public class CategoryActivity extends AppCompatActivity {
 
     public static final String ACTIVITY_TITLE = "Game Category";
 
+    // TODO: replace with game category manager size
+    private static final int SIZE_OF_GAME_CATEGORY_MANAGER = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,7 +29,7 @@ public class CategoryActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         ab.setTitle(ACTIVITY_TITLE);
 
-        String[] gameTypes  = {"Game Type 1", "Game Type 2", "Game Type 3"};
+        String[] gameTypes = {"Game Type 1", "Game Type 2", "Game Type 3"};
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 this,
@@ -35,8 +39,24 @@ public class CategoryActivity extends AppCompatActivity {
         ListView categories = findViewById(R.id.categoryList);
         categories.setAdapter(adapter);
 
+        setUpEmptyState();
         setupAddCategoryBtn();
         categoryClickCallback();
+    }
+
+    // Configure the empty state when there are no more games categories
+    private void setUpEmptyState() {
+        ImageView emptyStateIcon = findViewById(R.id.ivEmptyStateCategory);
+        TextView emptyStateDesc = findViewById(R.id.tvEmptyStateDescCategory);
+
+        // Display only if the category manager is 0
+        if (SIZE_OF_GAME_CATEGORY_MANAGER == 0) {
+            emptyStateIcon.setVisibility(View.VISIBLE);
+            emptyStateDesc.setVisibility(View.VISIBLE);
+        } else {
+            emptyStateIcon.setVisibility(View.INVISIBLE);
+            emptyStateDesc.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void setupAddCategoryBtn() {
