@@ -8,14 +8,18 @@ import java.util.ArrayList;
 public class GameManager {
     private ArrayList<Game> games = new ArrayList<>();
     private String name;
-    private int greatScore;
-    private int poorScore;
+    private int greatScoreIndividual;
+    private int poorScoreIndividual;
     private int gamesStored;
 
-    GameManager(){
-        greatScore = 0;
-        poorScore = 0;
-        gamesStored = 0;
+    GameManager(String name, int gs, int ps){
+        this.name = name;
+        if(ps >= gs){
+            throw new InvalidParameterException("Poor score cannot be greater than great score!");
+        }
+        this.greatScoreIndividual = gs;
+        this.poorScoreIndividual = ps;
+
     }
 
     // Getters and setters
@@ -23,34 +27,41 @@ public class GameManager {
         return name;
     }
 
-    public int getGreatScore(){
-        return greatScore;
+    public int getGreatScoreIndividual(){
+        return greatScoreIndividual;
     }
 
-    public int getPoorScore(){
-        return poorScore;
+    public int getPoorScoreIndividual(){
+        return poorScoreIndividual;
     }
 
     public int getGamesStored(){
         return gamesStored;
     }
 
-    public Game getGame(int index){
-        return games.get(index);
-    }
-
     public void setName(String gameName){
         this.name = gameName;
     }
 
-    public void setGreatScore(int score){
-        this.greatScore = score;
+    public void setGreatScoreIndividual(int score){
+        this.greatScoreIndividual = score;
     }
 
-    public void setPoorScore(int score){
-        this.poorScore = score;
+    public void setPoorScoreIndividual(int score){
+        this.poorScoreIndividual = score;
     }
 
+    public Game getGame(Game toGet){
+        boolean found = this.games.contains(toGet);
+        if(found){
+            for(int i=0; i<this.gamesStored; i++){
+                if(games.get(i) == toGet){
+                    return toGet;
+                }
+            }
+        }
+        throw new InvalidParameterException("Game does not exist!");
+    }
     // addGame: adds a game to the games array
     public void addGame(Game game){
         this.games.add(game);
@@ -58,7 +69,7 @@ public class GameManager {
     }
 
     // deleteGame: deletes a game from the games array. Returns true upon success, false otherwise.
-    public void deleteGame(Game toDelete){
+    public void removeGame(Game toDelete){
         boolean found = this.games.contains(toDelete);
         if(found){
             int remove = 0;
