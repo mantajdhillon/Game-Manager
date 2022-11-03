@@ -3,21 +3,19 @@ package ca.cmpt276.neon_coopachievement.model;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
+// GameManager class: Holds the games for a single game type, such as the games for Poker or Blackjack
+
 public class GameManager {
-    private ArrayList<Integer> games = new ArrayList<>();
+    private ArrayList<Game> games = new ArrayList<>();
     private String name;
-    private int goodScore;
-    private int badScore;
+    private int greatScore;
+    private int poorScore;
     private int gamesStored;
-    private ArrayList<String> achievements = new ArrayList<>();
 
     GameManager(){
-        goodScore = 0;
-        badScore = 0;
+        greatScore = 0;
+        poorScore = 0;
         gamesStored = 0;
-        for(int i=0; i<8; i++){
-            achievements.add("Tier " + i);
-        }
     }
 
     // Getters and setters
@@ -25,60 +23,55 @@ public class GameManager {
         return name;
     }
 
-    public int getGoodScore(){
-        return goodScore;
+    public int getGreatScore(){
+        return greatScore;
     }
 
-    public int getBadScore(){
-        return badScore;
+    public int getPoorScore(){
+        return poorScore;
     }
 
     public int getGamesStored(){
         return gamesStored;
     }
 
-    public int getGame(int index){
+    public Game getGame(int index){
         return games.get(index);
     }
 
-    public String getAchievement(int index){
-        return achievements.get(index);
-    }
     public void setName(String gameName){
-        name = gameName;
+        this.name = gameName;
     }
 
-    public void setGoodScore(int score){
-        goodScore = score;
+    public void setGreatScore(int score){
+        this.greatScore = score;
     }
 
-    public void setBadScore(int score){
-        badScore = score;
+    public void setPoorScore(int score){
+        this.poorScore = score;
     }
 
     // addGame: adds a game to the games array
-    public void addGame(int game){
-        games.add(game);
-        gamesStored++;
+    public void addGame(Game game){
+        this.games.add(game);
+        this.gamesStored++;
     }
 
-    // deleteGame: deletes a game from the games array
-    public boolean deleteGame(int toDelete){
-        boolean found = games.contains(toDelete);
+    // deleteGame: deletes a game from the games array. Returns true upon success, false otherwise.
+    public void deleteGame(Game toDelete){
+        boolean found = this.games.contains(toDelete);
         if(found){
             int remove = 0;
-            for(int i=0; i<gamesStored; i++){
-                if(games.get(i) == toDelete){
-                    remove = i;
-                    break;
+            for(int i=0; i<this.gamesStored; i++){
+                if(this.games.get(i) == toDelete){
+                    this.games.remove(remove);
+                    this.gamesStored--;
                 }
             }
-            games.remove(remove);
-            gamesStored--;
         }
-
-        return found;
-
+        else{
+            throw new InvalidParameterException("Game not found!");
+        }
     }
 
 }
