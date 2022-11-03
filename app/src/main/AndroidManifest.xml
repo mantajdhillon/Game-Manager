@@ -14,19 +14,24 @@
         android:theme="@style/Theme.NeonCoopAchievement"
         tools:targetApi="31">
         <activity
-            android:name=".CategoryConfigActivity"
+            android:name=".CategoryActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
+        </activity>
+        <activity
+            android:name=".CategoryConfigActivity"
+            android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
+        <activity
+            android:name=".GameActivity"
+            android:exported="false" />
         <activity
             android:name=".GameConfigActivity"
             android:exported="false">
@@ -34,6 +39,9 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <activity
+            android:name=".AchievementActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

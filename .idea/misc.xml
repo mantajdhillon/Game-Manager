@@ -3,8 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/12364/Desktop/Neon/app/src/main/res/layout/activity_category_config.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/12364/Desktop/Neon/app/src/main/res/layout/activity_game_config.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/tempe/AndroidStudioProjects/CoopAchievement/app/src/main/res/layout/activity_achievement.xml" value="0.25" />
+        <entry key="..\:/Users/tempe/AndroidStudioProjects/CoopAchievement/app/src/main/res/layout/activity_category.xml" value="0.25" />
+        <entry key="..\:/Users/tempe/AndroidStudioProjects/CoopAchievement/app/src/main/res/layout/activity_game.xml" value="0.25" />
+        <entry key="..\:/Users/tempe/AndroidStudioProjects/CoopAchievement/app/src/main/res/layout/items.xml" value="0.1" />
       </map>
     </option>
   </component>
