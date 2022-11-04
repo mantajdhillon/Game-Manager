@@ -26,8 +26,10 @@ public class GameCategoryTest {
         myCategory.removeGameManager(testManager);
         assertThrows(InvalidParameterException.class,
                 ()->myCategory.getGameManager(testManager));
-        assertThrows(InvalidParameterException.class,
-                ()->myCategory.removeGameManager(testManager));
+        assertEquals(0,myCategory.getGameManagersStored());
+
+        myCategory.removeGameManager(testManager);
+        assertEquals(0,myCategory.getGameManagersStored());
     }
 
 }

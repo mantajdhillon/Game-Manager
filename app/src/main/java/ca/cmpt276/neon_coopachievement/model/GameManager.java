@@ -68,20 +68,11 @@ public class GameManager {
         this.gamesStored++;
     }
 
-    // deleteGame: deletes a game from the games array. Returns true upon success, false otherwise.
+    // deleteGame: deletes a game from the games array and deincrements the total number of games
     public void removeGame(Game toDelete){
-        boolean found = this.games.contains(toDelete);
-        if(found){
-            int remove = 0;
-            for(int i=0; i<this.gamesStored; i++){
-                if(this.games.get(i) == toDelete){
-                    this.games.remove(remove);
-                    this.gamesStored--;
-                }
-            }
-        }
-        else{
-            throw new InvalidParameterException("Game not found!");
+        // If game can be removed
+        if(this.games.remove(toDelete)) {
+            this.gamesStored--;
         }
     }
 

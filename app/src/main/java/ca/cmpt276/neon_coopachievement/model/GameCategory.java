@@ -28,7 +28,7 @@ public class GameCategory {
     // getGameManager: searches through GameManagersStored, if it contains the object, for the object in question
     public GameManager getGameManager(GameManager toGet){
         boolean found = this.gameManagers.contains(toGet);
-        if(found) {
+        if(found){
             for (int i = 0; i < this.gameManagersStored; i++) {
                 if (this.gameManagers.get(i) == toGet) {
                     return this.gameManagers.get(i);
@@ -38,25 +38,17 @@ public class GameCategory {
         throw new InvalidParameterException("Game not found!");
     }
 
-    // addGameManager
+    // addGameManager: adds a game manager to the array and increments the total number of managers
     public void addGameManager(GameManager toAdd){
         this.gameManagers.add(toAdd);
         this.gameManagersStored++;
     }
 
-    // removeGameManager
+    // removeGameManager: removes a game manager and decincrements the total number of managers
     public void removeGameManager(GameManager toRemove){
-        boolean found = this.gameManagers.contains(toRemove);
-        if(found){
-            for(int i=0; i<this.gameManagersStored; i++){
-                if(this.gameManagers.get(i) == toRemove){
-                    this.gameManagers.remove(i);
-                    break;
-                }
-            }
-        }
-        else{
-            throw new InvalidParameterException("Game not found!");
+        // If game can be removed
+        if(this.gameManagers.remove(toRemove)) {
+            this.gameManagersStored--;
         }
     }
 }
