@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 // GameCategory class: Holds an the Game Managers for several different game types
 public class GameCategory {
-    private GameCategory instance;
+    private static GameCategory instance;
     private ArrayList<GameManager> gameManagers = new ArrayList<>();
     private int gameManagersStored;
 
@@ -18,11 +18,11 @@ public class GameCategory {
         return this.gameManagersStored;
     }
 
-    public GameCategory getInstance(){
+    public static GameCategory getInstance(){
         if(instance == null){
             return new GameCategory();
         }
-        return this.instance;
+        return instance;
     }
 
     // getGameManager: searches through GameManagersStored, if it contains the object, for the object in question
