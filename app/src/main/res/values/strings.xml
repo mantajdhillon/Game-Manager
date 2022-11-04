@@ -19,4 +19,6 @@
     <string name="delete">delete</string>
     <string name="msg_num_of_players">Number of Players?</string>
     <string name="invalid_num_players_msg">Must enter a number greater than 1</string>
+    <string name="help_screen_msg">Welcome to the Help Centre!\n\n[App name] is designed to generate the co-operative achievement ranks of game categories you\'ve saved, as well as track the history and results of your played games.\n\nGame Category:\nDisplays the different game categories you\'ve entered into the system. Click the + to add a new game category.\n\nAdd Game Configuration:\nFill in the \'Game Name\', \'Good Score\', and \'Bad Score\' and click save to generate a new game category.\n\nGames:\nDisplays the game history of one game category and the results of each game. Click on the + to add a new game. Click on an individual played game to edit/delete the game.\n\nAdd Game:\nFill in the \'# of players\' and \'Sum of scores\' and click save to generate a new game.\n\nAchievements:\nDisplays the different possible achievements of one game category based on the number of players you\'ve entered.</string>
+    <string name="help_centre">Help Centre</string>
 </resources>
