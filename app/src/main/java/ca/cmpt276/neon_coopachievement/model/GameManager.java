@@ -12,7 +12,7 @@ public class GameManager {
     private int poorScoreIndividual;
     private int gamesStored;
 
-    GameManager(String name, int gs, int ps){
+    public GameManager(String name, int gs, int ps){
         this.name = name;
         if(ps >= gs){
             throw new InvalidParameterException("Poor score cannot be greater than great score!");

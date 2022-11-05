@@ -17,10 +17,16 @@ import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
+
+import ca.cmpt276.neon_coopachievement.model.GameCategory;
+import ca.cmpt276.neon_coopachievement.model.GameManager;
+
 public class CategoryActivity extends AppCompatActivity {
 
     // TODO: replace with game category manager size
-    private static final int SIZE_OF_GAME_CATEGORY_MANAGER = 0;
+    private static GameCategory gameCategory = GameCategory.getInstance();
+    private static final int SIZE_OF_GAME_CATEGORY_MANAGER = gameCategory.getGameManagersStored();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +36,7 @@ public class CategoryActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         ab.setTitle(R.string.category_config_activity_title);
 
-        String[] gameTypes = {"Game Type 1", "Game Type 2", "Game Type 3"};
+        ArrayList<String> gameTypes = gameCategory.getGameNames();
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 this,
