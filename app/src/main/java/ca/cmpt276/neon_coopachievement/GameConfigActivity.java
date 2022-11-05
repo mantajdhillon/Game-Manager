@@ -13,8 +13,6 @@ import android.widget.Toast;
 
 public class GameConfigActivity extends AppCompatActivity {
 
-    private static final String ACTIVITY_TITLE = "Add game";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,7 +20,8 @@ public class GameConfigActivity extends AppCompatActivity {
 
         // Set up Action Bar
         ActionBar ab = getSupportActionBar();
-        ab.setTitle(ACTIVITY_TITLE);
+        ab.setTitle(R.string.game_config_activity_add_game);
+        // ab.setTitle(R.string.game_config_activity_edit_game);
         ab.setDisplayHomeAsUpEnabled(true);
 
         // Set up buttons
@@ -33,6 +32,7 @@ public class GameConfigActivity extends AppCompatActivity {
     private void setUpSaveBtn() {
         Button saveBtn = findViewById(R.id.btnSaveGame);
 
+        // todo link
         saveBtn.setOnClickListener(view -> Toast.makeText(this,
                 "Should save game",
                 Toast.LENGTH_SHORT).show());
@@ -41,6 +41,7 @@ public class GameConfigActivity extends AppCompatActivity {
     private void setUpDeleteBtn() {
         Button deleteBtn = findViewById(R.id.btnDeleteGame);
 
+        // todo link
         deleteBtn.setOnClickListener(view -> Toast.makeText(this,
                 "Should delete game",
                 Toast.LENGTH_SHORT).show());

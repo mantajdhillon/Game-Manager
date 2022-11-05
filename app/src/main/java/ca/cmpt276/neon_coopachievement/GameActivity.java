@@ -23,10 +23,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class GameActivity extends AppCompatActivity {
 
-    public static final String ACTIVITY_TITLE = "Games";
+    // TODO: replace with name of Game manager (ex. Poker)
+    private static final String REPLACE_WITH_GAME_MANAGER_NAME = "Poker";
 
-    // TODO: replace with category manager size
-    private static final int SIZE_OF_GAME_CATEGORY_MANAGER = 0;
+    // TODO: replace with category manager size (ex. 3)
+    private static final int REPLACE_WITH_SIZE_OF_GAME_MANAGER = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +46,7 @@ public class GameActivity extends AppCompatActivity {
         goBtn.setVisibility(View.INVISIBLE);
 
         ActionBar ab = getSupportActionBar();
-        ab.setTitle(ACTIVITY_TITLE);
+        ab.setTitle(REPLACE_WITH_GAME_MANAGER_NAME);
         ab.setDisplayHomeAsUpEnabled(true);
 
         String[] games = {"Game 1", "Game 2", "Game 3"};
@@ -70,7 +71,7 @@ public class GameActivity extends AppCompatActivity {
         TextView emptyStateDesc = findViewById(R.id.tvEmptyStateDescGameActivity);
 
         // Display only if the category manager is 0
-        if (SIZE_OF_GAME_CATEGORY_MANAGER == 0) {
+        if (REPLACE_WITH_SIZE_OF_GAME_MANAGER == 0) {
             emptyStateIcon.setVisibility(View.VISIBLE);
             emptyStateDesc.setVisibility(View.VISIBLE);
         } else {
@@ -127,7 +128,7 @@ public class GameActivity extends AppCompatActivity {
                 if (!TextUtils.isEmpty(strNumPlayers)) {
                     int numPlayers = Integer.parseInt(strNumPlayers);
                     if (numPlayers <= 1) {
-                        Toast.makeText(GameActivity.this, R.string.invalid_num_players_msg, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(GameActivity.this, R.string.game_activity_invalid_num_players_msg, Toast.LENGTH_SHORT).show();
                     } else {
                         Button viewAchievements = findViewById(R.id.viewAchievementsBtn);
                         viewAchievements.setEnabled(true);
@@ -147,7 +148,7 @@ public class GameActivity extends AppCompatActivity {
                         startActivity(i);
                     }
                 } else {
-                    Toast.makeText(GameActivity.this, R.string.invalid_num_players_msg, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GameActivity.this, R.string.game_activity_invalid_num_players_msg, Toast.LENGTH_SHORT).show();
                 }
             }
         });

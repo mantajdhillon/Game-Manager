@@ -7,14 +7,14 @@
     tools:context=".HelpActivity">
 
     <TextView
-        android:id="@+id/help_centre_msg"
+        android:id="@+id/tvHelpCentreMessage"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
-        android:text="@string/help_screen_msg"
+        android:text="@string/help_message"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"

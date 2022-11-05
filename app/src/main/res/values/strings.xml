@@ -1,24 +1,37 @@
 <resources>
-    <string name="app_name">Neon-CoopAchievement</string>
-
-    <!--Game Activity-->
-    <string name="game_activity_empty_state_desc">No games found!\nClick the + to add a new game.</string>
+    <string name="app_name">Coop Achievement</string>
 
     <!--Category Activity-->
     <string name="category_activity_empty_state_desc">No game categories found!\nClick the + to add a new game category.</string>
 
-    <!--Add/Edit individual game-->
+    <!--Category Config Activity-->
+    <string name="category_config_activity_title">Game Category</string>
+    <string name="category_config_activity_add_game">Add game configuration</string>
+    <string name="category_config_activity_edit_game">Edit Game configuration</string>
+
+    <!--Game Activity-->
+    <string name="game_activity_empty_state_desc">No games found!\nClick the + to add a new game.</string>
+    <string name="game_activity_invalid_num_players_msg">Must enter a number greater than 1</string>
+
+    <!--Game Config Activity-->
+    <string name="game_config_activity_add_game">Add game</string>
+    <string name="game_config_activity_edit_game">Edit game</string>
     <string name="game_config_game_name">Game Name:</string>
     <string name="game_config_bad_score">Bad Score:</string>
     <string name="game_config_good_score">Good Score:</string>
     <string name="game_config_sum_of_scores">Sum of scores:</string>
     <string name="game_config_num_players"># of players:</string>
 
+    <!--Achievement activity-->
+    <string name="achievement_activity_title">Achievements</string>
+
+    <!--Help Screen-->
+    <string name="help_activity_title">Help Centre</string>
+    <string name="help_message">Welcome to the Help Centre!\n\n[App name] is designed to generate the co-operative achievement ranks of game categories you\'ve saved, as well as track the history and results of your played games.\n\nGame Category:\nDisplays the different game categories you\'ve entered into the system. Click the + to add a new game category.\n\nAdd Game Configuration:\nFill in the \'Game Name\', \'Good Score\', and \'Bad Score\' and click save to generate a new game category.\n\nGames:\nDisplays the game history of one game category and the results of each game. Click on the + to add a new game. Click on an individual played game to edit/delete the game.\n\nAdd Game:\nFill in the \'# of players\' and \'Sum of scores\' and click save to generate a new game.\n\nAchievements:\nDisplays the different possible achievements of one game category based on the number of players you\'ve entered.</string>
+
     <!--Other-->
     <string name="save">save</string>
     <string name="delete">delete</string>
-    <string name="msg_num_of_players">Number of Players?</string>
-    <string name="invalid_num_players_msg">Must enter a number greater than 1</string>
-    <string name="help_screen_msg">Welcome to the Help Centre!\n\n[App name] is designed to generate the co-operative achievement ranks of game categories you\'ve saved, as well as track the history and results of your played games.\n\nGame Category:\nDisplays the different game categories you\'ve entered into the system. Click the + to add a new game category.\n\nAdd Game Configuration:\nFill in the \'Game Name\', \'Good Score\', and \'Bad Score\' and click save to generate a new game category.\n\nGames:\nDisplays the game history of one game category and the results of each game. Click on the + to add a new game. Click on an individual played game to edit/delete the game.\n\nAdd Game:\nFill in the \'# of players\' and \'Sum of scores\' and click save to generate a new game.\n\nAchievements:\nDisplays the different possible achievements of one game category based on the number of players you\'ve entered.</string>
-    <string name="help_centre">Help Centre</string>
+    <string name="num_of_players">Number of Players?</string>
+    <string name="help_centre">@string/help_activity_title</string>
 </resources>
