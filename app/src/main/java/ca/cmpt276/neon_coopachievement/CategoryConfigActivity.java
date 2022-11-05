@@ -48,13 +48,16 @@ public class CategoryConfigActivity extends AppCompatActivity {
             EditText getBadScore = findViewById((R.id.etBadScore));
             int badScore = getInt(getBadScore);
 
-            // TODO: add handling for invalid good/poor scores
+            if(goodScore > badScore) {
+                GameManager newManager = new GameManager(name, goodScore, badScore);
+                instance.addGameManager(newManager);
 
-            GameManager newManager = new GameManager(name,goodScore,badScore);
-            instance.addGameManager(newManager);
-
-            Intent i = new Intent(CategoryConfigActivity.this, CategoryActivity.class);
-            startActivity(i);
+                Intent i = new Intent(CategoryConfigActivity.this, CategoryActivity.class);
+                startActivity(i);
+            }
+            else{
+                Toast.makeText(this,"Invalid scores",Toast.LENGTH_SHORT).show();
+            }
 
         });
     }
