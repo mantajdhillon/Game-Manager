@@ -10,8 +10,6 @@ import android.view.MenuItem;
 
 public class HelpActivity extends AppCompatActivity {
 
-    public static final String ACTIVITY_TITLE = "Help Centre";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,7 +17,7 @@ public class HelpActivity extends AppCompatActivity {
 
         // Set up Action Bar
         ActionBar ab = getSupportActionBar();
-        ab.setTitle(ACTIVITY_TITLE);
+        ab.setTitle(R.string.help_activity_title);
         ab.setDisplayHomeAsUpEnabled(true);
     }
 

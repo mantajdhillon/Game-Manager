@@ -13,15 +13,13 @@ import android.widget.ListView;
 
 public class AchievementActivity extends AppCompatActivity {
 
-    public static final String ACTIVITY_TITLE = "Achievements";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_achievement);
 
         ActionBar ab = getSupportActionBar();
-        ab.setTitle(ACTIVITY_TITLE);
+        ab.setTitle(R.string.achievement_activity_title);
         ab.setDisplayHomeAsUpEnabled(true);
 
         String[] ranks = {"Goofy Goblins", "Majestic Unicorns", "Fabulous Dragons", "Brilliant Pixies"};

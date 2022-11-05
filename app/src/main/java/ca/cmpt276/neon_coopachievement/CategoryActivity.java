@@ -19,8 +19,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class CategoryActivity extends AppCompatActivity {
 
-    public static final String ACTIVITY_TITLE = "Game Category";
-
     // TODO: replace with game category manager size
     private static final int SIZE_OF_GAME_CATEGORY_MANAGER = 0;
 
@@ -30,7 +28,7 @@ public class CategoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_category);
 
         ActionBar ab = getSupportActionBar();
-        ab.setTitle(ACTIVITY_TITLE);
+        ab.setTitle(R.string.category_config_activity_title);
 
         String[] gameTypes = {"Game Type 1", "Game Type 2", "Game Type 3"};
 
