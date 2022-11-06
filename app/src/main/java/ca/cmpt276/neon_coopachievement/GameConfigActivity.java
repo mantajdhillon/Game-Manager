@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,8 +13,6 @@ import android.widget.Toast;
 
 public class GameConfigActivity extends AppCompatActivity {
 
-    private static final String ACTIVITY_TITLE = "Add game";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,7 +20,8 @@ public class GameConfigActivity extends AppCompatActivity {
 
         // Set up Action Bar
         ActionBar ab = getSupportActionBar();
-        ab.setTitle(ACTIVITY_TITLE);
+        ab.setTitle(R.string.game_config_activity_add_game);
+        // ab.setTitle(R.string.game_config_activity_edit_game);
         ab.setDisplayHomeAsUpEnabled(true);
 
         // Set up buttons
@@ -32,6 +32,7 @@ public class GameConfigActivity extends AppCompatActivity {
     private void setUpSaveBtn() {
         Button saveBtn = findViewById(R.id.btnSaveGame);
 
+        // todo link
         saveBtn.setOnClickListener(view -> Toast.makeText(this,
                 "Should save game",
                 Toast.LENGTH_SHORT).show());
@@ -40,6 +41,7 @@ public class GameConfigActivity extends AppCompatActivity {
     private void setUpDeleteBtn() {
         Button deleteBtn = findViewById(R.id.btnDeleteGame);
 
+        // todo link
         deleteBtn.setOnClickListener(view -> Toast.makeText(this,
                 "Should delete game",
                 Toast.LENGTH_SHORT).show());
@@ -47,7 +49,7 @@ public class GameConfigActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -56,6 +58,10 @@ public class GameConfigActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
+                return true;
+            case R.id.action_help:
+                Intent i = new Intent(GameConfigActivity.this, HelpActivity.class);
+                startActivity(i);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

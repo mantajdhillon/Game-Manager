@@ -9,29 +9,34 @@ import java.util.ArrayList;
 // GameCategory class: Holds an the Game Managers for several different game types
 public class GameCategory {
     private static GameCategory instance;
-    private ArrayList<GameManager> gameManagers = new ArrayList<>();
+    private final ArrayList<GameManager> gameManagers = new ArrayList<>();
     private int gameManagersStored;
+    private ArrayList<String> gameNames = new ArrayList<>();
 
-    GameCategory(){
+    private GameCategory() {
         this.gameManagersStored = 0;
     }
 
     // Getters and Setters
-    public int getGameManagersStored(){
+    public int getGameManagersStored() {
         return this.gameManagersStored;
     }
 
-    public static GameCategory getInstance(){
-        if(instance == null){
-            return new GameCategory();
+    public ArrayList<String> getGameNames() {
+        return gameNames;
+    }
+
+    public static GameCategory getInstance() {
+        if (instance == null) {
+            instance = new GameCategory();
         }
         return instance;
     }
 
     // getGameManager: searches through GameManagersStored, if it contains the object, for the object in question
-    public GameManager getGameManager(GameManager toGet){
+    public GameManager getGameManager(GameManager toGet) {
         boolean found = this.gameManagers.contains(toGet);
-        if(found){
+        if (found) {
             for (int i = 0; i < this.gameManagersStored; i++) {
                 if (this.gameManagers.get(i) == toGet) {
                     return this.gameManagers.get(i);
@@ -42,16 +47,18 @@ public class GameCategory {
     }
 
     // addGameManager: adds a game manager to the array and increments the total number of managers
-    public void addGameManager(GameManager toAdd){
+    public void addGameManager(GameManager toAdd) {
         this.gameManagers.add(toAdd);
         this.gameManagersStored++;
+        this.gameNames.add(toAdd.getName());
     }
 
     // removeGameManager: removes a game manager and decincrements the total number of managers
-    public void removeGameManager(GameManager toRemove){
+    public void removeGameManager(GameManager toRemove) {
         // If game can be removed
-        if(this.gameManagers.remove(toRemove)) {
+        if (this.gameManagers.remove(toRemove)) {
             this.gameManagersStored--;
+            this.gameNames.remove(toRemove.getName());
         }
     }
 }

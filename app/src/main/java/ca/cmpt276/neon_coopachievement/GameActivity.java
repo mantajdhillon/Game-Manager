@@ -27,9 +27,10 @@ import ca.cmpt276.neon_coopachievement.model.GameManager;
 public class GameActivity extends AppCompatActivity {
 
     private static final String GAME_TYPE_INDEX = "Game-Type-Index";
-    GameManager gameManager;
 
     public static final String ACTIVITY_TITLE = "Games";
+    // TODO: replace with name of Game manager (ex. Poker)
+    private static final String REPLACE_WITH_GAME_MANAGER_NAME = "Poker";
 
     // TODO: replace with category manager size
     private static final int SIZE_OF_GAME_CATEGORY_MANAGER = 0;
@@ -38,8 +39,6 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-
-        //gameManager = GameManager.get
 
         TextView numPlayersMsg = findViewById(R.id.numPlayersMsg);
         numPlayersMsg.setVisibility(View.INVISIBLE);
@@ -192,6 +191,10 @@ public class GameActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
+                return true;
+            case R.id.action_help:
+                Intent i = new Intent(GameActivity.this, HelpActivity.class);
+                startActivity(i);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

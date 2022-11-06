@@ -9,12 +9,12 @@ import java.security.InvalidParameterException;
 public class GameCategoryTest {
     @Test
     public void createTest(){
-        GameCategory myCategory = new GameCategory();
+        GameCategory myCategory = GameCategory.getInstance();
         assertEquals(0, myCategory.getGameManagersStored());
     }
 
     @Test public void methodsTest(){
-        GameCategory myCategory = new GameCategory();
+        GameCategory myCategory = GameCategory.getInstance();
         GameManager testManager = new GameManager("Test",5,1);
 
         // Test add + get
