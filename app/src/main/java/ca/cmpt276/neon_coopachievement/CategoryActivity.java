@@ -84,7 +84,7 @@ public class CategoryActivity extends AppCompatActivity {
         newCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = CategoryConfigActivity.makeCategoryConfigIntent(CategoryActivity.this, null, -1, -1);
+                Intent i = CategoryConfigActivity.makeCategoryConfigIntent(CategoryActivity.this, false,-1);
                 startActivity(i);
             }
         });

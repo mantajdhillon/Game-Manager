@@ -46,16 +46,6 @@ public class GameCategory {
         throw new InvalidParameterException("Game not found!");
     }
 
-    // findGame: locates a game based on its name, assuming each name is unique
-    public GameManager findGameManager(String name){
-        for(int i=0; i<gameManagersStored; i++){
-            if(gameManagers.get(i).getName() == name){
-                return gameManagers.get(i);
-            }
-        }
-        throw new InvalidParameterException("Game manager does not exist!");
-    }
-
     public GameManager getGameManager(int i) {
         return gameManagers.get(i);
     }
