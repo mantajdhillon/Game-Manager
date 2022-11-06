@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,9 +26,7 @@ import ca.cmpt276.neon_coopachievement.model.GameManager;
 
 public class CategoryActivity extends AppCompatActivity {
 
-    // TODO: replace with game category manager size
     private static GameCategory gameCategory = GameCategory.getInstance();
-    private static final int SIZE_OF_GAME_CATEGORY_MANAGER = gameCategory.getGameManagersStored();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +36,23 @@ public class CategoryActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         ab.setTitle(R.string.category_config_activity_title);
 
+        getGameManagerList();
+        setUpEmptyState();
+        setupAddCategoryBtn();
+        categoryClickCallback();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        getGameManagerList();
+        setUpEmptyState();
+        setupAddCategoryBtn();
+        categoryClickCallback();
+    }
+
+    private void getGameManagerList() {
         ArrayList<String> gameTypes = gameCategory.getGameNames();
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
@@ -46,10 +62,6 @@ public class CategoryActivity extends AppCompatActivity {
 
         ListView categories = findViewById(R.id.categoryList);
         categories.setAdapter(adapter);
-
-        setUpEmptyState();
-        setupAddCategoryBtn();
-        categoryClickCallback();
     }
 
     // Configure the empty state when there are no more games categories
@@ -58,7 +70,7 @@ public class CategoryActivity extends AppCompatActivity {
         TextView emptyStateDesc = findViewById(R.id.tvEmptyStateDescCategory);
 
         // Display only if the category manager is 0
-        if (SIZE_OF_GAME_CATEGORY_MANAGER == 0) {
+        if (gameCategory.getGameManagersStored() == 0) {
             emptyStateIcon.setVisibility(View.VISIBLE);
             emptyStateDesc.setVisibility(View.VISIBLE);
         } else {

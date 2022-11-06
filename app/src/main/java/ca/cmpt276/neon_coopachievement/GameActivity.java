@@ -165,7 +165,7 @@ public class GameActivity extends AppCompatActivity {
                 String strNumPlayers = etNumPlayers.getText().toString().trim();
                 if (!TextUtils.isEmpty(strNumPlayers)) {
                     int numPlayers = Integer.parseInt(strNumPlayers);
-                    if (numPlayers <= 1) {
+                    if (numPlayers <= 0) {
                         Toast.makeText(GameActivity.this, R.string.invalid_num_players_msg, Toast.LENGTH_SHORT).show();
                     } else {
                         Button viewAchievements = findViewById(R.id.viewAchievementsBtn);
