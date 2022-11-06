@@ -91,9 +91,7 @@ public class CategoryConfigActivity extends AppCompatActivity {
 
         // todo link
         deleteBtn.setOnClickListener(v -> {
-            GameManager toDelete = instance.findGameManager(gameName);
             // Change removeGameManager to boolean? Then change below to a try catch block
-            instance.removeGameManager(toDelete);
         });
     }
 

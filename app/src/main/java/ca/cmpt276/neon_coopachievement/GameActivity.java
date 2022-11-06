@@ -206,9 +206,14 @@ public class GameActivity extends AppCompatActivity {
         });
     }
 
+    private int getGameIndex() {
+        Intent intent = getIntent();
+        return intent.getIntExtra(GAME_TYPE_INDEX, -1);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_help, menu);
+        getMenuInflater().inflate(R.menu.menu_game, menu);
         return true;
     }
 
@@ -219,16 +224,16 @@ public class GameActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.action_help:
-                Intent i = new Intent(GameActivity.this, HelpActivity.class);
-                startActivity(i);
+                Intent i1 = new Intent(GameActivity.this, HelpActivity.class);
+                startActivity(i1);
+                return true;
+            case R.id.action_edit_category:
+                // TO-DO: replace with gameCategory info
+                Intent i2 = CategoryConfigActivity.makeCategoryConfigIntent(GameActivity.this, "Game Name", 100, 10);
+                startActivity(i2);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    private int getGameIndex() {
-        Intent intent = getIntent();
-        return intent.getIntExtra(GAME_TYPE_INDEX, -1);
     }
 }
