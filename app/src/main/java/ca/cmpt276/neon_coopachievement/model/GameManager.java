@@ -62,6 +62,15 @@ public class GameManager {
         }
         throw new InvalidParameterException("Game does not exist!");
     }
+
+    public Game getGame(int i) {
+        return games.get(i);
+    }
+
+    public String getGameString(int i) {
+        return games.get(i).toString();
+    }
+
     // addGame: adds a game to the games array
     public void addGame(Game game){
         this.games.add(game);

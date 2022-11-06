@@ -45,6 +45,13 @@ public class GameCategory {
         }
         throw new InvalidParameterException("Game not found!");
     }
+    public GameManager getGameManager(int i) {
+        return gameManagers.get(i);
+    }
+
+    public String getGameManagerString(int i) {
+        return gameManagers.get(i).toString();
+    }
 
     // addGameManager: adds a game manager to the array and increments the total number of managers
     public void addGameManager(GameManager toAdd) {

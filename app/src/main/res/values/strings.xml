@@ -34,4 +34,5 @@
     <string name="delete">delete</string>
     <string name="num_of_players">Number of Players?</string>
     <string name="help_centre">@string/help_activity_title</string>
+    <string name="invalid_num_players_msg">\"Invalid Number of Players"</string>
 </resources>
