@@ -22,18 +22,17 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import ca.cmpt276.neon_coopachievement.model.GameCategory;
 import ca.cmpt276.neon_coopachievement.model.GameManager;
 
 public class GameActivity extends AppCompatActivity {
 
     private static final String GAME_TYPE_INDEX = "Game-Type-Index";
+    private static GameCategory gameCategory = GameCategory.getInstance();
+
 
     public static final String ACTIVITY_TITLE = "Games";
-    // TODO: replace with name of Game manager (ex. Poker)
-    private static final String REPLACE_WITH_GAME_MANAGER_NAME = "Poker";
 
-    // TODO: replace with category manager size
-    private static final int SIZE_OF_GAME_CATEGORY_MANAGER = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +54,9 @@ public class GameActivity extends AppCompatActivity {
         ab.setTitle(ACTIVITY_TITLE);
         ab.setDisplayHomeAsUpEnabled(true);
 
-        String[] games = {"Game 1", "Game 2", "Game 3"};
+        GameManager gameManager = gameCategory.getGameManager(getGameIndex());
+
+        String[] games = getGameStrings(gameManager);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this,
@@ -65,7 +66,7 @@ public class GameActivity extends AppCompatActivity {
         ListView playedGames = findViewById(R.id.gameList);
         playedGames.setAdapter(adapter);
 
-        setUpEmptyState();
+        setUpEmptyState(gameManager.getGamesStored());
         setupAddGameBtn();
         setupViewAchievementsBtn();
         gameClickCallback();
@@ -77,13 +78,21 @@ public class GameActivity extends AppCompatActivity {
         return intent;
     }
 
+    private String[] getGameStrings(GameManager gM) {
+        String[] s = new String[gM.getGamesStored()];
+        for (int i = 0; i < s.length; i++) {
+            s[i] = gM.getGameString(i);
+        }
+        return s;
+    }
+
     // Configure the empty state when there are no more games
-    private void setUpEmptyState() {
+    private void setUpEmptyState(int numGames) {
         ImageView emptyStateIcon = findViewById(R.id.ivEmptyStateGameActivity);
         TextView emptyStateDesc = findViewById(R.id.tvEmptyStateDescGameActivity);
 
         // Display only if the category manager is 0
-        if (SIZE_OF_GAME_CATEGORY_MANAGER == 0) {
+        if (numGames == 0) {
             emptyStateIcon.setVisibility(View.VISIBLE);
             emptyStateDesc.setVisibility(View.VISIBLE);
         } else {
@@ -199,5 +208,10 @@ public class GameActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private int getGameIndex() {
+        Intent intent = getIntent();
+        return intent.getIntExtra(GAME_TYPE_INDEX, -1);
     }
 }
