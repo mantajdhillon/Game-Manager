@@ -99,9 +99,6 @@ public class GameActivity extends AppCompatActivity {
                 viewAchievements.setEnabled(false);
                 viewAchievements.setVisibility(View.INVISIBLE);
 
-                FloatingActionButton newGame = findViewById(R.id.addGameBtn);
-                newGame.setEnabled(false);
-
                 TextView numPlayersMsg = findViewById(R.id.numPlayersMsg);
                 numPlayersMsg.setVisibility(View.VISIBLE);
 
@@ -127,18 +124,19 @@ public class GameActivity extends AppCompatActivity {
                 String strNumPlayers = etNumPlayers.getText().toString().trim();
                 if (!TextUtils.isEmpty(strNumPlayers)) {
                     int numPlayers = Integer.parseInt(strNumPlayers);
-                    if (numPlayers <= 1) {
+                    if (numPlayers <= 0) {
                         Toast.makeText(GameActivity.this, R.string.game_activity_invalid_num_players_msg, Toast.LENGTH_SHORT).show();
                     } else {
                         Button viewAchievements = findViewById(R.id.viewAchievementsBtn);
                         viewAchievements.setEnabled(true);
                         viewAchievements.setVisibility(View.VISIBLE);
-                        FloatingActionButton newGame = findViewById(R.id.addGameBtn);
-                        newGame.setEnabled(true);
+
                         TextView numPlayersMsg = findViewById(R.id.numPlayersMsg);
                         numPlayersMsg.setVisibility(View.INVISIBLE);
+
                         etNumPlayers.setEnabled(false);
                         etNumPlayers.setVisibility(View.INVISIBLE);
+
                         goBtn.setEnabled(false);
                         goBtn.setVisibility(View.INVISIBLE);
 
@@ -162,6 +160,7 @@ public class GameActivity extends AppCompatActivity {
 
                 TextView game = (TextView) viewClicked;
 
+                // TO-DO: replace with Game info
                 Intent i = new Intent(GameActivity.this, GameConfigActivity.class);
                 startActivity(i);
             }
@@ -170,7 +169,7 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_game, menu);
         return true;
     }
 
@@ -181,8 +180,13 @@ public class GameActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.action_help:
-                Intent i = new Intent(GameActivity.this, HelpActivity.class);
-                startActivity(i);
+                Intent i1 = new Intent(GameActivity.this, HelpActivity.class);
+                startActivity(i1);
+                return true;
+            case R.id.action_edit_category:
+                // TO-DO: replace with gameCategory info
+                Intent i2 = CategoryConfigActivity.makeCategoryConfigIntent(GameActivity.this, "Game Name", 100, 10);
+                startActivity(i2);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

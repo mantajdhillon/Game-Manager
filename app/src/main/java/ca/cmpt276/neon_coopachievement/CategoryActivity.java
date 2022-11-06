@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -65,7 +66,7 @@ public class CategoryActivity extends AppCompatActivity {
         newCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(CategoryActivity.this, CategoryConfigActivity.class);
+                Intent i = CategoryConfigActivity.makeCategoryConfigIntent(CategoryActivity.this, null, -1, -1);
                 startActivity(i);
             }
         });
