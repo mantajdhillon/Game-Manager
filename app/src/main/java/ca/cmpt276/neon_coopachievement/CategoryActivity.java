@@ -72,15 +72,12 @@ public class CategoryActivity extends AppCompatActivity {
 
     private void categoryClickCallback() {
         ListView categories = findViewById(R.id.categoryList);
-        categories.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
+        categories.setOnItemClickListener((parent, viewClicked, position, id) -> {
 
-                TextView category = (TextView) viewClicked;
+            TextView category = (TextView) viewClicked;
 
-                Intent i = new Intent(CategoryActivity.this, GameActivity.class);
-                startActivity(i);
-            }
+            Intent i = GameActivity.makeLaunchIntent(CategoryActivity.this, position);
+            startActivity(i);
         });
     }
 }

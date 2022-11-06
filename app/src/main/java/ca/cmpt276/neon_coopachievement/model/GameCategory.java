@@ -1,5 +1,8 @@
 package ca.cmpt276.neon_coopachievement.model;
 
+import android.content.Context;
+import android.content.Intent;
+
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 

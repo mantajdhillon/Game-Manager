@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -21,7 +22,12 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import ca.cmpt276.neon_coopachievement.model.GameManager;
+
 public class GameActivity extends AppCompatActivity {
+
+    private static final String GAME_TYPE_INDEX = "Game-Type-Index";
+    GameManager gameManager;
 
     public static final String ACTIVITY_TITLE = "Games";
 
@@ -32,6 +38,8 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        //gameManager = GameManager.get
 
         TextView numPlayersMsg = findViewById(R.id.numPlayersMsg);
         numPlayersMsg.setVisibility(View.INVISIBLE);
@@ -62,6 +70,12 @@ public class GameActivity extends AppCompatActivity {
         setupAddGameBtn();
         setupViewAchievementsBtn();
         gameClickCallback();
+    }
+
+    public static Intent makeLaunchIntent(Context c, int index) {
+        Intent intent = new Intent(c, GameActivity.class);
+        intent.putExtra(GAME_TYPE_INDEX, index);
+        return intent;
     }
 
     // Configure the empty state when there are no more games
