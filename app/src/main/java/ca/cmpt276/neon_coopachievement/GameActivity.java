@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -21,13 +22,17 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import ca.cmpt276.neon_coopachievement.model.GameCategory;
+import ca.cmpt276.neon_coopachievement.model.GameManager;
+
 public class GameActivity extends AppCompatActivity {
 
-    // TODO: replace with name of Game manager (ex. Poker)
-    private static final String REPLACE_WITH_GAME_MANAGER_NAME = "Poker";
+    private static final String GAME_TYPE_INDEX = "Game-Type-Index";
+    private static GameCategory gameCategory = GameCategory.getInstance();
 
-    // TODO: replace with category manager size (ex. 3)
-    private static final int REPLACE_WITH_SIZE_OF_GAME_MANAGER = 0;
+
+    public static final String ACTIVITY_TITLE = "Games";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +51,12 @@ public class GameActivity extends AppCompatActivity {
         goBtn.setVisibility(View.INVISIBLE);
 
         ActionBar ab = getSupportActionBar();
-        ab.setTitle(REPLACE_WITH_GAME_MANAGER_NAME);
+        ab.setTitle(ACTIVITY_TITLE);
         ab.setDisplayHomeAsUpEnabled(true);
 
-        String[] games = {"Game 1", "Game 2", "Game 3"};
+        GameManager gameManager = gameCategory.getGameManager(getGameIndex());
+
+        String[] games = getGameStrings(gameManager);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this,
@@ -59,19 +66,33 @@ public class GameActivity extends AppCompatActivity {
         ListView playedGames = findViewById(R.id.gameList);
         playedGames.setAdapter(adapter);
 
-        setUpEmptyState();
+        setUpEmptyState(gameManager.getGamesStored());
         setupAddGameBtn();
         setupViewAchievementsBtn();
         gameClickCallback();
     }
 
+    public static Intent makeLaunchIntent(Context c, int index) {
+        Intent intent = new Intent(c, GameActivity.class);
+        intent.putExtra(GAME_TYPE_INDEX, index);
+        return intent;
+    }
+
+    private String[] getGameStrings(GameManager gM) {
+        String[] s = new String[gM.getGamesStored()];
+        for (int i = 0; i < s.length; i++) {
+            s[i] = gM.getGameString(i);
+        }
+        return s;
+    }
+
     // Configure the empty state when there are no more games
-    private void setUpEmptyState() {
+    private void setUpEmptyState(int numGames) {
         ImageView emptyStateIcon = findViewById(R.id.ivEmptyStateGameActivity);
         TextView emptyStateDesc = findViewById(R.id.tvEmptyStateDescGameActivity);
 
         // Display only if the category manager is 0
-        if (REPLACE_WITH_SIZE_OF_GAME_MANAGER == 0) {
+        if (numGames == 0) {
             emptyStateIcon.setVisibility(View.VISIBLE);
             emptyStateDesc.setVisibility(View.VISIBLE);
         } else {
@@ -85,7 +106,7 @@ public class GameActivity extends AppCompatActivity {
         newGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(GameActivity.this, GameConfigActivity.class);
+                Intent i = GameConfigActivity.makeLaunchIntent(GameActivity.this, getGameIndex());
                 startActivity(i);
             }
         });
@@ -98,6 +119,9 @@ public class GameActivity extends AppCompatActivity {
             public void onClick(View v) {
                 viewAchievements.setEnabled(false);
                 viewAchievements.setVisibility(View.INVISIBLE);
+
+                FloatingActionButton newGame = findViewById(R.id.addGameBtn);
+                newGame.setEnabled(false);
 
                 TextView numPlayersMsg = findViewById(R.id.numPlayersMsg);
                 numPlayersMsg.setVisibility(View.VISIBLE);
@@ -124,19 +148,18 @@ public class GameActivity extends AppCompatActivity {
                 String strNumPlayers = etNumPlayers.getText().toString().trim();
                 if (!TextUtils.isEmpty(strNumPlayers)) {
                     int numPlayers = Integer.parseInt(strNumPlayers);
-                    if (numPlayers <= 0) {
-                        Toast.makeText(GameActivity.this, R.string.game_activity_invalid_num_players_msg, Toast.LENGTH_SHORT).show();
+                    if (numPlayers <= 1) {
+                        Toast.makeText(GameActivity.this, R.string.invalid_num_players_msg, Toast.LENGTH_SHORT).show();
                     } else {
                         Button viewAchievements = findViewById(R.id.viewAchievementsBtn);
                         viewAchievements.setEnabled(true);
                         viewAchievements.setVisibility(View.VISIBLE);
-
+                        FloatingActionButton newGame = findViewById(R.id.addGameBtn);
+                        newGame.setEnabled(true);
                         TextView numPlayersMsg = findViewById(R.id.numPlayersMsg);
                         numPlayersMsg.setVisibility(View.INVISIBLE);
-
                         etNumPlayers.setEnabled(false);
                         etNumPlayers.setVisibility(View.INVISIBLE);
-
                         goBtn.setEnabled(false);
                         goBtn.setVisibility(View.INVISIBLE);
 
@@ -146,7 +169,7 @@ public class GameActivity extends AppCompatActivity {
                         startActivity(i);
                     }
                 } else {
-                    Toast.makeText(GameActivity.this, R.string.game_activity_invalid_num_players_msg, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GameActivity.this, R.string.invalid_num_players_msg, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -160,8 +183,7 @@ public class GameActivity extends AppCompatActivity {
 
                 TextView game = (TextView) viewClicked;
 
-                // TO-DO: replace with Game info
-                Intent i = new Intent(GameActivity.this, GameConfigActivity.class);
+                Intent i = GameConfigActivity.makeLaunchIntent(GameActivity.this, getGameIndex());
                 startActivity(i);
             }
         });
@@ -169,7 +191,7 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_game, menu);
+        getMenuInflater().inflate(R.menu.menu_help, menu);
         return true;
     }
 
@@ -180,16 +202,16 @@ public class GameActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.action_help:
-                Intent i1 = new Intent(GameActivity.this, HelpActivity.class);
-                startActivity(i1);
-                return true;
-            case R.id.action_edit_category:
-                // TO-DO: replace with gameCategory info
-                Intent i2 = CategoryConfigActivity.makeCategoryConfigIntent(GameActivity.this, "Game Name", 100, 10);
-                startActivity(i2);
+                Intent i = new Intent(GameActivity.this, HelpActivity.class);
+                startActivity(i);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private int getGameIndex() {
+        Intent intent = getIntent();
+        return intent.getIntExtra(GAME_TYPE_INDEX, -1);
     }
 }
