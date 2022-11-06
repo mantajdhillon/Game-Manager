@@ -76,4 +76,8 @@ public class GameManager {
         }
     }
 
+    @Override
+    public String toString() {
+        return name + ": " + getGamesStored() + " games recorded.";
+    }
 }
