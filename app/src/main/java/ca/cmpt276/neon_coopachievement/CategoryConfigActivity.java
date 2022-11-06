@@ -20,13 +20,16 @@ import ca.cmpt276.neon_coopachievement.model.GameManager;
 
 public class CategoryConfigActivity extends AppCompatActivity {
 
+    public static final String GAME_INDEX = "gameIndex";
     private static final String GAME_NAME = "game name";
     private static final String GOOD_SCORE = "good score";
     private static final String BAD_SCORE = "bad score";
+    public static final String IS_EDIT = "isEdit";
 
-    private String gameName;
-    private int goodScore;
-    private int badScore;
+
+    private boolean isEdit;
+    private int gameIndex;
+    private GameManager gameManager;
 
     private GameCategory instance = GameCategory.getInstance();
 
@@ -40,13 +43,16 @@ public class CategoryConfigActivity extends AppCompatActivity {
         ab.setTitle(R.string.category_config_activity_add_game);
         ab.setDisplayHomeAsUpEnabled(true);
 
+
         // Set up buttons
         setUpDeleteBtn();
         setUpSaveBtn();
 
         extractDataFromIntent();
-        if (gameName != null) {
+        if(isEdit){
+            gameManager = instance.getGameManager(gameIndex);
             ab.setTitle(R.string.category_config_activity_edit_game);
+            populateFields();
         }
     }
 
@@ -116,34 +122,28 @@ public class CategoryConfigActivity extends AppCompatActivity {
         }
     }
 
-    public static Intent makeCategoryConfigIntent(Context context, String gameName, int goodScore, int badScore) {
+    public static Intent makeCategoryConfigIntent(Context context, boolean isEdit, int gameIndex) {
         Intent i = new Intent(context, CategoryConfigActivity.class);
-        if (gameName != null) {
-            i.putExtra(GAME_NAME, gameName);
-            i.putExtra(GOOD_SCORE, goodScore);
-            i.putExtra(BAD_SCORE, badScore);
-        }
+        i.putExtra(IS_EDIT, isEdit);
+        i.putExtra(GAME_INDEX, gameIndex);
         return i;
     }
 
+
     private void extractDataFromIntent() {
         Intent i = getIntent();
-        gameName = i.getStringExtra(GAME_NAME);
-        goodScore = i.getIntExtra(GOOD_SCORE, -1);
-        badScore = i.getIntExtra(BAD_SCORE, -1);
-        if (gameName != null) {
-            populateFields();
-        }
+        isEdit = i.getBooleanExtra(IS_EDIT, false);
+        gameIndex = i.getIntExtra(GAME_INDEX,-1);
     }
 
     private void populateFields() {
         EditText etGameName = findViewById(R.id.etGameName);
-        etGameName.setText(gameName, TextView.BufferType.EDITABLE);
+        etGameName.setText(gameManager.getName());
 
         EditText etGoodScore = findViewById(R.id.etGoodScore);
-        etGoodScore.setText(Integer.toString(goodScore), TextView.BufferType.EDITABLE);
+        etGoodScore.setText(Integer.toString(gameManager.getGreatScoreIndividual()));
 
         EditText etBadScore = findViewById(R.id.etBadScore);
-        etBadScore.setText(Integer.toString(badScore), TextView.BufferType.EDITABLE);
+        etBadScore.setText(Integer.toString(gameManager.getPoorScoreIndividual()));
     }
 }

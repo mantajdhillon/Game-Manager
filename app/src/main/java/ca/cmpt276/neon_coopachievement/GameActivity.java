@@ -229,7 +229,7 @@ public class GameActivity extends AppCompatActivity {
                 return true;
             case R.id.action_edit_category:
                 // TO-DO: replace with gameCategory info
-                Intent i2 = CategoryConfigActivity.makeCategoryConfigIntent(GameActivity.this, "Game Name", 100, 10);
+                Intent i2 = CategoryConfigActivity.makeCategoryConfigIntent(GameActivity.this, true,getGameIndex());
                 startActivity(i2);
                 return true;
             default:
