@@ -106,7 +106,7 @@ public class GameActivity extends AppCompatActivity {
         newGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(GameActivity.this, GameConfigActivity.class);
+                Intent i = GameConfigActivity.makeLaunchIntent(GameActivity.this, getGameIndex());
                 startActivity(i);
             }
         });
@@ -183,7 +183,7 @@ public class GameActivity extends AppCompatActivity {
 
                 TextView game = (TextView) viewClicked;
 
-                Intent i = new Intent(GameActivity.this, GameConfigActivity.class);
+                Intent i = GameConfigActivity.makeLaunchIntent(GameActivity.this, getGameIndex());
                 startActivity(i);
             }
         });
