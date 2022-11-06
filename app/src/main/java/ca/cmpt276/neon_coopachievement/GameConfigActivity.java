@@ -69,16 +69,11 @@ public class GameConfigActivity extends AppCompatActivity {
                 gameManager.getPoorScoreIndividual(),gameManager.getGreatScoreIndividual());
                 gameManager.addGame(game);
 
-                Intent i = GameActivity.makeLaunchIntent(GameConfigActivity.this, getGameIndex());
-                startActivity(i);
             } catch (Exception e){
                 Toast.makeText(this,"Invalid input",Toast.LENGTH_SHORT).show();
             }
+            finish();
 
-
-            Toast.makeText(this,
-                    "Should save game",
-                    Toast.LENGTH_SHORT).show();
         });
     }
 
