@@ -56,6 +56,15 @@ public class GameActivity extends AppCompatActivity {
 
         GameManager gameManager = gameCategory.getGameManager(getGameIndex());
 
+        generateGamesList(gameManager);
+
+        setUpEmptyState(gameManager.getGamesStored());
+        setupAddGameBtn();
+        setupViewAchievementsBtn();
+        gameClickCallback();
+    }
+
+    private void generateGamesList(GameManager gameManager) {
         String[] games = getGameStrings(gameManager);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
@@ -65,11 +74,19 @@ public class GameActivity extends AppCompatActivity {
 
         ListView playedGames = findViewById(R.id.gameList);
         playedGames.setAdapter(adapter);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        GameManager gameManager = gameCategory.getGameManager(getGameIndex());
+
+        generateGamesList(gameManager);
         setUpEmptyState(gameManager.getGamesStored());
         setupAddGameBtn();
         setupViewAchievementsBtn();
         gameClickCallback();
+
     }
 
     public static Intent makeLaunchIntent(Context c, int index) {
