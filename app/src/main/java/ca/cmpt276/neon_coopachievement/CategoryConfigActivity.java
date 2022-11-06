@@ -68,13 +68,22 @@ public class CategoryConfigActivity extends AppCompatActivity {
 
             EditText getBadScore = findViewById((R.id.etBadScore));
             int badScore = getInt(getBadScore);
-
-            try{
-                GameManager newManager = new GameManager(name, goodScore, badScore);
-                instance.addGameManager(newManager);
+            if(!isEdit) {
+                try {
+                    GameManager newManager = new GameManager(name, goodScore, badScore);
+                    instance.addGameManager(newManager);
+                } catch (Exception e) {
+                    Toast.makeText(this, "Invalid scores", Toast.LENGTH_SHORT).show();
+                }
             }
-            catch(Exception e){
-                Toast.makeText(this,"Invalid scores",Toast.LENGTH_SHORT).show();
+            else{
+                try {
+                    gameManager.setName(name);
+                    gameManager.setGreatScoreIndividual(goodScore);
+                    gameManager.setPoorScoreIndividual(badScore);
+                } catch (Exception e) {
+                    Toast.makeText(this, "Invalid information", Toast.LENGTH_SHORT).show();
+                }
             }
             finish();
         });

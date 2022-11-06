@@ -12,6 +12,9 @@ public class GameManager {
     private int poorScoreIndividual;
 
     public GameManager(String name, int gs, int ps){
+        if(name == null || name.equals("")){
+            throw new InvalidParameterException("Name cannot be empty");
+        }
         this.name = name;
         if(ps >= gs){
             throw new InvalidParameterException("Poor score cannot be greater than great score!");
@@ -43,10 +46,16 @@ public class GameManager {
     }
 
     public void setGreatScoreIndividual(int score){
+        if(score <= poorScoreIndividual){
+            throw new InvalidParameterException("Invalid score entry");
+        }
         this.greatScoreIndividual = score;
     }
 
     public void setPoorScoreIndividual(int score){
+        if(score >= greatScoreIndividual){
+            throw new InvalidParameterException("Invalid score entry");
+        }
         this.poorScoreIndividual = score;
     }
 
