@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,10 +19,14 @@ import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
+
+import ca.cmpt276.neon_coopachievement.model.GameCategory;
+import ca.cmpt276.neon_coopachievement.model.GameManager;
+
 public class CategoryActivity extends AppCompatActivity {
 
-    // TODO: replace with game category manager size
-    private static final int SIZE_OF_GAME_CATEGORY_MANAGER = 0;
+    private static GameCategory gameCategory = GameCategory.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +36,24 @@ public class CategoryActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         ab.setTitle(R.string.category_config_activity_title);
 
-        String[] gameTypes = {"Game Type 1", "Game Type 2", "Game Type 3"};
+        getGameManagerList();
+        setUpEmptyState();
+        setupAddCategoryBtn();
+        categoryClickCallback();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        getGameManagerList();
+        setUpEmptyState();
+        setupAddCategoryBtn();
+        categoryClickCallback();
+    }
+
+    private void getGameManagerList() {
+        ArrayList<String> gameTypes = gameCategory.getGameNames();
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 this,
@@ -40,10 +62,6 @@ public class CategoryActivity extends AppCompatActivity {
 
         ListView categories = findViewById(R.id.categoryList);
         categories.setAdapter(adapter);
-
-        setUpEmptyState();
-        setupAddCategoryBtn();
-        categoryClickCallback();
     }
 
     // Configure the empty state when there are no more games categories
@@ -52,7 +70,7 @@ public class CategoryActivity extends AppCompatActivity {
         TextView emptyStateDesc = findViewById(R.id.tvEmptyStateDescCategory);
 
         // Display only if the category manager is 0
-        if (SIZE_OF_GAME_CATEGORY_MANAGER == 0) {
+        if (gameCategory.getGameManagersStored() == 0) {
             emptyStateIcon.setVisibility(View.VISIBLE);
             emptyStateDesc.setVisibility(View.VISIBLE);
         } else {
@@ -74,15 +92,12 @@ public class CategoryActivity extends AppCompatActivity {
 
     private void categoryClickCallback() {
         ListView categories = findViewById(R.id.categoryList);
-        categories.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
+        categories.setOnItemClickListener((parent, viewClicked, position, id) -> {
 
-                TextView category = (TextView) viewClicked;
+            TextView category = (TextView) viewClicked;
 
-                Intent i = new Intent(CategoryActivity.this, GameActivity.class);
-                startActivity(i);
-            }
+            Intent i = GameActivity.makeLaunchIntent(CategoryActivity.this, position);
+            startActivity(i);
         });
     }
 

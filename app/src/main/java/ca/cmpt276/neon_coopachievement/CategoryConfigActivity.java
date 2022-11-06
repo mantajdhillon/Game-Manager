@@ -9,10 +9,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import ca.cmpt276.neon_coopachievement.model.GameCategory;
+import ca.cmpt276.neon_coopachievement.model.GameManager;
 
 public class CategoryConfigActivity extends AppCompatActivity {
 
@@ -23,6 +27,8 @@ public class CategoryConfigActivity extends AppCompatActivity {
     private String gameName;
     private int goodScore;
     private int badScore;
+
+    private GameCategory instance = GameCategory.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,19 +53,48 @@ public class CategoryConfigActivity extends AppCompatActivity {
     private void setUpSaveBtn() {
         Button saveBtn = findViewById(R.id.btnSaveConfig);
 
-        // todo link
-        saveBtn.setOnClickListener(view -> Toast.makeText(this,
-                "Should save game config",
-                Toast.LENGTH_SHORT).show());
+        saveBtn.setOnClickListener(view -> {
+            EditText getName = findViewById(R.id.etGameName);
+            String name = getName.getText().toString();
+
+            EditText getGoodScore = findViewById((R.id.etGoodScore));
+            int goodScore = getInt(getGoodScore);
+
+            EditText getBadScore = findViewById((R.id.etBadScore));
+            int badScore = getInt(getBadScore);
+
+            try{
+                GameManager newManager = new GameManager(name, goodScore, badScore);
+                instance.addGameManager(newManager);
+            }
+            catch(Exception e){
+                Toast.makeText(this,"Invalid scores",Toast.LENGTH_SHORT).show();
+            }
+            finish();
+        });
     }
+
+    private int getInt(EditText et){
+        int newInt = 0;
+        String intStr = et.getText().toString();
+        try {
+            newInt = Integer.parseInt(intStr);
+        }  catch (NumberFormatException ex){
+            Toast.makeText(this, "INVALID ENTRY",Toast.LENGTH_SHORT).show();
+        }
+        return newInt;
+    }
+
 
     private void setUpDeleteBtn() {
         Button deleteBtn = findViewById(R.id.btnDeleteConfig);
 
         // todo link
-        deleteBtn.setOnClickListener(view -> Toast.makeText(this,
-                "Should delete game config",
-                Toast.LENGTH_SHORT).show());
+        deleteBtn.setOnClickListener(v -> {
+            GameManager toDelete = instance.findGameManager(gameName);
+            // Change removeGameManager to boolean? Then change below to a try catch block
+            instance.removeGameManager(toDelete);
+        });
     }
 
     @Override

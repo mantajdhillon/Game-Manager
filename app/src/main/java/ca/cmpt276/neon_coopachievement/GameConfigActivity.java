@@ -13,7 +13,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import ca.cmpt276.neon_coopachievement.model.Game;
+import ca.cmpt276.neon_coopachievement.model.GameCategory;
+import ca.cmpt276.neon_coopachievement.model.GameManager;
+
 public class GameConfigActivity extends AppCompatActivity {
+
+    private static final String GAME_TYPE_INDEX = "Game-Type-Index";
+    GameCategory gameCategory = GameCategory.getInstance();
+    GameManager gameManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,18 +34,58 @@ public class GameConfigActivity extends AppCompatActivity {
         // ab.setTitle(R.string.game_config_activity_edit_game);
         ab.setDisplayHomeAsUpEnabled(true);
 
+        gameManager = gameCategory.getGameManager(getGameIndex());
+
         // Set up buttons
         setUpSaveBtn();
         setUpDeleteBtn();
+    }
+
+    public static Intent makeLaunchIntent(Context c, int index) {
+        Intent intent = new Intent(c, GameConfigActivity.class);
+        intent.putExtra(GAME_TYPE_INDEX, index);
+        return intent;
+    }
+
+    private int getGameIndex() {
+        Intent intent = getIntent();
+        return intent.getIntExtra(GAME_TYPE_INDEX, -1);
     }
 
     private void setUpSaveBtn() {
         Button saveBtn = findViewById(R.id.btnSaveGame);
 
         // todo link
-        saveBtn.setOnClickListener(view -> Toast.makeText(this,
-                "Should save game",
-                Toast.LENGTH_SHORT).show());
+        saveBtn.setOnClickListener(view -> {
+
+            EditText etNumPlayers = findViewById((R.id.etNumPlayers));
+            int numPlayers = getInt(etNumPlayers);
+
+            EditText etSumScore = findViewById((R.id.etSumPlayerScores));
+            int sumScores = getInt(etSumScore);
+
+            try {
+                Game game = new Game(numPlayers, sumScores,
+                gameManager.getPoorScoreIndividual(),gameManager.getGreatScoreIndividual());
+                gameManager.addGame(game);
+
+            } catch (Exception e){
+                Toast.makeText(this,"Invalid input",Toast.LENGTH_SHORT).show();
+            }
+            finish();
+
+        });
+    }
+
+    private int getInt(EditText et){
+        int newInt = 0;
+        String intStr = et.getText().toString();
+        try {
+            newInt = Integer.parseInt(intStr);
+        }  catch (NumberFormatException ex){
+            Toast.makeText(this, "INVALID ENTRY",Toast.LENGTH_SHORT).show();
+        }
+        return newInt;
     }
 
     private void setUpDeleteBtn() {

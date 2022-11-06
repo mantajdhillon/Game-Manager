@@ -1,5 +1,8 @@
 package ca.cmpt276.neon_coopachievement.model;
 
+import android.content.Context;
+import android.content.Intent;
+
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
@@ -8,14 +11,19 @@ public class GameCategory {
     private static GameCategory instance;
     private final ArrayList<GameManager> gameManagers = new ArrayList<>();
     private int gameManagersStored;
+    private ArrayList<String> gameNames = new ArrayList<>();
 
-    GameCategory() {
+    private GameCategory() {
         this.gameManagersStored = 0;
     }
 
     // Getters and Setters
     public int getGameManagersStored() {
         return this.gameManagersStored;
+    }
+
+    public ArrayList<String> getGameNames() {
+        return gameNames;
     }
 
     public static GameCategory getInstance() {
@@ -38,10 +46,29 @@ public class GameCategory {
         throw new InvalidParameterException("Game not found!");
     }
 
+    // findGame: locates a game based on its name, assuming each name is unique
+    public GameManager findGameManager(String name){
+        for(int i=0; i<gameManagersStored; i++){
+            if(gameManagers.get(i).getName() == name){
+                return gameManagers.get(i);
+            }
+        }
+        throw new InvalidParameterException("Game manager does not exist!");
+    }
+
+    public GameManager getGameManager(int i) {
+        return gameManagers.get(i);
+    }
+
+    public String getGameManagerString(int i) {
+        return gameManagers.get(i).toString();
+    }
+
     // addGameManager: adds a game manager to the array and increments the total number of managers
     public void addGameManager(GameManager toAdd) {
         this.gameManagers.add(toAdd);
         this.gameManagersStored++;
+        this.gameNames.add(toAdd.getName());
     }
 
     // removeGameManager: removes a game manager and decincrements the total number of managers
@@ -49,6 +76,7 @@ public class GameCategory {
         // If game can be removed
         if (this.gameManagers.remove(toRemove)) {
             this.gameManagersStored--;
+            this.gameNames.remove(toRemove.getName());
         }
     }
 }

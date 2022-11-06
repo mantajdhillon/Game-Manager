@@ -10,9 +10,8 @@ public class GameManager {
     private String name;
     private int greatScoreIndividual;
     private int poorScoreIndividual;
-    private int gamesStored;
 
-    GameManager(String name, int gs, int ps){
+    public GameManager(String name, int gs, int ps){
         this.name = name;
         if(ps >= gs){
             throw new InvalidParameterException("Poor score cannot be greater than great score!");
@@ -36,7 +35,7 @@ public class GameManager {
     }
 
     public int getGamesStored(){
-        return gamesStored;
+        return games.size();
     }
 
     public void setName(String gameName){
@@ -54,7 +53,7 @@ public class GameManager {
     public Game getGame(Game toGet){
         boolean found = this.games.contains(toGet);
         if(found){
-            for(int i=0; i<this.gamesStored; i++){
+            for(int i = 0; i < games.size(); i++){
                 if(games.get(i) == toGet){
                     return toGet;
                 }
@@ -62,18 +61,29 @@ public class GameManager {
         }
         throw new InvalidParameterException("Game does not exist!");
     }
+
+    public Game getGame(int i) {
+        return games.get(i);
+    }
+
+    public String getGameString(int i) {
+        return games.get(i).toString();
+    }
+
     // addGame: adds a game to the games array
     public void addGame(Game game){
         this.games.add(game);
-        this.gamesStored++;
     }
 
     // deleteGame: deletes a game from the games array and deincrements the total number of games
     public void removeGame(Game toDelete){
         // If game can be removed
         if(this.games.remove(toDelete)) {
-            this.gamesStored--;
         }
     }
 
+    @Override
+    public String toString() {
+        return name + ": " + getGamesStored() + " games recorded.";
+    }
 }
