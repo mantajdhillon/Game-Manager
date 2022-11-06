@@ -4,20 +4,25 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import ca.cmpt276.neon_coopachievement.model.GameCategory;
-import ca.cmpt276.neon_coopachievement.model.GameManager;
-
 public class CategoryConfigActivity extends AppCompatActivity {
-    // Call the GameCategory instance
-    private GameCategory instance = GameCategory.getInstance();
+
+    private static final String GAME_NAME = "game name";
+    private static final String GOOD_SCORE = "good score";
+    private static final String BAD_SCORE = "bad score";
+
+    private String gameName;
+    private int goodScore;
+    private int badScore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,50 +32,25 @@ public class CategoryConfigActivity extends AppCompatActivity {
         // Set up Action Bar
         ActionBar ab = getSupportActionBar();
         ab.setTitle(R.string.category_config_activity_add_game);
-        // ab.setTitle(R.string.category_config_activity_edit_game);
         ab.setDisplayHomeAsUpEnabled(true);
 
         // Set up buttons
         setUpDeleteBtn();
         setUpSaveBtn();
+
+        extractDataFromIntent();
+        if (gameName != null) {
+            ab.setTitle(R.string.category_config_activity_edit_game);
+        }
     }
 
     private void setUpSaveBtn() {
         Button saveBtn = findViewById(R.id.btnSaveConfig);
 
-        saveBtn.setOnClickListener(view -> {
-            EditText getName = findViewById(R.id.etGameName);
-            String name = getName.getText().toString();
-
-            EditText getGoodScore = findViewById((R.id.etGoodScore));
-            int goodScore = getInt(getGoodScore);
-
-            EditText getBadScore = findViewById((R.id.etBadScore));
-            int badScore = getInt(getBadScore);
-
-            if(goodScore > badScore) {
-                GameManager newManager = new GameManager(name, goodScore, badScore);
-                instance.addGameManager(newManager);
-
-                Intent i = new Intent(CategoryConfigActivity.this, CategoryActivity.class);
-                startActivity(i);
-            }
-            else{
-                Toast.makeText(this,"Invalid scores",Toast.LENGTH_SHORT).show();
-            }
-
-        });
-    }
-
-    private int getInt(EditText et){
-        int newInt = 0;
-        String intStr = et.getText().toString();
-        try {
-            newInt = Integer.parseInt(intStr);
-        }  catch (NumberFormatException ex){
-            Toast.makeText(this, "INVALID ENTRY",Toast.LENGTH_SHORT).show();
-        }
-        return newInt;
+        // todo link
+        saveBtn.setOnClickListener(view -> Toast.makeText(this,
+                "Should save game config",
+                Toast.LENGTH_SHORT).show());
     }
 
     private void setUpDeleteBtn() {
@@ -101,5 +81,36 @@ public class CategoryConfigActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public static Intent makeCategoryConfigIntent(Context context, String gameName, int goodScore, int badScore) {
+        Intent i = new Intent(context, CategoryConfigActivity.class);
+        if (gameName != null) {
+            i.putExtra(GAME_NAME, gameName);
+            i.putExtra(GOOD_SCORE, goodScore);
+            i.putExtra(BAD_SCORE, badScore);
+        }
+        return i;
+    }
+
+    private void extractDataFromIntent() {
+        Intent i = getIntent();
+        gameName = i.getStringExtra(GAME_NAME);
+        goodScore = i.getIntExtra(GOOD_SCORE, -1);
+        badScore = i.getIntExtra(BAD_SCORE, -1);
+        if (gameName != null) {
+            populateFields();
+        }
+    }
+
+    private void populateFields() {
+        EditText etGameName = findViewById(R.id.etGameName);
+        etGameName.setText(gameName, TextView.BufferType.EDITABLE);
+
+        EditText etGoodScore = findViewById(R.id.etGoodScore);
+        etGoodScore.setText(Integer.toString(goodScore), TextView.BufferType.EDITABLE);
+
+        EditText etBadScore = findViewById(R.id.etBadScore);
+        etBadScore.setText(Integer.toString(badScore), TextView.BufferType.EDITABLE);
     }
 }

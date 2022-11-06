@@ -11,7 +11,7 @@
 
     <!--Game Activity-->
     <string name="game_activity_empty_state_desc">No games found!\nClick the + to add a new game.</string>
-    <string name="game_activity_invalid_num_players_msg">Must enter a number greater than 1</string>
+    <string name="game_activity_invalid_num_players_msg">Must enter a number greater than 0</string>
 
     <!--Game Config Activity-->
     <string name="game_config_activity_add_game">Add game</string>
@@ -27,12 +27,12 @@
 
     <!--Help Screen-->
     <string name="help_activity_title">Help Centre</string>
-    <string name="help_message">Welcome to the Help Centre!\n\n[App name] is designed to generate the co-operative achievement ranks of game categories you\'ve saved, as well as track the history and results of your played games.\n\nGame Category:\nDisplays the different game categories you\'ve entered into the system. Click the + to add a new game category.\n\nAdd Game Configuration:\nFill in the \'Game Name\', \'Good Score\', and \'Bad Score\' and click save to generate a new game category.\n\nGames:\nDisplays the game history of one game category and the results of each game. Click on the + to add a new game. Click on an individual played game to edit/delete the game.\n\nAdd Game:\nFill in the \'# of players\' and \'Sum of scores\' and click save to generate a new game.\n\nAchievements:\nDisplays the different possible achievements of one game category based on the number of players you\'ve entered.</string>
+    <string name="help_message">Welcome to the Help Centre!\n\n[App name] is designed to generate the co-operative achievement ranks of game categories you\'ve saved, as well as track the history and results of your played games.\n\nGame Category:\nDisplays the different game categories you\'ve entered into the system. Click the + to add a new game category. Click on the pencil icon to edit the game configuration.\n\nAdd Game Configuration:\nFill in the \'Game Name\', \'Good Score\', and \'Bad Score\' and click save to generate a new game category.\n\nGames:\nDisplays the game history of one game category and the results of each game. Click on the + to add a new game. Click on an individual played game to edit/delete the game.\n\nAdd Game:\nFill in the \'# of players\' and \'Sum of scores\' and click save to generate a new game.\n\nAchievements:\nDisplays the different possible achievements of one game category based on the number of players you\'ve entered.</string>
 
     <!--Other-->
     <string name="save">save</string>
     <string name="delete">delete</string>
     <string name="num_of_players">Number of Players?</string>
     <string name="help_centre">@string/help_activity_title</string>
-    <string name="invalid_num_players_msg">\"Invalid Number of Players"</string>
+    <string name="edit_category">Edit Category</string>
 </resources>
