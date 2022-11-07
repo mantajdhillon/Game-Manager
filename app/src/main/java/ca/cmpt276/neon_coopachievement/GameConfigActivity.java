@@ -7,12 +7,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import ca.cmpt276.neon_coopachievement.model.Achievement;
 import ca.cmpt276.neon_coopachievement.model.Game;
 import ca.cmpt276.neon_coopachievement.model.GameCategory;
 import ca.cmpt276.neon_coopachievement.model.GameManager;
@@ -22,6 +26,9 @@ public class GameConfigActivity extends AppCompatActivity {
     private static final String GAME_TYPE_INDEX = "Game-Type-Index";
     GameCategory gameCategory = GameCategory.getInstance();
     GameManager gameManager;
+
+    private EditText etNumPlayers;
+    private EditText etSumScore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +46,13 @@ public class GameConfigActivity extends AppCompatActivity {
         // Set up buttons
         setUpSaveBtn();
         setUpDeleteBtn();
+
+
+        etNumPlayers = findViewById(R.id.etNumPlayers);
+        etNumPlayers.addTextChangedListener(inputWatcher);
+
+        etSumScore = findViewById(R.id.etSumPlayerScores);
+        etSumScore.addTextChangedListener(inputWatcher);
     }
 
     public static Intent makeLaunchIntent(Context c, int index) {
@@ -58,14 +72,14 @@ public class GameConfigActivity extends AppCompatActivity {
         saveBtn.setOnClickListener(view -> {
 
             try {
-                EditText etNumPlayers = findViewById((R.id.etNumPlayers));
                 int numPlayers = getInt(etNumPlayers);
-
-                EditText etSumScore = findViewById((R.id.etSumPlayerScores));
                 int sumScores = getInt(etSumScore);
+
                 Game game = new Game(numPlayers, sumScores,
-                gameManager.getPoorScoreIndividual(),gameManager.getGreatScoreIndividual());
+                    gameManager.getPoorScoreIndividual(), gameManager.getGreatScoreIndividual());
+
                 gameManager.addGame(game);
+
                 finish();
             } catch (Exception e){
                 Toast.makeText(this,"Invalid input",Toast.LENGTH_SHORT).show();
@@ -90,6 +104,44 @@ public class GameConfigActivity extends AppCompatActivity {
                 "Should delete game",
                 Toast.LENGTH_SHORT).show());
     }
+
+    private TextWatcher inputWatcher = new TextWatcher() {
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            //leaving empty
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            String strNumPlayers = etNumPlayers.getText().toString().trim();
+            String strSumScore = etSumScore.getText().toString().trim();
+
+            Toast.makeText(GameConfigActivity.this, "got fields", Toast.LENGTH_SHORT).show();
+
+            TextView tvAchieveGenerator = findViewById(R.id.tvAchieveGenerator);
+
+            if (!strNumPlayers.isEmpty() && !strSumScore.isEmpty()) {
+                Toast.makeText(GameConfigActivity.this, "inside if statement", Toast.LENGTH_SHORT).show();
+                Achievement achievements = new Achievement(
+                    gameManager.getPoorScoreIndividual(),
+                    gameManager.getGreatScoreIndividual(),
+                    Integer.parseInt(strNumPlayers));
+
+                int rank = achievements.getRank(Integer.parseInt(strSumScore));
+                String rankName = achievements.getAchievementName(rank);
+
+                tvAchieveGenerator.setText(rankName);
+            } else {
+                tvAchieveGenerator.setText("");
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            //leaving empty
+        }
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
