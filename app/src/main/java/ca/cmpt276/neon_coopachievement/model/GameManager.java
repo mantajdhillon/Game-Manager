@@ -58,8 +58,8 @@ public class GameManager {
     }
 
     private void isValidScore(int gs, int ps) {
-        if(gs < ps){
-            throw new InvalidParameterException("Invalid great score entry");
+        if(gs <= ps){
+            throw new InvalidParameterException("Invalid score entry");
         }
     }
 

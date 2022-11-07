@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -55,24 +56,21 @@ public class GameConfigActivity extends AppCompatActivity {
     private void setUpSaveBtn() {
         Button saveBtn = findViewById(R.id.btnSaveGame);
 
-        // todo link
         saveBtn.setOnClickListener(view -> {
 
-            EditText etNumPlayers = findViewById((R.id.etNumPlayers));
-            int numPlayers = getInt(etNumPlayers);
-
-            EditText etSumScore = findViewById((R.id.etSumPlayerScores));
-            int sumScores = getInt(etSumScore);
-
             try {
+                EditText etNumPlayers = findViewById((R.id.etNumPlayers));
+                int numPlayers = getInt(etNumPlayers);
+
+                EditText etSumScore = findViewById((R.id.etSumPlayerScores));
+                int sumScores = getInt(etSumScore);
                 Game game = new Game(numPlayers, sumScores,
                 gameManager.getPoorScoreIndividual(),gameManager.getGreatScoreIndividual());
                 gameManager.addGame(game);
-
+                finish();
             } catch (Exception e){
                 Toast.makeText(this,"Invalid input",Toast.LENGTH_SHORT).show();
             }
-            finish();
 
         });
     }
@@ -80,21 +78,18 @@ public class GameConfigActivity extends AppCompatActivity {
     private int getInt(EditText et){
         int newInt = 0;
         String intStr = et.getText().toString();
-        try {
-            newInt = Integer.parseInt(intStr);
-        }  catch (NumberFormatException ex){
-            Toast.makeText(this, "INVALID ENTRY",Toast.LENGTH_SHORT).show();
-        }
+        newInt = Integer.parseInt(intStr);
+
         return newInt;
     }
 
     private void setUpDeleteBtn() {
         Button deleteBtn = findViewById(R.id.btnDeleteGame);
-
-        // todo link
-        deleteBtn.setOnClickListener(view -> Toast.makeText(this,
-                "Should delete game",
-                Toast.LENGTH_SHORT).show());
+        deleteBtn.setVisibility(View.INVISIBLE);
+//        for iteration 2:
+//        deleteBtn.setOnClickListener(view -> Toast.makeText(this,
+//                "Should delete game",
+//                Toast.LENGTH_SHORT).show());
     }
 
     @Override

@@ -7,11 +7,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import ca.cmpt276.neon_coopachievement.model.GameCategory;
@@ -42,17 +43,25 @@ public class CategoryConfigActivity extends AppCompatActivity {
         ab.setTitle(R.string.category_config_activity_add_game);
         ab.setDisplayHomeAsUpEnabled(true);
 
+        extractDataFromIntent();
 
         // Set up buttons
-        setUpDeleteBtn();
         setUpSaveBtn();
 
-        extractDataFromIntent();
-        if (isEdit) {
+        if(isEdit){
             gameManager = instance.getGameManager(gameIndex);
             ab.setTitle(R.string.category_config_activity_edit_game);
+            setUpDeleteBtn();
             populateFields();
         }
+        else{
+            hideDeleteButton();
+        }
+    }
+
+    private void hideDeleteButton() {
+        Button deleteBtn = findViewById(R.id.btnDeleteConfig);
+        deleteBtn.setVisibility(View.INVISIBLE);
     }
 
     private void setUpSaveBtn() {
@@ -81,8 +90,6 @@ public class CategoryConfigActivity extends AppCompatActivity {
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-
-        Log.i("saveGameManager", "Successfully " + gameManager);
     }
 
 
