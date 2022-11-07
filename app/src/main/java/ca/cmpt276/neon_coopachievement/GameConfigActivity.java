@@ -46,21 +46,26 @@ public class GameConfigActivity extends AppCompatActivity {
 
         gameManager = gameCategory.getGameManager(getGameManagerIndex());
 
-        if(getisEdit()){
-            game = gameManager.getGame(getGameIndex());
-            ab.setTitle(R.string.game_config_activity_edit_game);
-            populateFields();
-        }
-        // Set up buttons
-        setUpSaveBtn();
-        setUpDeleteBtn();
+        Button deleteBtn = findViewById(R.id.btnDeleteGame);
+        deleteBtn.setVisibility(View.INVISIBLE);
+        deleteBtn.setEnabled(false);
 
+        setUpSaveBtn();
 
         etNumPlayers = findViewById(R.id.etNumPlayers);
         etNumPlayers.addTextChangedListener(inputWatcher);
 
         etSumScore = findViewById(R.id.etSumPlayerScores);
         etSumScore.addTextChangedListener(inputWatcher);
+
+        if(getisEdit()){
+            Toast.makeText(this, "isEdit", Toast.LENGTH_SHORT).show();
+            game = gameManager.getGame(getGameIndex());
+            ab.setTitle(R.string.game_config_activity_edit_game);
+            populateFields();
+            populateAchievementView();
+            setUpDeleteBtn();
+        }
     }
 
     public static Intent makeLaunchIntent(Context c, boolean isEdit, int gameIndex, int gameManagerIndex) {
@@ -130,11 +135,15 @@ public class GameConfigActivity extends AppCompatActivity {
 
     private void setUpDeleteBtn() {
         Button deleteBtn = findViewById(R.id.btnDeleteGame);
-        deleteBtn.setVisibility(View.INVISIBLE);
-//        for iteration 2:
-//        deleteBtn.setOnClickListener(view -> Toast.makeText(this,
-//                "Should delete game",
-//                Toast.LENGTH_SHORT).show());
+        deleteBtn.setVisibility(View.VISIBLE);
+        deleteBtn.setEnabled(true);
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gameManager.removeGame(getGameIndex());
+                finish();
+            }
+        });
     }
 
     private TextWatcher inputWatcher = new TextWatcher() {
@@ -146,24 +155,7 @@ public class GameConfigActivity extends AppCompatActivity {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            String strNumPlayers = etNumPlayers.getText().toString().trim();
-            String strSumScore = etSumScore.getText().toString().trim();
-
-            TextView tvAchieveGenerator = findViewById(R.id.tvAchieveGenerator);
-
-            if (!strNumPlayers.isEmpty() && !strSumScore.isEmpty()) {
-                Achievement achievements = new Achievement(
-                    gameManager.getPoorScoreIndividual(),
-                    gameManager.getGreatScoreIndividual(),
-                    Integer.parseInt(strNumPlayers));
-
-                int rank = achievements.getRank(Integer.parseInt(strSumScore));
-                String rankName = achievements.getAchievementName(rank);
-
-                tvAchieveGenerator.setText(rankName);
-            } else {
-                tvAchieveGenerator.setText("");
-            }
+            populateAchievementView();
         }
 
         @Override
@@ -171,6 +163,27 @@ public class GameConfigActivity extends AppCompatActivity {
             //leaving empty
         }
     };
+
+    private void populateAchievementView() {
+        String strNumPlayers = etNumPlayers.getText().toString().trim();
+        String strSumScore = etSumScore.getText().toString().trim();
+
+        TextView tvAchieveGenerator = findViewById(R.id.tvAchieveGenerator);
+
+        if (!strNumPlayers.isEmpty() && !strSumScore.isEmpty()) {
+            Achievement achievements = new Achievement(
+                    gameManager.getPoorScoreIndividual(),
+                    gameManager.getGreatScoreIndividual(),
+                    Integer.parseInt(strNumPlayers));
+
+            int rank = achievements.getRank(Integer.parseInt(strSumScore));
+            String rankName = achievements.getAchievementName(rank);
+
+            tvAchieveGenerator.setText(rankName);
+        } else {
+            tvAchieveGenerator.setText("");
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
