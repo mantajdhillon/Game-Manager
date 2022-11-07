@@ -9,21 +9,15 @@ import java.util.ArrayList;
 // GameCategory class: Holds an the Game Managers for several different game types
 public class GameCategory {
     private static GameCategory instance;
-    private final ArrayList<GameManager> gameManagers = new ArrayList<>();
-    private int gameManagersStored;
-    private ArrayList<String> gameNames = new ArrayList<>();
+    private final ArrayList<GameManager> gameManagers;
 
     private GameCategory() {
-        this.gameManagersStored = 0;
+        gameManagers = new ArrayList<>();
     }
 
     // Getters and Setters
     public int getGameManagersStored() {
-        return this.gameManagersStored;
-    }
-
-    public ArrayList<String> getGameNames() {
-        return gameNames;
+        return gameManagers.size();
     }
 
     public static GameCategory getInstance() {
@@ -37,7 +31,7 @@ public class GameCategory {
     public GameManager getGameManager(GameManager toGet) {
         boolean found = this.gameManagers.contains(toGet);
         if (found) {
-            for (int i = 0; i < this.gameManagersStored; i++) {
+            for (int i = 0; i < gameManagers.size(); i++) {
                 if (this.gameManagers.get(i) == toGet) {
                     return this.gameManagers.get(i);
                 }
@@ -57,16 +51,10 @@ public class GameCategory {
     // addGameManager: adds a game manager to the array and increments the total number of managers
     public void addGameManager(GameManager toAdd) {
         this.gameManagers.add(toAdd);
-        this.gameManagersStored++;
-        this.gameNames.add(toAdd.getName());
     }
 
     // removeGameManager: removes a game manager and decincrements the total number of managers
-    public void removeGameManager(GameManager toRemove) {
-        // If game can be removed
-        if (this.gameManagers.remove(toRemove)) {
-            this.gameManagersStored--;
-            this.gameNames.remove(toRemove.getName());
-        }
+    public void removeGameManager(int toRemove) {
+        this.gameManagers.remove(toRemove);
     }
 }

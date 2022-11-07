@@ -85,10 +85,8 @@ public class GameManager {
     }
 
     // deleteGame: deletes a game from the games array and deincrements the total number of games
-    public void removeGame(Game toDelete){
-        // If game can be removed
-        if(this.games.remove(toDelete)) {
-        }
+    public void removeGame(int index){
+        this.games.remove(index);
     }
 
     @Override
