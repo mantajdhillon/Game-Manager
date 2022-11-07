@@ -81,6 +81,7 @@ public class CategoryConfigActivity extends AppCompatActivity {
                     gameManager.setName(name);
                     gameManager.setGreatScoreIndividual(goodScore);
                     gameManager.setPoorScoreIndividual(badScore);
+                    gameManager.updateEdits(badScore, goodScore);
                 }
                 else {
                     GameManager newManager = new GameManager(name, goodScore, badScore);
