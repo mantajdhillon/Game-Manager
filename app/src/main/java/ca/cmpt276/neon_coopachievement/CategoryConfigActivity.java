@@ -106,7 +106,6 @@ public class CategoryConfigActivity extends AppCompatActivity {
     private void setUpDeleteBtn() {
         Button deleteBtn = findViewById(R.id.btnDeleteConfig);
 
-        // todo link
         deleteBtn.setOnClickListener(v -> {
             if (isEdit) {
                 instance.removeGameManager(gameIndex);

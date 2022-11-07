@@ -48,12 +48,12 @@ public class GameCategory {
         return gameManagers.get(i).toString();
     }
 
-    // addGameManager: adds a game manager to the array and increments the total number of managers
+    // addGameManager: adds a game manager
     public void addGameManager(GameManager toAdd) {
         this.gameManagers.add(toAdd);
     }
 
-    // removeGameManager: removes a game manager and decincrements the total number of managers
+    // removeGameManager: removes a game manager
     public void removeGameManager(int toRemove) {
         this.gameManagers.remove(toRemove);
     }

@@ -89,7 +89,7 @@ public class GameManager {
         this.games.add(game);
     }
 
-    // deleteGame: deletes a game from the games array and deincrements the total number of games
+    // deleteGame: deletes a game from the games array
     public void removeGame(int index){
         this.games.remove(index);
     }

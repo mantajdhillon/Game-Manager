@@ -42,7 +42,6 @@ public class GameConfigActivity extends AppCompatActivity {
         // Set up Action Bar
         ActionBar ab = getSupportActionBar();
         ab.setTitle(R.string.game_config_activity_add_game);
-        // ab.setTitle(R.string.game_config_activity_edit_game);
         ab.setDisplayHomeAsUpEnabled(true);
 
         gameManager = gameCategory.getGameManager(getGameManagerIndex());
