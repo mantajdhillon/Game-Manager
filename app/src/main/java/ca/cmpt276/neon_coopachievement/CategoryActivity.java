@@ -53,7 +53,10 @@ public class CategoryActivity extends AppCompatActivity {
     }
 
     private void getGameManagerList() {
-        ArrayList<String> gameTypes = gameCategory.getGameNames();
+        ArrayList<String> gameTypes = new ArrayList<>();
+        for (int i=0; i < gameCategory.getGameManagersStored(); i++) {
+            gameTypes.add(gameCategory.getGameManager(i).toString());
+        }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 this,
