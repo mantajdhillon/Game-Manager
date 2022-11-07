@@ -30,7 +30,6 @@ public class AchievementActivity extends AppCompatActivity {
     public static final String POOR_SCORE = "poor score";
     public static final int MAX_ACHIEVEMENTS = 10;
 
-    GameCategory gameCategory = GameCategory.getInstance();
 
     List<AchievementListElement> listAchievements = new ArrayList<AchievementListElement>();
 
