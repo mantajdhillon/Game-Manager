@@ -23,7 +23,7 @@ import ca.cmpt276.neon_coopachievement.model.GameCategory;
 public class CategoryActivity extends AppCompatActivity {
 
     private GameCategory gameCategory;
-    CategorySaver saver;
+    CategorySaver saveState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +34,7 @@ public class CategoryActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         ab.setTitle(R.string.category_config_activity_title);
 
-        saver = new CategorySaver(this);
+        saveState = new CategorySaver(this);
         gameCategory = GameCategory.getInstance();
         setUpScreen();
     }
@@ -50,7 +50,7 @@ public class CategoryActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        saver.saveData();
+        saveState.saveData();
         setUpScreen();
     }
 
@@ -58,7 +58,7 @@ public class CategoryActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        saver.saveData();
+        saveState.saveData();
         setUpScreen();
     }
 

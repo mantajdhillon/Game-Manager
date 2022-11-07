@@ -65,22 +65,19 @@ public class GameConfigActivity extends AppCompatActivity {
                 EditText etSumScore = findViewById((R.id.etSumPlayerScores));
                 int sumScores = getInt(etSumScore);
                 Game game = new Game(numPlayers, sumScores,
-                gameManager.getPoorScoreIndividual(),gameManager.getGreatScoreIndividual());
+                        gameManager.getPoorScoreIndividual(), gameManager.getGreatScoreIndividual());
                 gameManager.addGame(game);
                 finish();
-            } catch (Exception e){
-                Toast.makeText(this,"Invalid input",Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                Toast.makeText(this, "Invalid input", Toast.LENGTH_SHORT).show();
             }
 
         });
     }
 
-    private int getInt(EditText et){
-        int newInt = 0;
+    private int getInt(EditText et) {
         String intStr = et.getText().toString();
-        newInt = Integer.parseInt(intStr);
-
-        return newInt;
+        return Integer.parseInt(intStr);
     }
 
     private void setUpDeleteBtn() {

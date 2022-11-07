@@ -31,7 +31,7 @@ public class CategoryConfigActivity extends AppCompatActivity {
     private int gameIndex;
     private GameManager gameManager;
 
-    private GameCategory instance = GameCategory.getInstance();
+    private final GameCategory instance = GameCategory.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,13 +48,12 @@ public class CategoryConfigActivity extends AppCompatActivity {
         // Set up buttons
         setUpSaveBtn();
 
-        if(isEdit){
+        if (isEdit) {
             gameManager = instance.getGameManager(gameIndex);
             ab.setTitle(R.string.category_config_activity_edit_game);
             setUpDeleteBtn();
             populateFields();
-        }
-        else{
+        } else {
             hideDeleteButton();
         }
     }
@@ -92,14 +91,10 @@ public class CategoryConfigActivity extends AppCompatActivity {
         });
     }
 
-
     private int getInt(EditText et) {
-        int newInt = 0;
         String intStr = et.getText().toString();
-        newInt = Integer.parseInt(intStr);
-        return newInt;
+        return Integer.parseInt(intStr);
     }
-
 
     private void setUpDeleteBtn() {
         Button deleteBtn = findViewById(R.id.btnDeleteConfig);
