@@ -18,10 +18,10 @@ public class Achievement {
         }
         this.numPlayers = numPlayers;
         this.achievementNames = new String[]{
-                "Achievement Level 1", "Achievement Level 2",
-                "Achievement Level 3", "Achievement Level 4", "Achievement Level 5",
-                "Achievement Level 6", "Achievement Level 7", "Achievement Level 8",
-                "Achievement Level 9", "Achievement Level 10"
+                "Horrendous Hams", "Terrible Tartar Sauces",
+                "Bad Broccoli's", "Alright Anchovies", "Mediocre Mangoes",
+                "Okay Oranges", "Great Grapes", "Superb Sausages",
+                "Awesome Almonds", "Excellent Eggs"
         };
 
         achievementBoundaries = new double[MAX_ACHIEVEMENTS-1];
@@ -61,15 +61,18 @@ public class Achievement {
         return rank;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder s = new StringBuilder("");
-        for (int i = 0; i < achievementBoundaries.length; i++) {
-            s.append(achievementNames[i]).append(" for a cooperative score less than or equal to ").append(achievementBoundaries[i]).append("! /n");
+    public String getAchievementString(int i) {
+        if (i == MAX_ACHIEVEMENTS - 1) {
+            return "Level " + MAX_ACHIEVEMENTS + " (>" + achievementBoundaries[MAX_ACHIEVEMENTS-2]
+                    + "): " + achievementNames[MAX_ACHIEVEMENTS - 1];
+        } else if (i == 0){
+            return "Level " + (i+1) + " (<" + achievementBoundaries[i]
+                    + "): " + achievementNames[i];
+        } else {
+            return "Level " + (i+1) + " (" + achievementBoundaries[i-1] + " - " + achievementBoundaries[i] + "): " + achievementNames[i];
         }
-        s.append(achievementNames[MAX_ACHIEVEMENTS - 1]).append(" for a cooperative score greater than ").append(achievementBoundaries[MAX_ACHIEVEMENTS - 2]).append("! /n");
-        return s.toString();
     }
+
 }
 
 

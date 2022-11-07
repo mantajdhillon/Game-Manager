@@ -180,9 +180,14 @@ public class GameActivity extends AppCompatActivity {
                         goBtn.setEnabled(false);
                         goBtn.setVisibility(View.INVISIBLE);
 
+                        GameManager gameManager = gameCategory.getGameManager(getGameIndex());
+
+
+
                         Toast.makeText(GameActivity.this, "Number of players is " + numPlayers, Toast.LENGTH_SHORT).show();
 
-                        Intent i = new Intent(GameActivity.this, AchievementActivity.class);
+                        Intent i = AchievementActivity.makeLaunchIntent(GameActivity.this,
+                                numPlayers, gameManager.getPoorScoreIndividual(), gameManager.getGreatScoreIndividual());
                         startActivity(i);
                     }
                 } else {
