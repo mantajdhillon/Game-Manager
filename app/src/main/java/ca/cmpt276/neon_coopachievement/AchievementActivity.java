@@ -26,8 +26,8 @@ import ca.cmpt276.neon_coopachievement.model.GameCategory;
 public class AchievementActivity extends AppCompatActivity {
 
     public static final String NUM_PLAYERS = "numPlayers";
-    public static final String GOOD_SCORE = "good score";
-    public static final String POOR_SCORE = "poor score";
+    public static final String GOOD_SCORE = "goodScore";
+    public static final String POOR_SCORE = "poorScore";
     public static final int MAX_ACHIEVEMENTS = 10;
 
 
@@ -52,8 +52,8 @@ public class AchievementActivity extends AppCompatActivity {
     private void populateAchievementsList() {
         Achievement achievements = new Achievement(getPoorScore(), getGoodScore(), getNumPlayers());
         for (int i = 0; i < MAX_ACHIEVEMENTS; i++) {
-            String filename = "level_" + (i+1);
-            int id = getResources().getIdentifier(filename, "drawable", this.getPackageName());
+            String filename = getString(R.string.IconFileName) + (i+1);
+            int id = getResources().getIdentifier(filename, getString(R.string.defType), this.getPackageName());
             listAchievements.add(new AchievementListElement
                      (achievements.getAchievementString(i), id));
         }
