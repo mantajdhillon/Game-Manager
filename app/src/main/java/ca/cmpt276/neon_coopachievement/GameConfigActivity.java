@@ -49,6 +49,7 @@ public class GameConfigActivity extends AppCompatActivity {
 
         if(getisEdit()){
             game = gameManager.getGame(getGameIndex());
+            ab.setTitle(R.string.game_config_activity_edit_game);
             populateFields();
         }
         // Set up buttons
@@ -102,11 +103,6 @@ public class GameConfigActivity extends AppCompatActivity {
             try {
                 int numPlayers = getInt(etNumPlayers);
                 int sumScores = getInt(etSumScore);
-
-                Game game = new Game(numPlayers, sumScores,
-                    gameManager.getPoorScoreIndividual(), gameManager.getGreatScoreIndividual());
-
-                gameManager.addGame(game);
 
                 if(getisEdit()){
                     game.setNumPlayers(numPlayers);
