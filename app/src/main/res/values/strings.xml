@@ -36,6 +36,7 @@
     <string name="help_centre">@string/help_activity_title</string>
     <string name="edit_category">Edit Category</string>
     <string name="invalid_num_players_msg">invalid_num_players</string>
+    <string name="achievement_display">Achievement:</string>
     <string name="IconFileName">level_</string>
     <string name="defType">drawable</string>
 </resources>
