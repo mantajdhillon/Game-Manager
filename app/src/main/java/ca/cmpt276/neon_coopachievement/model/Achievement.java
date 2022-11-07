@@ -18,10 +18,10 @@ public class Achievement {
         }
         this.numPlayers = numPlayers;
         this.achievementNames = new String[]{
-                "Horrendous Hamburgers", "Terrible Tartar Sauces",
-                "Bad Broccoli's", "Alright Anchovies", "Mediocre Mangoes",
+                "Horrendous Hamburgers", "Terrible Tacos",
+                "Bad Broccoli's", "Alright Apples", "Mediocre Mangoes",
                 "Okay Oranges", "Great Grapes", "Superb Sausages",
-                "Awesome Almonds", "Excellent Eggs"
+                "Awesome Avocados", "Excellent Eggs"
         };
 
         achievementBoundaries = new double[MAX_ACHIEVEMENTS-1];

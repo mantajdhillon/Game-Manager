@@ -9,11 +9,19 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="34dp"
-        android:layout_marginTop="12dp"
         android:adjustViewBounds="true"
         android:maxWidth="80dp"
         android:maxHeight="80dp"
-        android:src="@drawable/apple" />
+        android:src="@drawable/level_4" />
+
+    <TextView
+        android:id="@+id/tvAchievementsDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="16dp"
+        android:layout_toRightOf="@+id/achievement_icon"
+        android:text="Achievement Description"
+        android:textSize="18sp" />
 
 </RelativeLayout>
