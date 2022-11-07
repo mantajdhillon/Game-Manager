@@ -7,12 +7,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import ca.cmpt276.neon_coopachievement.model.GameCategory;
@@ -49,7 +48,7 @@ public class CategoryConfigActivity extends AppCompatActivity {
         setUpSaveBtn();
 
         extractDataFromIntent();
-        if(isEdit){
+        if (isEdit) {
             gameManager = instance.getGameManager(gameIndex);
             ab.setTitle(R.string.category_config_activity_edit_game);
             populateFields();
@@ -69,25 +68,25 @@ public class CategoryConfigActivity extends AppCompatActivity {
 
                 EditText getBadScore = findViewById((R.id.etBadScore));
                 int badScore = getInt(getBadScore);
-                if(isEdit){
+                if (isEdit) {
                     gameManager.setName(name);
                     gameManager.setGreatScoreIndividual(goodScore);
                     gameManager.setPoorScoreIndividual(badScore);
-                }
-                else {
+                } else {
                     GameManager newManager = new GameManager(name, goodScore, badScore);
                     instance.addGameManager(newManager);
                 }
                 finish();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
+        Log.i("saveGameManager", "Successfully " + gameManager);
     }
 
 
-    private int getInt(EditText et){
+    private int getInt(EditText et) {
         int newInt = 0;
         String intStr = et.getText().toString();
         newInt = Integer.parseInt(intStr);
@@ -128,18 +127,17 @@ public class CategoryConfigActivity extends AppCompatActivity {
         }
     }
 
-    public static Intent makeCategoryConfigIntent(Context context, boolean isEdit, int gameIndex) {
+    public static Intent makeIntent(Context context, boolean isEdit, int gameIndex) {
         Intent i = new Intent(context, CategoryConfigActivity.class);
         i.putExtra(IS_EDIT, isEdit);
         i.putExtra(GAME_INDEX, gameIndex);
         return i;
     }
 
-
     private void extractDataFromIntent() {
         Intent i = getIntent();
         isEdit = i.getBooleanExtra(IS_EDIT, false);
-        gameIndex = i.getIntExtra(GAME_INDEX,-1);
+        gameIndex = i.getIntExtra(GAME_INDEX, -1);
     }
 
     private void populateFields() {

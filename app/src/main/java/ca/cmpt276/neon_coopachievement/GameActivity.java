@@ -28,12 +28,12 @@ import ca.cmpt276.neon_coopachievement.model.GameManager;
 public class GameActivity extends AppCompatActivity {
 
     private static final String GAME_TYPE_INDEX = "Game-Type-Index";
-    private static GameCategory gameCategory = GameCategory.getInstance();
+    private static final GameCategory gameCategory = GameCategory.getInstance();
 
     public static final String ACTIVITY_TITLE = "Games";
 
     private GameManager gameManager;
-    private static int GameCategorySize = gameCategory.getGameManagersStored();
+    private static int GameCategorySize = gameCategory.getSize();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +105,7 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
-    public static Intent makeLaunchIntent(Context c, int index) {
+    public static Intent makeIntent(Context c, int index) {
         Intent intent = new Intent(c, GameActivity.class);
         intent.putExtra(GAME_TYPE_INDEX, index);
         return intent;
@@ -254,7 +254,7 @@ public class GameActivity extends AppCompatActivity {
                 return true;
             case R.id.action_edit_category:
                 // TO-DO: replace with gameCategory info
-                Intent i2 = CategoryConfigActivity.makeCategoryConfigIntent(GameActivity.this, true, getGameManagerIndex());
+                Intent i2 = CategoryConfigActivity.makeIntent(GameActivity.this, true, getGameManagerIndex());
                 startActivity(i2);
                 return true;
             default:

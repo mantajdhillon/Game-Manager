@@ -6,7 +6,7 @@ import java.util.ArrayList;
 // GameManager class: Holds the games for a single game type, such as the games for Poker or Blackjack
 
 public class GameManager {
-    private ArrayList<Game> games = new ArrayList<>();
+    private final ArrayList<Game> games = new ArrayList<>();
     private String name;
     private int greatScoreIndividual;
     private int poorScoreIndividual;
@@ -17,7 +17,6 @@ public class GameManager {
         this.name = name;
         this.greatScoreIndividual = gs;
         this.poorScoreIndividual = ps;
-
     }
 
     // Getters and setters
