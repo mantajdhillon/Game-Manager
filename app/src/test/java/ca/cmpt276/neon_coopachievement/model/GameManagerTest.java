@@ -27,11 +27,6 @@ public class GameManagerTest {
         Game myGame = new Game(2,10,1,5);
         myManager.addGame(myGame);
         assertEquals(myGame,myManager.getGame(myGame));
-        myManager.removeGame(myGame);
-        assertEquals(0,myManager.getGamesStored());
-
-        myManager.removeGame(myGame);
-        assertEquals(0,myManager.getGamesStored());
     }
 
 }
