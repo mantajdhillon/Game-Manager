@@ -43,17 +43,25 @@ public class CategoryConfigActivity extends AppCompatActivity {
         ab.setTitle(R.string.category_config_activity_add_game);
         ab.setDisplayHomeAsUpEnabled(true);
 
+        extractDataFromIntent();
 
         // Set up buttons
-        setUpDeleteBtn();
         setUpSaveBtn();
 
-        extractDataFromIntent();
         if(isEdit){
             gameManager = instance.getGameManager(gameIndex);
             ab.setTitle(R.string.category_config_activity_edit_game);
+            setUpDeleteBtn();
             populateFields();
         }
+        else{
+            hideDeleteButton();
+        }
+    }
+
+    private void hideDeleteButton() {
+        Button deleteBtn = findViewById(R.id.btnDeleteConfig);
+        deleteBtn.setVisibility(View.INVISIBLE);
     }
 
     private void setUpSaveBtn() {
