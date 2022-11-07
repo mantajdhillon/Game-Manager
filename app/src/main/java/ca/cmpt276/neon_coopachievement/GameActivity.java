@@ -51,11 +51,12 @@ public class GameActivity extends AppCompatActivity {
         goBtn.setEnabled(false);
         goBtn.setVisibility(View.INVISIBLE);
 
+        gameManager = gameCategory.getGameManager(getGameManagerIndex());
+
         ActionBar ab = getSupportActionBar();
-        ab.setTitle(ACTIVITY_TITLE);
+        ab.setTitle(gameManager.getName());
         ab.setDisplayHomeAsUpEnabled(true);
 
-        gameManager = gameCategory.getGameManager(getGameManagerIndex());
 
         generateGamesList();
 
@@ -80,11 +81,9 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // PROBLEM HERE
 
         GameManager temp = null;
         try{
-            // Check if game manager at idx exists
             temp = gameCategory.getGameManager(getGameManagerIndex());
         }
         catch (Exception e){
