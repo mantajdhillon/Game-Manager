@@ -113,9 +113,9 @@ public class GameConfigActivity extends AppCompatActivity {
                     game.setFinalTotalScore(sumScores);
                 }
                 else {
-                    Game game = new Game(numPlayers, sumScores,
+                    Game newGame = new Game(numPlayers, sumScores,
                             gameManager.getPoorScoreIndividual(), gameManager.getGreatScoreIndividual());
-                    gameManager.addGame(game);
+                    gameManager.addGame(newGame);
                 }
                 finish();
             } catch (Exception e){
