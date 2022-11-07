@@ -106,7 +106,10 @@ public class CategoryConfigActivity extends AppCompatActivity {
 
         // todo link
         deleteBtn.setOnClickListener(v -> {
-            // Change removeGameManager to boolean? Then change below to a try catch block
+            if (isEdit) {
+                instance.removeGameManager(gameIndex);
+            }
+            finish();
         });
     }
 

@@ -30,9 +30,10 @@ public class GameActivity extends AppCompatActivity {
     private static final String GAME_TYPE_INDEX = "Game-Type-Index";
     private static GameCategory gameCategory = GameCategory.getInstance();
 
-
     public static final String ACTIVITY_TITLE = "Games";
 
+    private GameManager gameManager;
+    private static int GameCategorySize = gameCategory.getGameManagersStored();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +55,9 @@ public class GameActivity extends AppCompatActivity {
         ab.setTitle(ACTIVITY_TITLE);
         ab.setDisplayHomeAsUpEnabled(true);
 
-        GameManager gameManager = gameCategory.getGameManager(getGameIndex());
+        gameManager = gameCategory.getGameManager(getGameManagerIndex());
 
-        generateGamesList(gameManager);
+        generateGamesList();
 
         setUpEmptyState(gameManager.getGamesStored());
         setupAddGameBtn();
@@ -64,8 +65,8 @@ public class GameActivity extends AppCompatActivity {
         gameClickCallback();
     }
 
-    private void generateGamesList(GameManager gameManager) {
-        String[] games = getGameStrings(gameManager);
+    private void generateGamesList() {
+        String[] games = getGameStrings();
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this,
@@ -79,9 +80,9 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        GameManager gameManager = gameCategory.getGameManager(getGameIndex());
-
-        generateGamesList(gameManager);
+        // PROBLEM HERE
+        gameManager = gameCategory.getGameManager(getGameManagerIndex());
+        generateGamesList();
         setUpEmptyState(gameManager.getGamesStored());
         setupAddGameBtn();
         setupViewAchievementsBtn();
@@ -95,10 +96,10 @@ public class GameActivity extends AppCompatActivity {
         return intent;
     }
 
-    private String[] getGameStrings(GameManager gM) {
-        String[] s = new String[gM.getGamesStored()];
+    private String[] getGameStrings() {
+        String[] s = new String[gameManager.getGamesStored()];
         for (int i = 0; i < s.length; i++) {
-            s[i] = gM.getGameString(i);
+            s[i] = gameManager.getGameString(i);
         }
         return s;
     }
@@ -123,7 +124,7 @@ public class GameActivity extends AppCompatActivity {
         newGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = GameConfigActivity.makeLaunchIntent(GameActivity.this, getGameIndex());
+                Intent i = GameConfigActivity.makeLaunchIntent(GameActivity.this, getGameManagerIndex());
                 startActivity(i);
             }
         });
@@ -171,12 +172,16 @@ public class GameActivity extends AppCompatActivity {
                         Button viewAchievements = findViewById(R.id.viewAchievementsBtn);
                         viewAchievements.setEnabled(true);
                         viewAchievements.setVisibility(View.VISIBLE);
+
                         FloatingActionButton newGame = findViewById(R.id.addGameBtn);
                         newGame.setEnabled(true);
+
                         TextView numPlayersMsg = findViewById(R.id.numPlayersMsg);
                         numPlayersMsg.setVisibility(View.INVISIBLE);
+
                         etNumPlayers.setEnabled(false);
                         etNumPlayers.setVisibility(View.INVISIBLE);
+
                         goBtn.setEnabled(false);
                         goBtn.setVisibility(View.INVISIBLE);
 
@@ -205,13 +210,13 @@ public class GameActivity extends AppCompatActivity {
 
                 TextView game = (TextView) viewClicked;
 
-                Intent i = GameConfigActivity.makeLaunchIntent(GameActivity.this, getGameIndex());
+                Intent i = GameConfigActivity.makeLaunchIntent(GameActivity.this, getGameManagerIndex());
                 startActivity(i);
             }
         });
     }
 
-    private int getGameIndex() {
+    private int getGameManagerIndex() {
         Intent intent = getIntent();
         return intent.getIntExtra(GAME_TYPE_INDEX, -1);
     }
@@ -234,7 +239,7 @@ public class GameActivity extends AppCompatActivity {
                 return true;
             case R.id.action_edit_category:
                 // TO-DO: replace with gameCategory info
-                Intent i2 = CategoryConfigActivity.makeCategoryConfigIntent(GameActivity.this, true,getGameIndex());
+                Intent i2 = CategoryConfigActivity.makeCategoryConfigIntent(GameActivity.this, true, getGameManagerIndex());
                 startActivity(i2);
                 return true;
             default:
