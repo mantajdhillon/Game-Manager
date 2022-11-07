@@ -18,7 +18,7 @@ public class Achievement {
         }
         this.numPlayers = numPlayers;
         this.achievementNames = new String[]{
-                "Horrendous Hams", "Terrible Tartar Sauces",
+                "Horrendous Hamburgers", "Terrible Tartar Sauces",
                 "Bad Broccoli's", "Alright Anchovies", "Mediocre Mangoes",
                 "Okay Oranges", "Great Grapes", "Superb Sausages",
                 "Awesome Almonds", "Excellent Eggs"
