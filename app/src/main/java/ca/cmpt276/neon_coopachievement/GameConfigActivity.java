@@ -118,12 +118,9 @@ public class GameConfigActivity extends AppCompatActivity {
             String strNumPlayers = etNumPlayers.getText().toString().trim();
             String strSumScore = etSumScore.getText().toString().trim();
 
-            Toast.makeText(GameConfigActivity.this, "got fields", Toast.LENGTH_SHORT).show();
-
             TextView tvAchieveGenerator = findViewById(R.id.tvAchieveGenerator);
 
             if (!strNumPlayers.isEmpty() && !strSumScore.isEmpty()) {
-                Toast.makeText(GameConfigActivity.this, "inside if statement", Toast.LENGTH_SHORT).show();
                 Achievement achievements = new Achievement(
                     gameManager.getPoorScoreIndividual(),
                     gameManager.getGreatScoreIndividual(),
