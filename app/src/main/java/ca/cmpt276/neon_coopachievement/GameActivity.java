@@ -81,12 +81,27 @@ public class GameActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         // PROBLEM HERE
-        gameManager = gameCategory.getGameManager(getGameManagerIndex());
-        generateGamesList();
-        setUpEmptyState(gameManager.getGamesStored());
-        setupAddGameBtn();
-        setupViewAchievementsBtn();
-        gameClickCallback();
+
+        GameManager temp = null;
+        try{
+            // Check if game manager at idx exists
+            temp = gameCategory.getGameManager(getGameManagerIndex());
+        }
+        catch (Exception e){
+            finish();
+        }
+
+        // Check if the game manager was deleted
+        if (!gameManager.equals(temp)) {
+            finish();
+        } else {
+            generateGamesList();
+            setUpEmptyState(gameManager.getGamesStored());
+            setupAddGameBtn();
+            setupViewAchievementsBtn();
+            gameClickCallback();
+        }
+
 
     }
 
@@ -185,7 +200,7 @@ public class GameActivity extends AppCompatActivity {
                         goBtn.setEnabled(false);
                         goBtn.setVisibility(View.INVISIBLE);
 
-                        GameManager gameManager = gameCategory.getGameManager(getGameIndex());
+                        GameManager gameManager = gameCategory.getGameManager(getGameManagerIndex());
 
 
 
