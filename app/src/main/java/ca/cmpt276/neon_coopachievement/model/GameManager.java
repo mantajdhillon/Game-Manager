@@ -94,6 +94,16 @@ public class GameManager {
         this.games.remove(index);
     }
 
+    public void updateEdits(int poorScoreNew, int greatScoreNew) {
+        for (int i = 0; i < getGamesStored(); i++) {
+            Game oldGame = games.get(i);
+            Game newGame = new Game(oldGame.getNumPlayers(), oldGame.getFinalTotalScore(),
+                    poorScoreNew, greatScoreNew);
+            newGame.setTime(oldGame.getTime());
+            games.set(i, newGame);
+        }
+    }
+
     @Override
     public String toString() {
         return name + ": " + getGamesStored() + " games recorded.";
