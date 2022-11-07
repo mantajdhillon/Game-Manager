@@ -138,7 +138,7 @@ public class GameActivity extends AppCompatActivity {
         newGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = GameConfigActivity.makeLaunchIntent(GameActivity.this, getGameManagerIndex());
+                Intent i = GameConfigActivity.makeLaunchIntent(GameActivity.this, false, -1, getGameManagerIndex());
                 startActivity(i);
             }
         });
@@ -176,44 +176,48 @@ public class GameActivity extends AppCompatActivity {
         goBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText etNumPlayers = findViewById(R.id.numPlayersInput);
-                String strNumPlayers = etNumPlayers.getText().toString().trim();
-                if (!TextUtils.isEmpty(strNumPlayers)) {
-                    int numPlayers = Integer.parseInt(strNumPlayers);
-                    if (numPlayers <= 0) {
-                        Toast.makeText(GameActivity.this, R.string.invalid_num_players_msg, Toast.LENGTH_SHORT).show();
-                    } else {
-                        Button viewAchievements = findViewById(R.id.viewAchievementsBtn);
-                        viewAchievements.setEnabled(true);
-                        viewAchievements.setVisibility(View.VISIBLE);
-
-                        FloatingActionButton newGame = findViewById(R.id.addGameBtn);
-                        newGame.setEnabled(true);
-
-                        TextView numPlayersMsg = findViewById(R.id.numPlayersMsg);
-                        numPlayersMsg.setVisibility(View.INVISIBLE);
-
-                        etNumPlayers.setEnabled(false);
-                        etNumPlayers.setVisibility(View.INVISIBLE);
-
-                        goBtn.setEnabled(false);
-                        goBtn.setVisibility(View.INVISIBLE);
-
-                        GameManager gameManager = gameCategory.getGameManager(getGameManagerIndex());
-
-
-
-                        Toast.makeText(GameActivity.this, "Number of players is " + numPlayers, Toast.LENGTH_SHORT).show();
-
-                        Intent i = AchievementActivity.makeLaunchIntent(GameActivity.this,
-                                numPlayers, gameManager.getPoorScoreIndividual(), gameManager.getGreatScoreIndividual());
-                        startActivity(i);
-                    }
-                } else {
-                    Toast.makeText(GameActivity.this, R.string.invalid_num_players_msg, Toast.LENGTH_SHORT).show();
-                }
+                setupAchievementsBtn(goBtn);
             }
         });
+    }
+
+    private void setupAchievementsBtn(Button goBtn) {
+        EditText etNumPlayers = findViewById(R.id.numPlayersInput);
+        String strNumPlayers = etNumPlayers.getText().toString().trim();
+        if (!TextUtils.isEmpty(strNumPlayers)) {
+            int numPlayers = Integer.parseInt(strNumPlayers);
+            if (numPlayers <= 0) {
+                Toast.makeText(GameActivity.this, R.string.invalid_num_players_msg, Toast.LENGTH_SHORT).show();
+            } else {
+                hideButtonAndText(goBtn, etNumPlayers);
+
+                GameManager gameManager = gameCategory.getGameManager(getGameManagerIndex());
+
+                Intent i = AchievementActivity.makeLaunchIntent(GameActivity.this,
+                        numPlayers, gameManager.getPoorScoreIndividual(), gameManager.getGreatScoreIndividual());
+                startActivity(i);
+            }
+        } else {
+            Toast.makeText(GameActivity.this, R.string.invalid_num_players_msg, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void hideButtonAndText(Button goBtn, EditText etNumPlayers) {
+        Button viewAchievements = findViewById(R.id.viewAchievementsBtn);
+        viewAchievements.setEnabled(true);
+        viewAchievements.setVisibility(View.VISIBLE);
+
+        FloatingActionButton newGame = findViewById(R.id.addGameBtn);
+        newGame.setEnabled(true);
+
+        TextView numPlayersMsg = findViewById(R.id.numPlayersMsg);
+        numPlayersMsg.setVisibility(View.INVISIBLE);
+
+        etNumPlayers.setEnabled(false);
+        etNumPlayers.setVisibility(View.INVISIBLE);
+
+        goBtn.setEnabled(false);
+        goBtn.setVisibility(View.INVISIBLE);
     }
 
     private void gameClickCallback() {
@@ -224,7 +228,7 @@ public class GameActivity extends AppCompatActivity {
 
                 TextView game = (TextView) viewClicked;
 
-                Intent i = GameConfigActivity.makeLaunchIntent(GameActivity.this, getGameManagerIndex());
+                Intent i = GameConfigActivity.makeLaunchIntent(GameActivity.this, true, position, getGameManagerIndex());
                 startActivity(i);
             }
         });
@@ -252,7 +256,6 @@ public class GameActivity extends AppCompatActivity {
                 startActivity(i1);
                 return true;
             case R.id.action_edit_category:
-                // TO-DO: replace with gameCategory info
                 Intent i2 = CategoryConfigActivity.makeIntent(GameActivity.this, true, getGameManagerIndex());
                 startActivity(i2);
                 return true;
