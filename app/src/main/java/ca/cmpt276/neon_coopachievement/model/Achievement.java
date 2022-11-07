@@ -1,21 +1,27 @@
 package ca.cmpt276.neon_coopachievement.model;
 
+import java.util.Arrays;
+
 public class Achievement {
     private static final byte MAX_ACHIEVEMENTS = 10;
 
     private final double[] achievementBoundaries;
     private final String[] achievementNames;
+    int numPlayers;
 
     public Achievement(int low, int high, int numPlayers) {
         if (low > high) {
             throw new RuntimeException("Low score can not be greater than high score");
         }
-
+        if (numPlayers < 0) {
+            throw new IllegalArgumentException("Invalid number of players");
+        }
+        this.numPlayers = numPlayers;
         this.achievementNames = new String[]{
-                "Achievement Level 1", "Achievement Level 2",
-                "Achievement Level 3", "Achievement Level 4", "Achievement Level 5",
-                "Achievement Level 6", "Achievement Level 7", "Achievement Level 8",
-                "Achievement Level 9", "Achievement Level 10"
+                "Horrendous Hamburgers", "Terrible Tartar Sauces",
+                "Bad Broccoli's", "Alright Anchovies", "Mediocre Mangoes",
+                "Okay Oranges", "Great Grapes", "Superb Sausages",
+                "Awesome Almonds", "Excellent Eggs"
         };
 
         achievementBoundaries = new double[MAX_ACHIEVEMENTS-1];
@@ -28,9 +34,6 @@ public class Achievement {
         }
     }
 
-    public String[] getAchievementNames() {
-        return achievementNames;
-    }
 
     public double getAchievementBoundary(int i) {
         return achievementBoundaries[i];
@@ -53,6 +56,18 @@ public class Achievement {
             i++;
         }
         return rank;
+    }
+
+    public String getAchievementString(int i) {
+        if (i == MAX_ACHIEVEMENTS - 1) {
+            return "Level " + MAX_ACHIEVEMENTS + " (>" + achievementBoundaries[MAX_ACHIEVEMENTS-2]
+                    + "): " + achievementNames[MAX_ACHIEVEMENTS - 1];
+        } else if (i == 0){
+            return "Level " + (i+1) + " (<" + achievementBoundaries[i]
+                    + "): " + achievementNames[i];
+        } else {
+            return "Level " + (i+1) + " (" + achievementBoundaries[i-1] + " - " + achievementBoundaries[i] + "): " + achievementNames[i];
+        }
     }
 
 }

@@ -66,45 +66,39 @@ public class CategoryConfigActivity extends AppCompatActivity {
 
     private void setUpSaveBtn() {
         Button saveBtn = findViewById(R.id.btnSaveConfig);
-
         saveBtn.setOnClickListener(view -> {
-            EditText getName = findViewById(R.id.etGameName);
-            String name = getName.getText().toString();
 
-            EditText getGoodScore = findViewById((R.id.etGoodScore));
-            int goodScore = getInt(getGoodScore);
+            try {
+                EditText getName = findViewById(R.id.etGameName);
+                String name = getName.getText().toString();
 
-            EditText getBadScore = findViewById((R.id.etBadScore));
-            int badScore = getInt(getBadScore);
-            if(!isEdit) {
-                try {
-                    GameManager newManager = new GameManager(name, goodScore, badScore);
-                    instance.addGameManager(newManager);
-                } catch (Exception e) {
-                    Toast.makeText(this, "Invalid scores", Toast.LENGTH_SHORT).show();
-                }
-            }
-            else{
-                try {
+                EditText getGoodScore = findViewById((R.id.etGoodScore));
+                int goodScore = getInt(getGoodScore);
+
+                EditText getBadScore = findViewById((R.id.etBadScore));
+                int badScore = getInt(getBadScore);
+                if(isEdit){
                     gameManager.setName(name);
                     gameManager.setGreatScoreIndividual(goodScore);
                     gameManager.setPoorScoreIndividual(badScore);
-                } catch (Exception e) {
-                    Toast.makeText(this, "Invalid information", Toast.LENGTH_SHORT).show();
                 }
+                else {
+                    GameManager newManager = new GameManager(name, goodScore, badScore);
+                    instance.addGameManager(newManager);
+                }
+                finish();
             }
-            finish();
+            catch (Exception e) {
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
         });
     }
+
 
     private int getInt(EditText et){
         int newInt = 0;
         String intStr = et.getText().toString();
-        try {
-            newInt = Integer.parseInt(intStr);
-        }  catch (NumberFormatException ex){
-            Toast.makeText(this, "INVALID ENTRY",Toast.LENGTH_SHORT).show();
-        }
+        newInt = Integer.parseInt(intStr);
         return newInt;
     }
 
@@ -114,7 +108,10 @@ public class CategoryConfigActivity extends AppCompatActivity {
 
         // todo link
         deleteBtn.setOnClickListener(v -> {
-            // Change removeGameManager to boolean? Then change below to a try catch block
+            if (isEdit) {
+                instance.removeGameManager(gameIndex);
+            }
+            finish();
         });
     }
 
