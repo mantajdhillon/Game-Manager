@@ -5,8 +5,10 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 /*
     HelpActivity Class
@@ -26,6 +28,9 @@ public class HelpActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         ab.setTitle(R.string.help_activity_title);
         ab.setDisplayHomeAsUpEnabled(true);
+
+        TextView text = findViewById(R.id.tvHelpCentreMessage);
+        text.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     @Override
