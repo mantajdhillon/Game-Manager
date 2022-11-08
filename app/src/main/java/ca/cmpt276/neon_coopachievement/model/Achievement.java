@@ -22,7 +22,7 @@ public class Achievement {
         }
 
         this.achievementNames = new String[]{
-                "Horrendous Hamburgers", "Terrible Tacos",
+                "Horrible Hamburgers", "Terrible Tacos",
                 "Bad Broccoli's", "Alright Apples", "Mediocre Mangoes",
                 "Okay Oranges", "Great Grapes", "Superb Sausages",
                 "Awesome Avocados", "Excellent Eggs"
