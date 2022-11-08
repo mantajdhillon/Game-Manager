@@ -4,7 +4,7 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
 /*
-   GameManager Class
+   GameManager
    Description: Holds the games for a single game type, such as the games for Poker or Blackjack
                 - Takes the name, and good/poor individual scores for a given game, if the parameters
                   are valid
@@ -54,16 +54,14 @@ public class GameManager {
     }
 
     public void setGreatScoreIndividual(int score){
-        isValidScore(score, poorScoreIndividual);
         this.greatScoreIndividual = score;
     }
 
     public void setPoorScoreIndividual(int score){
-        isValidScore(greatScoreIndividual, score);
         this.poorScoreIndividual = score;
     }
 
-    private void isValidScore(int gs, int ps) {
+    public void isValidScore(int gs, int ps) {
         if(gs <= ps){
             throw new InvalidParameterException("Invalid score entry");
         }

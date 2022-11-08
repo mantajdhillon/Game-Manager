@@ -185,7 +185,7 @@ public class GameConfigActivity extends AppCompatActivity {
                     gameManager.getGreatScoreIndividual(),
                     Integer.parseInt(strNumPlayers));
 
-            int rank = achievements.getRank(Integer.parseInt(strSumScore));
+            int rank = achievements.getHighestRank(Integer.parseInt(strSumScore));
             String rankName = achievements.getAchievementName(rank);
 
             tvAchieveGenerator.setText(rankName);

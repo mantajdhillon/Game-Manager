@@ -29,7 +29,7 @@ public class Game {
         this.time = LocalDateTime.now().format(f);
 
         this.achievements = new Achievement(poorScore, greatScore, numPlayers);
-        this.rank = achievements.getRank(finalTotalScore);
+        this.rank = achievements.getHighestRank(finalTotalScore);
     }
 
     public int getNumPlayers() {

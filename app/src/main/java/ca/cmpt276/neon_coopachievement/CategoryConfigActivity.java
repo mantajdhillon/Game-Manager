@@ -87,6 +87,7 @@ public class CategoryConfigActivity extends AppCompatActivity {
                 int badScore = getInt(getBadScore);
                 if (isEdit) {
                     gameManager.setName(name);
+                    gameManager.isValidScore(goodScore,badScore);
                     gameManager.setGreatScoreIndividual(goodScore);
                     gameManager.setPoorScoreIndividual(badScore);
                     gameManager.updateEdits(badScore, goodScore);
