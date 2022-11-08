@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Coop Achievement</string>
+    <string name="app_name">Win2Gether</string>
 
     <!--Category Activity-->
     <string name="category_activity_empty_state_desc">No game categories found!\nClick the + to add a new game category.</string>
