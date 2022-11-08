@@ -18,12 +18,12 @@ public class GameManager {
     private int greatScoreIndividual;
     private int poorScoreIndividual;
 
-    public GameManager(String name, int gs, int ps) {
+    public GameManager(String name, int goodScore, int poorScore) {
         isValidName(name);
-        isValidScore(gs, ps);
+        isValidScore(goodScore, poorScore);
         this.name = name;
-        this.greatScoreIndividual = gs;
-        this.poorScoreIndividual = ps;
+        this.greatScoreIndividual = goodScore;
+        this.poorScoreIndividual = poorScore;
     }
 
     public String getName() {
@@ -66,8 +66,8 @@ public class GameManager {
     }
 
     // Checks whether a given great and poor score are valid
-    private void isValidScore(int gs, int ps) {
-        if (gs <= ps) {
+    private void isValidScore(int goodScore, int poorScore) {
+        if (goodScore <= poorScore) {
             throw new RuntimeException("Invalid score entry: ");
         }
     }
