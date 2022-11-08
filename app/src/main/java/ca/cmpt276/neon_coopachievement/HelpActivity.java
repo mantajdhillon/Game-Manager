@@ -10,13 +10,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-/*
-    HelpActivity Class
-    - Displays one big text which describes the app
-      and explain the purpose of each screen (activity)
-      in the app.
-    - Accessed through ? icon in top right corner of
-      every activity.
+/**
+ * HelpActivity Class
+ * <p>
+ * - Displays one big text which describes the app
+ *   and explain the purpose of each screen (activity)
+ *   in the app.
+ * - Accessed through ? icon in top right corner of
+ *   every activity.
  */
 public class HelpActivity extends AppCompatActivity {
 
@@ -25,12 +26,7 @@ public class HelpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help);
 
-        ActionBar ab = getSupportActionBar();
-        ab.setTitle(R.string.help_activity_title);
-        ab.setDisplayHomeAsUpEnabled(true);
-
-        TextView text = findViewById(R.id.tvHelpCentreMessage);
-        text.setMovementMethod(LinkMovementMethod.getInstance());
+        setUpScreen();
     }
 
     @Override
@@ -48,5 +44,14 @@ public class HelpActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void setUpScreen() {
+        ActionBar ab = getSupportActionBar();
+        ab.setTitle(R.string.help_activity_title);
+        ab.setDisplayHomeAsUpEnabled(true);
+
+        TextView text = findViewById(R.id.tvHelpCentreMessage);
+        text.setMovementMethod(LinkMovementMethod.getInstance());
     }
 }
