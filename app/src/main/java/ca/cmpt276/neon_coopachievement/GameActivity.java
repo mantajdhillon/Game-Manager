@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +22,10 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import ca.cmpt276.neon_coopachievement.model.Game;
 import ca.cmpt276.neon_coopachievement.model.GameCategory;
 import ca.cmpt276.neon_coopachievement.model.GameManager;
 
@@ -32,6 +37,9 @@ public class GameActivity extends AppCompatActivity {
 
     private GameManager gameManager;
     private final int GameCategorySize = gameCategory.getSize();
+
+    List<GameActivity.GameListElement> listGames = new ArrayList<GameActivity.GameListElement>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +63,7 @@ public class GameActivity extends AppCompatActivity {
 
         gameManager = gameCategory.getGameManager(getGameManagerIndex());
 
+        populateGamesList();
         generateGamesList();
 
         setUpEmptyState(gameManager.size());
@@ -66,11 +75,7 @@ public class GameActivity extends AppCompatActivity {
     private void generateGamesList() {
         String[] games = getGameStrings();
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                this,
-                R.layout.items,
-                games);
-
+        ArrayAdapter<GameListElement> adapter = new MyListAdapter();
         ListView playedGames = findViewById(R.id.gameList);
         playedGames.setAdapter(adapter);
     }
@@ -93,6 +98,7 @@ public class GameActivity extends AppCompatActivity {
         if (!gameManager.equals(temp)) {
             finish();
         } else {
+            populateGamesList();
             generateGamesList();
             setUpEmptyState(gameManager.size());
             setupAddGameBtn();
@@ -161,7 +167,6 @@ public class GameActivity extends AppCompatActivity {
             goBtn.setEnabled(true);
             goBtn.setVisibility(View.VISIBLE);
             setupGoAchievementsBtn();
-
         });
     }
 
@@ -252,6 +257,52 @@ public class GameActivity extends AppCompatActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private class MyListAdapter extends ArrayAdapter<GameActivity.GameListElement> {
+        public MyListAdapter() {
+            super(GameActivity.this, R.layout.achievements_list, listGames);
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            View gameView = convertView;
+            if (gameView == null) {
+                gameView = getLayoutInflater().inflate
+                        (R.layout.achievements_list, parent, false);
+            }
+
+            GameActivity.GameListElement currentElement= listGames.get(position);
+
+            ImageView icon = gameView.findViewById(R.id.achievement_icon);
+            icon.setImageResource(currentElement.iconId);
+
+            TextView description = gameView.findViewById(R.id.tvAchievementsDescription);
+            description.setText(currentElement.description);
+
+            return gameView;
+        }
+    }
+
+    private class GameListElement {
+        public String description;
+        public int iconId;
+
+        public GameListElement(String description, int iconId) {
+            this.description = description;
+            this.iconId = iconId;
+        }
+    }
+
+    private void populateGamesList() {
+        listGames.clear();
+        for (int i = 0; i < gameManager.size(); i++) {
+            Game g = gameManager.getGame(i);
+            String filename = getString(R.string.IconFileName) + g.getRank();
+            int id = getResources().getIdentifier(filename, getString(R.string.defType), this.getPackageName());
+            listGames.add(new GameActivity.GameListElement(g.toString(), id));
         }
     }
 }
