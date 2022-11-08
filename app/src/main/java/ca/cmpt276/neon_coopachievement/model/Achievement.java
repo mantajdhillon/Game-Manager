@@ -63,19 +63,19 @@ public class Achievement {
         // Maximum achievement rank
         if (rankIdx == MAX_RANK_IDX) {
             return "Level " + MAX_RANK + " (>"
-                    + achievementBoundaries[MAX_RANK_IDX - 1] + "): "
+                    + (int) achievementBoundaries[MAX_RANK_IDX - 1] + "): "
                     + achievementNames[MAX_RANK_IDX];
         }
 
         // Minimum achievement rank
         else if (rankIdx == MIN_RANK_IDX) {
             return "Level " + (rankIdx + 1) + " (<"
-                    + achievementBoundaries[rankIdx] + "): "
+                    + (int) achievementBoundaries[rankIdx] + "): "
                     + achievementNames[rankIdx];
         } else {
             return "Level " + (rankIdx + 1) + " ("
-                    + achievementBoundaries[rankIdx - 1] + " - "
-                    + achievementBoundaries[rankIdx]
+                    + (int) achievementBoundaries[rankIdx - 1] + " - "
+                    + (int) achievementBoundaries[rankIdx]
                     + "): " + achievementNames[rankIdx];
         }
     }
