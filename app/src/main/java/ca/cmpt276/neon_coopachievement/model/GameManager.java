@@ -94,7 +94,7 @@ public class GameManager {
     }
 
     public void updateEdits(int poorScoreNew, int greatScoreNew) {
-        for (int i = 0; i < getGamesStored(); i++) {
+        for (int i = 0; i < games.size(); i++) {
             Game oldGame = games.get(i);
             Game newGame = new Game(oldGame.getNumPlayers(), oldGame.getFinalTotalScore(),
                     poorScoreNew, greatScoreNew);

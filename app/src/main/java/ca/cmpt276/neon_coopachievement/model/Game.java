@@ -15,7 +15,7 @@ import java.time.format.DateTimeFormatter;
 
 public class Game {
 
-    private final String time;
+    private String time;
     private int numPlayers;
     private int finalTotalScore;
     private final Achievement achievements;
@@ -48,11 +48,11 @@ public class Game {
         this.finalTotalScore = finalTotalScore;
     }
 
-    public void setTime(LocalDateTime time) {
+    public void setTime(String time) {
         this.time = time;
     }
 
-    public LocalDateTime getTime() {
+    public String getTime() {
         return this.time;
     }
 

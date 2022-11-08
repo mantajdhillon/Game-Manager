@@ -59,8 +59,8 @@ public class GameConfigActivity extends AppCompatActivity {
         etSumScore = findViewById(R.id.etSumPlayerScores);
         etSumScore.addTextChangedListener(inputWatcher);
 
-        if(getisEdit()){
-            game = gameManager.getGame(getGameIndex());
+        if (getisEdit()) {
+            currentGame = gameManager.getGame(getGameIndex());
             ab.setTitle(R.string.game_config_activity_edit_game);
             populateFields();
             populateAchievementView();
@@ -108,9 +108,9 @@ public class GameConfigActivity extends AppCompatActivity {
                 int numPlayers = getInt(etNumPlayers);
                 int sumScores = getInt(etSumScore);
 
-                if(getisEdit()){
-                    game.setNumPlayers(numPlayers);
-                    game.setFinalTotalScore(sumScores);
+                if (getisEdit()) {
+                    currentGame.setNumPlayers(numPlayers);
+                    currentGame.setFinalTotalScore(sumScores);
                     gameManager.updateEdits
                             (gameManager.getPoorScoreIndividual(), gameManager.getGreatScoreIndividual());
                 }

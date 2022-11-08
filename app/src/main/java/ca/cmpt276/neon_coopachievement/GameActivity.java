@@ -1,6 +1,7 @@
 package ca.cmpt276.neon_coopachievement;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,6 +12,7 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -38,7 +40,7 @@ public class GameActivity extends AppCompatActivity {
     private GameManager gameManager;
     private final int GameCategorySize = gameCategory.getSize();
 
-    List<GameActivity.GameListElement> listGames = new ArrayList<GameActivity.GameListElement>();
+    List<GameListElement> listGames = new ArrayList<>();
 
 
     @Override
@@ -172,12 +174,7 @@ public class GameActivity extends AppCompatActivity {
 
     private void setupGoAchievementsBtn() {
         Button goBtn = findViewById(R.id.gotoAchievements);
-        goBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setupAchievementsBtn(goBtn);
-            }
-        });
+        goBtn.setOnClickListener(v -> setupAchievementsBtn(goBtn));
     }
 
     private void setupAchievementsBtn(Button goBtn) {
@@ -286,7 +283,7 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    private class GameListElement {
+    private static class GameListElement {
         public String description;
         public int iconId;
 
@@ -302,7 +299,7 @@ public class GameActivity extends AppCompatActivity {
             Game g = gameManager.getGame(i);
             String filename = getString(R.string.IconFileName) + g.getRank();
             int id = getResources().getIdentifier(filename, getString(R.string.defType), this.getPackageName());
-            listGames.add(new GameActivity.GameListElement(g.toString(), id));
+            listGames.add(new GameListElement(g.toString(), id));
         }
     }
 }
