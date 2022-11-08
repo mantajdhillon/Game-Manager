@@ -62,8 +62,8 @@ public class Game {
     @NonNull
     @Override
     public String toString() {
-        return time + " - " + numPlayers + " player(s) " + "\n"
+        return numPlayers + " player(s) - " + time + "\n"
                 + "Total score: " + finalTotalScore + "\n"
-                + "Rank " + rank + ": " + achievements.getAchievementName(rank);
+                + "Rank #" + rank + ": " + achievements.getAchievementName(rank);
     }
 }
