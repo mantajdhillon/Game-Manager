@@ -114,10 +114,9 @@ public class CategoryConfigActivity extends AppCompatActivity {
 
                 EditText getBadScore = findViewById((R.id.etBadScore));
                 int badScore = getInt(getBadScore);
-
-                // Edit Configuration: Update game manager
                 if (editConfig) {
                     currGameManager.setName(name);
+                    currGameManager.isValidScore(goodScore,badScore);
                     currGameManager.setGreatScoreIndividual(goodScore);
                     currGameManager.setPoorScoreIndividual(badScore);
                     currGameManager.updateEdits(badScore, goodScore);

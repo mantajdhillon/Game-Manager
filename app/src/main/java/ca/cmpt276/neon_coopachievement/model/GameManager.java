@@ -55,13 +55,11 @@ public class GameManager {
     }
 
     public void setGreatScoreIndividual(int score) {
-        isValidScore(score, poorScoreIndividual);
         this.greatScoreIndividual = score;
     }
 
     // Checks whether a given great score is valid
     public void setPoorScoreIndividual(int score) {
-        isValidScore(greatScoreIndividual, score);
         this.poorScoreIndividual = score;
     }
 
@@ -88,7 +86,6 @@ public class GameManager {
         games.remove(index);
     }
 
-    // Fix the edits
     public void updateEdits(int poorScoreNew, int greatScoreNew) {
         for (int i = 0; i < games.size(); i++) {
             Game oldGame = games.get(i);

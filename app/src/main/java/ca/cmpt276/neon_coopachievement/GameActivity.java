@@ -169,17 +169,21 @@ public class GameActivity extends AppCompatActivity {
         EditText etNumPlayers = findViewById(R.id.numPlayersInput);
         String strNumPlayers = etNumPlayers.getText().toString().trim();
         if (!TextUtils.isEmpty(strNumPlayers)) {
-            int numPlayers = Integer.parseInt(strNumPlayers);
-            if (numPlayers <= 0) {
+            try {
+                int numPlayers = Integer.parseInt(strNumPlayers);
+                if (numPlayers <= 0) {
+                    Toast.makeText(GameActivity.this, R.string.invalid_num_players_msg, Toast.LENGTH_SHORT).show();
+                } else {
+                    hideButtonAndText(goBtn, etNumPlayers);
+
+                    GameManager gameManager = gameCategory.getGameManager(getGameManagerIndex());
+
+                    Intent i = AchievementActivity.makeIntent(GameActivity.this,
+                            numPlayers, gameManager.getPoorScoreIndividual(), gameManager.getGreatScoreIndividual());
+                    startActivity(i);
+                }
+            } catch (Exception e) {
                 Toast.makeText(GameActivity.this, R.string.invalid_num_players_msg, Toast.LENGTH_SHORT).show();
-            } else {
-                hideButtonAndText(goBtn, etNumPlayers);
-
-                GameManager gameManager = gameCategory.getGameManager(getGameManagerIndex());
-
-                Intent i = AchievementActivity.makeIntent(GameActivity.this,
-                        numPlayers, gameManager.getPoorScoreIndividual(), gameManager.getGreatScoreIndividual());
-                startActivity(i);
             }
         } else {
             Toast.makeText(GameActivity.this, R.string.invalid_num_players_msg, Toast.LENGTH_SHORT).show();
@@ -236,7 +240,7 @@ public class GameActivity extends AppCompatActivity {
 
     private class MyListAdapter extends ArrayAdapter<GameActivity.GameListElement> {
         public MyListAdapter() {
-            super(GameActivity.this, R.layout.achievements_list, listGames);
+            super(GameActivity.this, R.layout.complex_listview_layout, listGames);
         }
 
         @NonNull
@@ -245,7 +249,7 @@ public class GameActivity extends AppCompatActivity {
             View gameView = convertView;
             if (gameView == null) {
                 gameView = getLayoutInflater().inflate
-                        (R.layout.achievements_list, parent, false);
+                        (R.layout.complex_listview_layout, parent, false);
             }
 
             gameView.setOnClickListener(v -> {
