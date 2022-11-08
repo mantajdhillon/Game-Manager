@@ -118,7 +118,7 @@ public class AchievementActivity extends AppCompatActivity {
 
     private class AchievementListAdapter extends ArrayAdapter<AchievementListElement> {
         public AchievementListAdapter() {
-            super(AchievementActivity.this, R.layout.achievements_list, achievementList);
+            super(AchievementActivity.this, R.layout.complex_listview_layout, achievementList);
         }
 
         @NonNull
@@ -127,7 +127,7 @@ public class AchievementActivity extends AppCompatActivity {
             View achievementView = convertView;
             if (achievementView == null) {
                 achievementView = getLayoutInflater().inflate
-                        (R.layout.achievements_list, parent, false);
+                        (R.layout.complex_listview_layout, parent, false);
             }
 
             AchievementListElement currentElement = achievementList.get(position);
