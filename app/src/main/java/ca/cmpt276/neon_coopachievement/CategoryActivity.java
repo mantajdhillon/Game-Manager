@@ -76,7 +76,7 @@ public class CategoryActivity extends AppCompatActivity {
 
     private void populateListView() {
         ArrayList<String> gameTypes = new ArrayList<>();
-        for (int i = 0; i < gameCategory.getSize(); i++) {
+        for (int i = 0; i < gameCategory.size(); i++) {
             gameTypes.add(gameCategory.getGameManager(i).toString());
         }
 
@@ -95,7 +95,7 @@ public class CategoryActivity extends AppCompatActivity {
         TextView emptyStateDesc = findViewById(R.id.tvEmptyStateDescCategory);
 
         // Display only if the category manager is 0
-        if (gameCategory.getSize() == 0) {
+        if (gameCategory.size() == 0) {
             emptyStateIcon.setVisibility(View.VISIBLE);
             emptyStateDesc.setVisibility(View.VISIBLE);
         } else {

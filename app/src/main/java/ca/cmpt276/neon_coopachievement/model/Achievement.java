@@ -2,6 +2,7 @@ package ca.cmpt276.neon_coopachievement.model;
 
 /**
  * Achievements Class:
+ * <p>
  * - Used to store the achievement boundaries of a game type.
  * - Each Game has an achievements variable that gets
  * - Constructed using the good score and bad score from the game manager, and the num players from the game.

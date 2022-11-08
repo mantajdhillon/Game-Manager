@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * Game Class:
+ * <p>
  * - Used to store one instance of a game.
  * - Each Game has a time which is constructed once.
  * - Takes a good score and a bad score and construct an appropriate achievement object
