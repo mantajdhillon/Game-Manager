@@ -25,7 +25,7 @@ public class GameCategory {
         return instance;
     }
 
-    // Update the current instance
+    // Set the instance to the calling object
     public void setInstance() {
         instance = this;
     }
