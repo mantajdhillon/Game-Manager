@@ -6,7 +6,13 @@ import android.content.Intent;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
-// GameCategory class: Holds an the Game Managers for several different game types
+/*  GameCategory
+    Description: Holds the Game Managers for several different game types, such as Poker or Blackjack
+                - Singleton design: returns an instance of the GameCategory
+                - GameManagers are held in an ArrayList
+
+*/
+
 public class GameCategory {
     private static GameCategory instance;
     private final ArrayList<GameManager> gameManagers;
@@ -15,7 +21,6 @@ public class GameCategory {
         gameManagers = new ArrayList<>();
     }
 
-    // Getters and Setters
     public int getGameManagersStored() {
         return gameManagers.size();
     }
@@ -27,7 +32,6 @@ public class GameCategory {
         return instance;
     }
 
-    // getGameManager: searches through GameManagersStored, if it contains the object, for the object in question
     public GameManager getGameManager(GameManager toGet) {
         boolean found = this.gameManagers.contains(toGet);
         if (found) {
@@ -48,12 +52,10 @@ public class GameCategory {
         return gameManagers.get(i).toString();
     }
 
-    // addGameManager: adds a game manager
     public void addGameManager(GameManager toAdd) {
         this.gameManagers.add(toAdd);
     }
 
-    // removeGameManager: removes a game manager
     public void removeGameManager(int toRemove) {
         this.gameManagers.remove(toRemove);
     }

@@ -3,7 +3,11 @@ package ca.cmpt276.neon_coopachievement.model;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
-// GameManager class: Holds the games for a single game type, such as the games for Poker or Blackjack
+/* GameManager
+   Description: Holds the games for a single game type, such as the games for Poker or Blackjack
+                - Takes the name, and good/poor individual scores for a given game
+                - Holds games in an ArrayList
+*/
 
 public class GameManager {
     private ArrayList<Game> games = new ArrayList<>();
@@ -20,7 +24,6 @@ public class GameManager {
 
     }
 
-    // Getters and setters
     public String getName(){
         return name;
     }
@@ -84,12 +87,10 @@ public class GameManager {
         return games.get(i).toString();
     }
 
-    // addGame: adds a game to the games array
     public void addGame(Game game){
         this.games.add(game);
     }
 
-    // deleteGame: deletes a game from the games array
     public void removeGame(int index){
         this.games.remove(index);
     }
