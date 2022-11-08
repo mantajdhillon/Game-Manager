@@ -3,10 +3,13 @@ package ca.cmpt276.neon_coopachievement.model;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
-/* GameManager
+/*
+   GameManager Class
    Description: Holds the games for a single game type, such as the games for Poker or Blackjack
-                - Takes the name, and good/poor individual scores for a given game
+                - Takes the name, and good/poor individual scores for a given game, if the parameters
+                  are valid
                 - Holds games in an ArrayList
+                - Can only be accessed through the GameCategory instance
 */
 
 public class GameManager {

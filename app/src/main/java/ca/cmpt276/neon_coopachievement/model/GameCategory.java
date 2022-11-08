@@ -3,10 +3,12 @@ package ca.cmpt276.neon_coopachievement.model;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
-/**  GameCategory
+/**
+    GameCategory Class
     Description: Holds the Game Managers for several different game types, such as Poker or Blackjack
                 - Singleton design: returns an instance of the GameCategory
                 - GameManagers are held in an ArrayList
+                - GameManagers can only be accessed through the GameCategory instance
 */
 public class GameCategory {
     private static GameCategory instance;
