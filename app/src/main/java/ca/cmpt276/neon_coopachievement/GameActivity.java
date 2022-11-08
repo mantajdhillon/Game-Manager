@@ -49,7 +49,7 @@ public class GameActivity extends AppCompatActivity {
     private GameManager gameManager;
     private final int GameCategorySize = gameCategory.getSize();
 
-    List<GameListElement> listGames = new ArrayList<>();
+    List<GameActivity.GameListElement> listGames = new ArrayList<GameActivity.GameListElement>();
 
 
     @Override
@@ -80,7 +80,6 @@ public class GameActivity extends AppCompatActivity {
         setUpEmptyState(gameManager.size());
         setupAddGameBtn();
         setupViewAchievementsBtn();
-        gameClickCallback();
     }
 
     private void generateGamesList() {
@@ -113,7 +112,6 @@ public class GameActivity extends AppCompatActivity {
             setUpEmptyState(gameManager.size());
             setupAddGameBtn();
             setupViewAchievementsBtn();
-            gameClickCallback();
         }
 
         // Save game manager
@@ -222,17 +220,6 @@ public class GameActivity extends AppCompatActivity {
         goBtn.setVisibility(View.INVISIBLE);
     }
 
-    private void gameClickCallback() {
-        ListView games = findViewById(R.id.gameList);
-        games.setOnItemClickListener((parent, viewClicked, position, id) -> {
-
-            TextView game = (TextView) viewClicked;
-
-            Intent i = GameConfigActivity.makeLaunchIntent(GameActivity.this, true, position, getGameManagerIndex());
-            startActivity(i);
-        });
-    }
-
     private int getGameManagerIndex() {
         Intent intent = getIntent();
         return intent.getIntExtra(GAME_TYPE_INDEX, -1);
@@ -276,6 +263,11 @@ public class GameActivity extends AppCompatActivity {
                 gameView = getLayoutInflater().inflate
                         (R.layout.achievements_list, parent, false);
             }
+
+            gameView.setOnClickListener(v -> {
+                Intent i = GameConfigActivity.makeLaunchIntent(GameActivity.this, true, position, getGameManagerIndex());
+                startActivity(i);
+            });
 
             GameActivity.GameListElement currentElement= listGames.get(position);
 
