@@ -1,5 +1,13 @@
 package ca.cmpt276.neon_coopachievement.model;
 
+/*
+    Game Class
+    - Used to store one instance of a game.
+    - Each Game has a time which is constructed once.
+    - it takes a good score and a bad score which is used when constructing
+      the achievements and the scores are taken from the game manager
+ */
+
 import androidx.annotation.NonNull;
 
 import java.time.LocalDateTime;
@@ -43,10 +51,6 @@ public class Game {
 
     public LocalDateTime getTime() {
         return this.time;
-    }
-
-    public String getAchievementLevelName() {
-        return achievements.getAchievementName(rank);
     }
 
     @NonNull
