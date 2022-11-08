@@ -81,7 +81,6 @@ public class GameActivity extends AppCompatActivity {
         setUpEmptyState(gameManager.getGamesStored());
         setupAddGameBtn();
         setupViewAchievementsBtn();
-        gameClickCallback();
     }
 
     private void generateGamesList() {
@@ -112,7 +111,6 @@ public class GameActivity extends AppCompatActivity {
             setUpEmptyState(gameManager.getGamesStored());
             setupAddGameBtn();
             setupViewAchievementsBtn();
-            gameClickCallback();
         }
 
 
@@ -232,20 +230,6 @@ public class GameActivity extends AppCompatActivity {
         goBtn.setVisibility(View.INVISIBLE);
     }
 
-    private void gameClickCallback() {
-        ListView games = findViewById(R.id.gameList);
-        games.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
-
-                TextView game = (TextView) viewClicked;
-
-                Intent i = GameConfigActivity.makeLaunchIntent(GameActivity.this, true, position, getGameManagerIndex());
-                startActivity(i);
-            }
-        });
-    }
-
     private int getGameManagerIndex() {
         Intent intent = getIntent();
         return intent.getIntExtra(GAME_TYPE_INDEX, -1);
@@ -281,6 +265,7 @@ public class GameActivity extends AppCompatActivity {
             super(GameActivity.this, R.layout.achievements_list, listGames);
         }
 
+
         @NonNull
         @Override
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -289,6 +274,11 @@ public class GameActivity extends AppCompatActivity {
                 gameView = getLayoutInflater().inflate
                         (R.layout.achievements_list, parent, false);
             }
+
+            gameView.setOnClickListener(v -> {
+                Intent i = GameConfigActivity.makeLaunchIntent(GameActivity.this, true, position, getGameManagerIndex());
+                startActivity(i);
+            });
 
             GameActivity.GameListElement currentElement= listGames.get(position);
 
