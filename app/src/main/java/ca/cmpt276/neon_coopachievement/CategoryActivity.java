@@ -24,6 +24,13 @@ import java.util.ArrayList;
 import ca.cmpt276.neon_coopachievement.model.GameCategory;
 import ca.cmpt276.neon_coopachievement.model.GameManager;
 
+/*
+    CategoryActivity Class
+    - Displays the list of game categories.
+    - Allows user to add a new game category by clicking +.
+    - Allows user to access the list of played games of a
+      game category by clicking on the game category.
+ */
 public class CategoryActivity extends AppCompatActivity {
 
     private static GameCategory gameCategory = GameCategory.getInstance();

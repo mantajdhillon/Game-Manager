@@ -22,6 +22,18 @@ import ca.cmpt276.neon_coopachievement.model.Game;
 import ca.cmpt276.neon_coopachievement.model.GameCategory;
 import ca.cmpt276.neon_coopachievement.model.GameManager;
 
+/*
+    GameConfigActivity Class
+    - Used for add/edit/delete game.
+    - A new game is created when user inputs a number
+      of players and sum of players' scores, and clicks
+      save.
+    - Editing mode displays the previous number of players
+      and score that the user entered in the inputs fields.
+      Details updated when user changes the fields and clicks
+      save. Or the user may delete the game by clicking
+      delete.
+ */
 public class GameConfigActivity extends AppCompatActivity {
 
     private static final String GAME_TYPE_INDEX = "Game-Type-Index";
@@ -39,7 +51,6 @@ public class GameConfigActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_config);
 
-        // Set up Action Bar
         ActionBar ab = getSupportActionBar();
         ab.setTitle(R.string.game_config_activity_add_game);
         ab.setDisplayHomeAsUpEnabled(true);

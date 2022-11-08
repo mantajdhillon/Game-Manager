@@ -23,6 +23,12 @@ import java.util.List;
 import ca.cmpt276.neon_coopachievement.model.Achievement;
 import ca.cmpt276.neon_coopachievement.model.GameCategory;
 
+/*
+    AchievementActivity Class
+    - Displays the list of achievements of a game based on
+      the number of players the user enters.
+    - Accessed through GameActivity.
+ */
 public class AchievementActivity extends AppCompatActivity {
 
     public static final String NUM_PLAYERS = "numPlayers";
