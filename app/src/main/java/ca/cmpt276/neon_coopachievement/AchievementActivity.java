@@ -21,54 +21,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.cmpt276.neon_coopachievement.model.Achievement;
-import ca.cmpt276.neon_coopachievement.model.GameCategory;
 
-/*
-    AchievementActivity Class
-    - Displays the list of achievements of a game based on
-      the number of players the user enters.
-    - Accessed through GameActivity.
+/**
+ * AchievementActivity Class
+ * - Displays the list of achievements of a game based on the number of players the user enters.
+ * - Accessed through GameActivity.
  */
 public class AchievementActivity extends AppCompatActivity {
+    private static final byte MAX_ACHIEVEMENTS = 10;
+    private static final String EXTRA_NUM_PLAYERS = "numPlayers";
+    private static final String EXTRA_GOOD_SCORE = "goodScore";
+    private static final String EXTRA_POOR_SCORE = "poorScore";
 
-    public static final String NUM_PLAYERS = "numPlayers";
-    public static final String GOOD_SCORE = "goodScore";
-    public static final String POOR_SCORE = "poorScore";
-    public static final int MAX_ACHIEVEMENTS = 10;
-
-
-    List<AchievementListElement> listAchievements = new ArrayList<AchievementListElement>();
+    private final List<AchievementListElement> achievementList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_achievement);
 
-
+        // Set up Action bar
         ActionBar ab = getSupportActionBar();
         ab.setTitle(R.string.achievement_activity_title);
         ab.setDisplayHomeAsUpEnabled(true);
 
         populateAchievementsList();
         populateListView();
-
-    }
-
-
-    private void populateAchievementsList() {
-        Achievement achievements = new Achievement(getPoorScore(), getGoodScore(), getNumPlayers());
-        for (int i = 0; i < MAX_ACHIEVEMENTS; i++) {
-            String filename = getString(R.string.IconFileName) + (i+1);
-            int id = getResources().getIdentifier(filename, getString(R.string.defType), this.getPackageName());
-            listAchievements.add(new AchievementListElement
-                     (achievements.getAchievementString(i), id));
-        }
-    }
-
-    private void populateListView() {
-        ArrayAdapter<AchievementListElement> adapter = new MyListAdapter();
-        ListView list = findViewById(R.id.achievementList);
-        list.setAdapter(adapter);
     }
 
     @Override
@@ -84,7 +62,7 @@ public class AchievementActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.action_help:
-                Intent i = new Intent(AchievementActivity.this, HelpActivity.class);
+                Intent i = new Intent(this, HelpActivity.class);
                 startActivity(i);
                 return true;
             default:
@@ -92,28 +70,43 @@ public class AchievementActivity extends AppCompatActivity {
         }
     }
 
-    public static Intent makeLaunchIntent(Context c, int numPlayers, int poorScore, int goodScore) {
+    public static Intent makeIntent(Context c, int numPlayers, int poorScore, int goodScore) {
         Intent intent = new Intent(c, AchievementActivity.class);
-        intent.putExtra(NUM_PLAYERS, numPlayers);
-        intent.putExtra(GOOD_SCORE, goodScore);
-        intent.putExtra(POOR_SCORE, poorScore);
+        intent.putExtra(EXTRA_NUM_PLAYERS, numPlayers);
+        intent.putExtra(EXTRA_GOOD_SCORE, goodScore);
+        intent.putExtra(EXTRA_POOR_SCORE, poorScore);
         return intent;
     }
 
     private int getNumPlayers() {
-        Intent intent = getIntent();
-        return intent.getIntExtra(NUM_PLAYERS, -1);
-    }
-    private int getPoorScore() {
-        Intent intent = getIntent();
-        return intent.getIntExtra(POOR_SCORE, -1);
-    }
-    private int getGoodScore() {
-        Intent intent = getIntent();
-        return intent.getIntExtra(GOOD_SCORE, -1);
+        return getIntent().getIntExtra(EXTRA_NUM_PLAYERS, -1);
     }
 
-    private class AchievementListElement {
+    private int getPoorScore() {
+        return getIntent().getIntExtra(EXTRA_POOR_SCORE, -1);
+    }
+
+    private int getGoodScore() {
+        return getIntent().getIntExtra(EXTRA_GOOD_SCORE, -1);
+    }
+
+    private void populateAchievementsList() {
+        Achievement achievements = new Achievement(getPoorScore(), getGoodScore(), getNumPlayers());
+
+        for (int i = 0; i < MAX_ACHIEVEMENTS; i++) {
+            String filename = getString(R.string.IconFileName) + (i + 1);
+            int id = getResources().getIdentifier(filename, getString(R.string.defType), this.getPackageName());
+            achievementList.add(new AchievementListElement(achievements.getAchievementString(i), id));
+        }
+    }
+
+    private void populateListView() {
+        ArrayAdapter<AchievementListElement> adapter = new AchievementListAdapter();
+        ListView list = findViewById(R.id.achievementList);
+        list.setAdapter(adapter);
+    }
+
+    private static class AchievementListElement {
         public String description;
         public int iconId;
 
@@ -123,9 +116,9 @@ public class AchievementActivity extends AppCompatActivity {
         }
     }
 
-    private class MyListAdapter extends ArrayAdapter<AchievementListElement> {
-        public MyListAdapter() {
-            super(AchievementActivity.this, R.layout.achievements_list, listAchievements);
+    private class AchievementListAdapter extends ArrayAdapter<AchievementListElement> {
+        public AchievementListAdapter() {
+            super(AchievementActivity.this, R.layout.achievements_list, achievementList);
         }
 
         @NonNull
@@ -137,7 +130,7 @@ public class AchievementActivity extends AppCompatActivity {
                         (R.layout.achievements_list, parent, false);
             }
 
-            AchievementListElement currentElement= listAchievements.get(position);
+            AchievementListElement currentElement = achievementList.get(position);
 
             ImageView icon = achievementView.findViewById(R.id.achievement_icon);
             icon.setImageResource(currentElement.iconId);
