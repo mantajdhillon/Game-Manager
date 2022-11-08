@@ -22,6 +22,7 @@ import ca.cmpt276.neon_coopachievement.model.GameCategory;
 
 /**
  * CategoryActivity Class
+ * <p>
  * - Displays the list of game categories.
  * - Allows user to add a new game category by clicking +.
  * - Allows user to access the list of played games of a ame category by clicking on the game category.

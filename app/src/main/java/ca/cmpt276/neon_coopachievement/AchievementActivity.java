@@ -24,6 +24,7 @@ import ca.cmpt276.neon_coopachievement.model.Achievement;
 
 /**
  * AchievementActivity Class
+ * <p>
  * - Displays the list of achievements of a game based on the number of players the user enters.
  * - Accessed through GameActivity.
  */
