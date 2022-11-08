@@ -42,7 +42,7 @@ public class CategoryConfigActivity extends AppCompatActivity {
     private int gameIndex;
     private GameManager gameManager;
 
-    private GameCategory instance = GameCategory.getInstance();
+    private final GameCategory instance = GameCategory.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,13 +57,12 @@ public class CategoryConfigActivity extends AppCompatActivity {
 
         setUpSaveBtn();
 
-        if(isEdit){
+        if (isEdit) {
             gameManager = instance.getGameManager(gameIndex);
             ab.setTitle(R.string.category_config_activity_edit_game);
             setUpDeleteBtn();
             populateFields();
-        }
-        else{
+        } else {
             hideDeleteButton();
         }
     }
@@ -86,7 +85,7 @@ public class CategoryConfigActivity extends AppCompatActivity {
 
                 EditText getBadScore = findViewById((R.id.etBadScore));
                 int badScore = getInt(getBadScore);
-                if(isEdit){
+                if (isEdit) {
                     gameManager.setName(name);
                     gameManager.setGreatScoreIndividual(goodScore);
                     gameManager.setPoorScoreIndividual(badScore);
@@ -97,21 +96,16 @@ public class CategoryConfigActivity extends AppCompatActivity {
                     instance.addGameManager(newManager);
                 }
                 finish();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-
-    private int getInt(EditText et){
-        int newInt = 0;
+    private int getInt(EditText et) {
         String intStr = et.getText().toString();
-        newInt = Integer.parseInt(intStr);
-        return newInt;
+        return Integer.parseInt(intStr);
     }
-
 
     private void setUpDeleteBtn() {
         Button deleteBtn = findViewById(R.id.btnDeleteConfig);
@@ -145,18 +139,17 @@ public class CategoryConfigActivity extends AppCompatActivity {
         }
     }
 
-    public static Intent makeCategoryConfigIntent(Context context, boolean isEdit, int gameIndex) {
+    public static Intent makeIntent(Context context, boolean isEdit, int gameIndex) {
         Intent i = new Intent(context, CategoryConfigActivity.class);
         i.putExtra(IS_EDIT, isEdit);
         i.putExtra(GAME_INDEX, gameIndex);
         return i;
     }
 
-
     private void extractDataFromIntent() {
         Intent i = getIntent();
         isEdit = i.getBooleanExtra(IS_EDIT, false);
-        gameIndex = i.getIntExtra(GAME_INDEX,-1);
+        gameIndex = i.getIntExtra(GAME_INDEX, -1);
     }
 
     private void populateFields() {

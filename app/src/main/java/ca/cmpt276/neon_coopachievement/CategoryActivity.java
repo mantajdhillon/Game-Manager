@@ -4,14 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -22,7 +19,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 
 import ca.cmpt276.neon_coopachievement.model.GameCategory;
-import ca.cmpt276.neon_coopachievement.model.GameManager;
 
 /*
     CategoryActivity Class
@@ -33,45 +29,64 @@ import ca.cmpt276.neon_coopachievement.model.GameManager;
  */
 public class CategoryActivity extends AppCompatActivity {
 
-    private static GameCategory gameCategory = GameCategory.getInstance();
+    private GameCategory gameCategory;
+    private static CategorySaver saveState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
 
+        // Set up action bar
         ActionBar ab = getSupportActionBar();
         ab.setTitle(R.string.category_config_activity_title);
 
-        getGameManagerList();
+        saveState = new CategorySaver(this);
+        gameCategory = GameCategory.getInstance();
+        setUpScreen();
+    }
+
+    // Save the current state of the game category
+    public static void saveCategoryState() {
+        saveState.saveData();
+    }
+
+    private void setUpScreen() {
+        populateListView();
         setUpEmptyState();
         setupAddCategoryBtn();
-        categoryClickCallback();
+        registerListClickCallback();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        saveCategoryState();
+        setUpScreen();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        getGameManagerList();
-        setUpEmptyState();
-        setupAddCategoryBtn();
-        categoryClickCallback();
+        saveCategoryState();
+        setUpScreen();
     }
 
-    private void getGameManagerList() {
+    private void populateListView() {
         ArrayList<String> gameTypes = new ArrayList<>();
-        for (int i=0; i < gameCategory.getGameManagersStored(); i++) {
+        for (int i = 0; i < gameCategory.getSize(); i++) {
             gameTypes.add(gameCategory.getGameManager(i).toString());
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this,
                 R.layout.items,
                 gameTypes);
 
-        ListView categories = findViewById(R.id.categoryList);
-        categories.setAdapter(adapter);
+        ListView categoryListView = findViewById(R.id.categoryList);
+        categoryListView.setAdapter(adapter);
     }
 
     // Configure the empty state when there are no more games categories
@@ -80,7 +95,7 @@ public class CategoryActivity extends AppCompatActivity {
         TextView emptyStateDesc = findViewById(R.id.tvEmptyStateDescCategory);
 
         // Display only if the category manager is 0
-        if (gameCategory.getGameManagersStored() == 0) {
+        if (gameCategory.getSize() == 0) {
             emptyStateIcon.setVisibility(View.VISIBLE);
             emptyStateDesc.setVisibility(View.VISIBLE);
         } else {
@@ -91,22 +106,21 @@ public class CategoryActivity extends AppCompatActivity {
 
     private void setupAddCategoryBtn() {
         FloatingActionButton newCategory = findViewById(R.id.addCategoryBtn);
-        newCategory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = CategoryConfigActivity.makeCategoryConfigIntent(CategoryActivity.this, false,-1);
-                startActivity(i);
-            }
+        newCategory.setOnClickListener(v -> {
+            Intent i = CategoryConfigActivity.makeIntent(
+                    CategoryActivity.this,
+                    false,
+                    -1);
+            startActivity(i);
         });
     }
 
-    private void categoryClickCallback() {
+    private void registerListClickCallback() {
         ListView categories = findViewById(R.id.categoryList);
         categories.setOnItemClickListener((parent, viewClicked, position, id) -> {
-
-            TextView category = (TextView) viewClicked;
-
-            Intent i = GameActivity.makeLaunchIntent(CategoryActivity.this, position);
+            Intent i = GameActivity.makeIntent(
+                    CategoryActivity.this,
+                    position);
             startActivity(i);
         });
     }
