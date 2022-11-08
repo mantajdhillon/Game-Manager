@@ -13,7 +13,7 @@ public class GameManagerTest {
         assertEquals("Test",myManager.getName());
         assertEquals(5,myManager.getGreatScoreIndividual());
         assertEquals(1,myManager.getPoorScoreIndividual());
-        assertEquals(0,myManager.getGamesStored());
+        assertEquals(0,myManager.size());
 
         assertThrows(InvalidParameterException.class,
                 ()->myManager.setPoorScoreIndividual(5));

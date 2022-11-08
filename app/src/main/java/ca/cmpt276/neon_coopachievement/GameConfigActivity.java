@@ -39,9 +39,9 @@ public class GameConfigActivity extends AppCompatActivity {
     private static final String GAME_TYPE_INDEX = "Game-Type-Index";
     public static final String IS_EDIT = "isEdit";
     public static final String GAME_INDEX = "gameIndex";
-    GameCategory gameCategory = GameCategory.getInstance();
+    GameCategory gameCategory;
     GameManager gameManager;
-    Game game;
+    Game currentGame;
 
     private EditText etNumPlayers;
     private EditText etSumScore;
@@ -55,6 +55,7 @@ public class GameConfigActivity extends AppCompatActivity {
         ab.setTitle(R.string.game_config_activity_add_game);
         ab.setDisplayHomeAsUpEnabled(true);
 
+        gameCategory = GameCategory.getInstance();
         gameManager = gameCategory.getGameManager(getGameManagerIndex());
 
         Button deleteBtn = findViewById(R.id.btnDeleteGame);
@@ -69,8 +70,8 @@ public class GameConfigActivity extends AppCompatActivity {
         etSumScore = findViewById(R.id.etSumPlayerScores);
         etSumScore.addTextChangedListener(inputWatcher);
 
-        if(getisEdit()){
-            game = gameManager.getGame(getGameIndex());
+        if (getisEdit()) {
+            currentGame = gameManager.getGame(getGameIndex());
             ab.setTitle(R.string.game_config_activity_edit_game);
             populateFields();
             populateAchievementView();
@@ -80,8 +81,8 @@ public class GameConfigActivity extends AppCompatActivity {
 
     public static Intent makeLaunchIntent(Context c, boolean isEdit, int gameIndex, int gameManagerIndex) {
         Intent intent = new Intent(c, GameConfigActivity.class);
-        intent.putExtra(IS_EDIT,isEdit);
-        intent.putExtra(GAME_INDEX,gameIndex);
+        intent.putExtra(IS_EDIT, isEdit);
+        intent.putExtra(GAME_INDEX, gameIndex);
         intent.putExtra(GAME_TYPE_INDEX, gameManagerIndex);
         return intent;
     }
@@ -91,22 +92,22 @@ public class GameConfigActivity extends AppCompatActivity {
         return intent.getIntExtra(GAME_TYPE_INDEX, -1);
     }
 
-    private int getGameIndex(){
+    private int getGameIndex() {
         Intent intent = getIntent();
-        return intent.getIntExtra(GAME_INDEX,-1);
+        return intent.getIntExtra(GAME_INDEX, -1);
     }
 
-    private boolean getisEdit(){
+    private boolean getisEdit() {
         Intent intent = getIntent();
-        return intent.getBooleanExtra(IS_EDIT,false);
+        return intent.getBooleanExtra(IS_EDIT, false);
     }
 
-    private void populateFields(){
+    private void populateFields() {
         EditText etNumPlayers = findViewById((R.id.etNumPlayers));
-        etNumPlayers.setText(Integer.toString(game.getNumPlayers()));
+        etNumPlayers.setText(Integer.toString(currentGame.getNumPlayers()));
 
         EditText etSumScore = findViewById((R.id.etSumPlayerScores));
-        etSumScore.setText(Integer.toString(game.getFinalTotalScore()));
+        etSumScore.setText(Integer.toString(currentGame.getFinalTotalScore()));
     }
 
     private void setUpSaveBtn() {
@@ -118,47 +119,43 @@ public class GameConfigActivity extends AppCompatActivity {
                 int numPlayers = getInt(etNumPlayers);
                 int sumScores = getInt(etSumScore);
 
-                if(getisEdit()){
-                    game.setNumPlayers(numPlayers);
-                    game.setFinalTotalScore(sumScores);
+                if (getisEdit()) {
+                    currentGame.setNumPlayers(numPlayers);
+                    currentGame.setFinalTotalScore(sumScores);
                     gameManager.updateEdits
                             (gameManager.getPoorScoreIndividual(), gameManager.getGreatScoreIndividual());
                 }
+
+                // Make a new game
                 else {
                     Game newGame = new Game(numPlayers, sumScores,
-                            gameManager.getPoorScoreIndividual(), gameManager.getGreatScoreIndividual());
+                            gameManager.getPoorScoreIndividual(),
+                            gameManager.getGreatScoreIndividual());
                     gameManager.addGame(newGame);
                 }
                 finish();
-            } catch (Exception e){
-                Toast.makeText(this,"Invalid input",Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                Toast.makeText(this, "Invalid input", Toast.LENGTH_SHORT).show();
             }
-
         });
     }
 
-    private int getInt(EditText et){
-        int newInt = 0;
+    private int getInt(EditText et) {
         String intStr = et.getText().toString();
-        newInt = Integer.parseInt(intStr);
-
-        return newInt;
+        return Integer.parseInt(intStr);
     }
 
     private void setUpDeleteBtn() {
         Button deleteBtn = findViewById(R.id.btnDeleteGame);
         deleteBtn.setVisibility(View.VISIBLE);
         deleteBtn.setEnabled(true);
-        deleteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                gameManager.removeGame(getGameIndex());
-                finish();
-            }
+        deleteBtn.setOnClickListener(v -> {
+            gameManager.removeGame(getGameIndex());
+            finish();
         });
     }
 
-    private TextWatcher inputWatcher = new TextWatcher() {
+    private final TextWatcher inputWatcher = new TextWatcher() {
 
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {

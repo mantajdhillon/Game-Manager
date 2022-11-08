@@ -1,28 +1,23 @@
 package ca.cmpt276.neon_coopachievement.model;
 
-import android.content.Context;
-import android.content.Intent;
-
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
-/*  GameCategory
+/**  GameCategory
     Description: Holds the Game Managers for several different game types, such as Poker or Blackjack
                 - Singleton design: returns an instance of the GameCategory
                 - GameManagers are held in an ArrayList
-
 */
-
 public class GameCategory {
     private static GameCategory instance;
-    private final ArrayList<GameManager> gameManagers;
+    private final ArrayList<GameManager> gameManagerList;
 
     private GameCategory() {
-        gameManagers = new ArrayList<>();
+        gameManagerList = new ArrayList<>();
     }
 
-    public int getGameManagersStored() {
-        return gameManagers.size();
+    public int getSize() {
+        return gameManagerList.size();
     }
 
     public static GameCategory getInstance() {
@@ -32,12 +27,18 @@ public class GameCategory {
         return instance;
     }
 
+    // Update the current instance to "this" object
+    public void setInstance() {
+        instance = this;
+    }
+
+    // getGameManager: searches through GameManagersStored, if it contains the object, for the object in question
     public GameManager getGameManager(GameManager toGet) {
-        boolean found = this.gameManagers.contains(toGet);
+        boolean found = this.gameManagerList.contains(toGet);
         if (found) {
-            for (int i = 0; i < gameManagers.size(); i++) {
-                if (this.gameManagers.get(i) == toGet) {
-                    return this.gameManagers.get(i);
+            for (int i = 0; i < gameManagerList.size(); i++) {
+                if (this.gameManagerList.get(i) == toGet) {
+                    return this.gameManagerList.get(i);
                 }
             }
         }
@@ -45,18 +46,18 @@ public class GameCategory {
     }
 
     public GameManager getGameManager(int i) {
-        return gameManagers.get(i);
+        return gameManagerList.get(i);
     }
 
     public String getGameManagerString(int i) {
-        return gameManagers.get(i).toString();
+        return gameManagerList.get(i).toString();
     }
 
     public void addGameManager(GameManager toAdd) {
-        this.gameManagers.add(toAdd);
+        this.gameManagerList.add(toAdd);
     }
 
     public void removeGameManager(int toRemove) {
-        this.gameManagers.remove(toRemove);
+        this.gameManagerList.remove(toRemove);
     }
 }
