@@ -23,7 +23,7 @@ import ca.cmpt276.neon_coopachievement.model.GameCategory;
 public class CategoryActivity extends AppCompatActivity {
 
     private GameCategory gameCategory;
-    CategorySaver saveState;
+    private static CategorySaver saveState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +39,11 @@ public class CategoryActivity extends AppCompatActivity {
         setUpScreen();
     }
 
+    // Save the current state of the game category
+    public static void saveCategoryState() {
+        saveState.saveData();
+    }
+
     private void setUpScreen() {
         populateListView();
         setUpEmptyState();
@@ -50,7 +55,7 @@ public class CategoryActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        saveState.saveData();
+        saveCategoryState();
         setUpScreen();
     }
 
@@ -58,7 +63,7 @@ public class CategoryActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        saveState.saveData();
+        saveCategoryState();
         setUpScreen();
     }
 

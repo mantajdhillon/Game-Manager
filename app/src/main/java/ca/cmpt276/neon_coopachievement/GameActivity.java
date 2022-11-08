@@ -11,7 +11,6 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,16 +28,19 @@ public class GameActivity extends AppCompatActivity {
 
     private static final String GAME_TYPE_INDEX = "Game-Type-Index";
     private static final GameCategory gameCategory = GameCategory.getInstance();
-
     public static final String ACTIVITY_TITLE = "Games";
 
     private GameManager gameManager;
-    private static int GameCategorySize = gameCategory.getSize();
+    private final int GameCategorySize = gameCategory.getSize();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        // Set up action bar
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
 
         TextView numPlayersMsg = findViewById(R.id.numPlayersMsg);
         numPlayersMsg.setVisibility(View.INVISIBLE);
@@ -53,14 +55,9 @@ public class GameActivity extends AppCompatActivity {
 
         gameManager = gameCategory.getGameManager(getGameManagerIndex());
 
-        ActionBar ab = getSupportActionBar();
-        ab.setTitle(gameManager.getName());
-        ab.setDisplayHomeAsUpEnabled(true);
-
-
         generateGamesList();
 
-        setUpEmptyState(gameManager.getGamesStored());
+        setUpEmptyState(gameManager.size());
         setupAddGameBtn();
         setupViewAchievementsBtn();
         gameClickCallback();
@@ -82,11 +79,13 @@ public class GameActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        // Update title
+        getSupportActionBar().setTitle(gameManager.getName());
+
         GameManager temp = null;
-        try{
+        try {
             temp = gameCategory.getGameManager(getGameManagerIndex());
-        }
-        catch (Exception e){
+        }  catch (Exception e){
             finish();
         }
 
@@ -95,13 +94,14 @@ public class GameActivity extends AppCompatActivity {
             finish();
         } else {
             generateGamesList();
-            setUpEmptyState(gameManager.getGamesStored());
+            setUpEmptyState(gameManager.size());
             setupAddGameBtn();
             setupViewAchievementsBtn();
             gameClickCallback();
         }
 
-
+        // Save game manager
+        CategoryActivity.saveCategoryState();
     }
 
     public static Intent makeIntent(Context c, int index) {
@@ -111,7 +111,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private String[] getGameStrings() {
-        String[] s = new String[gameManager.getGamesStored()];
+        String[] s = new String[gameManager.size()];
         for (int i = 0; i < s.length; i++) {
             s[i] = gameManager.getGameString(i);
         }
@@ -135,39 +135,33 @@ public class GameActivity extends AppCompatActivity {
 
     private void setupAddGameBtn() {
         FloatingActionButton newGame = findViewById(R.id.addGameBtn);
-        newGame.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = GameConfigActivity.makeLaunchIntent(GameActivity.this, false, -1, getGameManagerIndex());
-                startActivity(i);
-            }
+        newGame.setOnClickListener(v -> {
+            Intent i = GameConfigActivity.makeLaunchIntent(GameActivity.this, false, -1, getGameManagerIndex());
+            startActivity(i);
         });
     }
 
     private void setupViewAchievementsBtn() {
         Button viewAchievements = findViewById(R.id.viewAchievementsBtn);
-        viewAchievements.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewAchievements.setEnabled(false);
-                viewAchievements.setVisibility(View.INVISIBLE);
+        viewAchievements.setOnClickListener(v -> {
+            viewAchievements.setEnabled(false);
+            viewAchievements.setVisibility(View.INVISIBLE);
 
-                FloatingActionButton newGame = findViewById(R.id.addGameBtn);
-                newGame.setEnabled(false);
+            FloatingActionButton newGame = findViewById(R.id.addGameBtn);
+            newGame.setEnabled(false);
 
-                TextView numPlayersMsg = findViewById(R.id.numPlayersMsg);
-                numPlayersMsg.setVisibility(View.VISIBLE);
+            TextView numPlayersMsg = findViewById(R.id.numPlayersMsg);
+            numPlayersMsg.setVisibility(View.VISIBLE);
 
-                EditText numPlayersInput = findViewById(R.id.numPlayersInput);
-                numPlayersInput.setEnabled(true);
-                numPlayersInput.setVisibility(View.VISIBLE);
+            EditText numPlayersInput = findViewById(R.id.numPlayersInput);
+            numPlayersInput.setEnabled(true);
+            numPlayersInput.setVisibility(View.VISIBLE);
 
-                Button goBtn = findViewById(R.id.gotoAchievements);
-                goBtn.setEnabled(true);
-                goBtn.setVisibility(View.VISIBLE);
-                setupGoAchievementsBtn();
+            Button goBtn = findViewById(R.id.gotoAchievements);
+            goBtn.setEnabled(true);
+            goBtn.setVisibility(View.VISIBLE);
+            setupGoAchievementsBtn();
 
-            }
         });
     }
 
@@ -222,15 +216,12 @@ public class GameActivity extends AppCompatActivity {
 
     private void gameClickCallback() {
         ListView games = findViewById(R.id.gameList);
-        games.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
+        games.setOnItemClickListener((parent, viewClicked, position, id) -> {
 
-                TextView game = (TextView) viewClicked;
+            TextView game = (TextView) viewClicked;
 
-                Intent i = GameConfigActivity.makeLaunchIntent(GameActivity.this, true, position, getGameManagerIndex());
-                startActivity(i);
-            }
+            Intent i = GameConfigActivity.makeLaunchIntent(GameActivity.this, true, position, getGameManagerIndex());
+            startActivity(i);
         });
     }
 

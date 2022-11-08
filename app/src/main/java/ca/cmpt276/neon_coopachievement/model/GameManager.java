@@ -32,7 +32,7 @@ public class GameManager {
         return poorScoreIndividual;
     }
 
-    public int getGamesStored(){
+    public int size() {
         return games.size();
     }
 
@@ -95,6 +95,6 @@ public class GameManager {
 
     @Override
     public String toString() {
-        return name + ": " + getGamesStored() + " games recorded.";
+        return name + ": " + size() + " games recorded.";
     }
 }
