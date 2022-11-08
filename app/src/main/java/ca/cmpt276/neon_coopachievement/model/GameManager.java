@@ -43,12 +43,11 @@ public class GameManager {
     }
 
     public void setName(String gameName) {
-        isValidName(gameName);
         this.name = gameName;
     }
 
     // Checks whether a given name is valid
-    private void isValidName(String gameName) {
+    public void isValidName(String gameName) {
         if (gameName == null || gameName.isEmpty()) {
             throw new RuntimeException("Invalid name: " + gameName);
         }
@@ -64,7 +63,7 @@ public class GameManager {
     }
 
     // Checks whether a given great and poor score are valid
-    private void isValidScore(int goodScore, int poorScore) {
+    public void isValidScore(int goodScore, int poorScore) {
         if (goodScore <= poorScore) {
             throw new RuntimeException("Invalid score entry: ");
         }
@@ -72,10 +71,6 @@ public class GameManager {
 
     public Game getGame(int i) {
         return games.get(i);
-    }
-
-    public String getGameString(int i) {
-        return games.get(i).toString();
     }
 
     public void addGame(Game game) {
