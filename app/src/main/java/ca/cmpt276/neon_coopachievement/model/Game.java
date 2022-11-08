@@ -15,7 +15,7 @@ import java.time.format.DateTimeFormatter;
 
 public class Game {
 
-    private LocalDateTime time;
+    private String time;
     private int numPlayers;
     private int finalTotalScore;
     private final Achievement achievements;
@@ -24,7 +24,10 @@ public class Game {
     public Game(int numPlayers, int finalTotalScore, int poorScore, int greatScore) {
         this.numPlayers = numPlayers;
         this.finalTotalScore = finalTotalScore;
-        this.time  = LocalDateTime.now();
+
+        DateTimeFormatter f = DateTimeFormatter.ofPattern("MMM dd @ HH:mm a");
+        this.time = LocalDateTime.now().format(f);
+
         this.achievements = new Achievement(poorScore, greatScore, numPlayers);
         this.rank = achievements.getRank(finalTotalScore);
     }
@@ -45,11 +48,11 @@ public class Game {
         this.finalTotalScore = finalTotalScore;
     }
 
-    public void setTime(LocalDateTime time) {
+    public void setTime(String time) {
         this.time = time;
     }
 
-    public LocalDateTime getTime() {
+    public String getTime() {
         return this.time;
     }
 
@@ -60,8 +63,8 @@ public class Game {
     @NonNull
     @Override
     public String toString() {
-        DateTimeFormatter f = DateTimeFormatter.ofPattern("MMM dd @ HH:mm a :");
-        return time.format(f) + numPlayers +
+//        DateTimeFormatter f = DateTimeFormatter.ofPattern("MMM dd @ HH:mm a -");
+        return time + " - " + numPlayers +
                 " player(s) achieved a total score of " + finalTotalScore + " and their " +
                 "achievement level is " + achievements.getAchievementName(rank);
     }

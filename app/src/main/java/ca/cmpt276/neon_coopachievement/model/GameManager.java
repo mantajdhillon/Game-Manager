@@ -10,7 +10,7 @@ import java.util.ArrayList;
 */
 
 public class GameManager {
-    private ArrayList<Game> games = new ArrayList<>();
+    private final ArrayList<Game> games = new ArrayList<>();
     private String name;
     private int greatScoreIndividual;
     private int poorScoreIndividual;
@@ -21,7 +21,6 @@ public class GameManager {
         this.name = name;
         this.greatScoreIndividual = gs;
         this.poorScoreIndividual = ps;
-
     }
 
     public String getName(){
@@ -36,7 +35,7 @@ public class GameManager {
         return poorScoreIndividual;
     }
 
-    public int getGamesStored(){
+    public int size() {
         return games.size();
     }
 
@@ -96,7 +95,7 @@ public class GameManager {
     }
 
     public void updateEdits(int poorScoreNew, int greatScoreNew) {
-        for (int i = 0; i < getGamesStored(); i++) {
+        for (int i = 0; i < games.size(); i++) {
             Game oldGame = games.get(i);
             Game newGame = new Game(oldGame.getNumPlayers(), oldGame.getFinalTotalScore(),
                     poorScoreNew, greatScoreNew);
@@ -107,6 +106,6 @@ public class GameManager {
 
     @Override
     public String toString() {
-        return name + ": " + getGamesStored() + " games recorded.";
+        return name + ": " + size() + " games recorded.";
     }
 }
