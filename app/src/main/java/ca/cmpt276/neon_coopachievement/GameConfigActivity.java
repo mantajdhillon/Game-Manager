@@ -59,10 +59,8 @@ public class GameConfigActivity extends AppCompatActivity {
         etSumScore = findViewById(R.id.etSumPlayerScores);
         etSumScore.addTextChangedListener(inputWatcher);
 
-        // Editing game
-        if (getisEdit()) {
-            Toast.makeText(this, "editing at idx " + getGameIndex(), Toast.LENGTH_SHORT).show();
-            currentGame = gameManager.getGame(getGameIndex());
+        if(getisEdit()){
+            game = gameManager.getGame(getGameIndex());
             ab.setTitle(R.string.game_config_activity_edit_game);
             populateFields();
             populateAchievementView();
@@ -110,10 +108,11 @@ public class GameConfigActivity extends AppCompatActivity {
                 int numPlayers = getInt(etNumPlayers);
                 int sumScores = getInt(etSumScore);
 
-                // If editing, take current input and update the current game
-                if (getisEdit()) {
-                    currentGame.setNumPlayers(numPlayers);
-                    currentGame.setFinalTotalScore(sumScores);
+                if(getisEdit()){
+                    game.setNumPlayers(numPlayers);
+                    game.setFinalTotalScore(sumScores);
+                    gameManager.updateEdits
+                            (gameManager.getPoorScoreIndividual(), gameManager.getGreatScoreIndividual());
                 }
 
                 // Make a new game
