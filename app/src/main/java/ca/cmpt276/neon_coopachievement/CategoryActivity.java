@@ -20,12 +20,12 @@ import java.util.ArrayList;
 
 import ca.cmpt276.neon_coopachievement.model.GameCategory;
 
-/*
-    CategoryActivity Class
-    - Displays the list of game categories.
-    - Allows user to add a new game category by clicking +.
-    - Allows user to access the list of played games of a
-      game category by clicking on the game category.
+/**
+ * CategoryActivity Class
+ * <p>
+ * - Displays the list of game categories.
+ * - Allows user to add a new game category by clicking +.
+ * - Allows user to access the list of played games of a ame category by clicking on the game category.
  */
 public class CategoryActivity extends AppCompatActivity {
 
@@ -43,19 +43,8 @@ public class CategoryActivity extends AppCompatActivity {
 
         saveState = new CategorySaver(this);
         gameCategory = GameCategory.getInstance();
+
         setUpScreen();
-    }
-
-    // Save the current state of the game category
-    public static void saveCategoryState() {
-        saveState.saveData();
-    }
-
-    private void setUpScreen() {
-        populateListView();
-        setUpEmptyState();
-        setupAddCategoryBtn();
-        registerListClickCallback();
     }
 
     @Override
@@ -74,9 +63,40 @@ public class CategoryActivity extends AppCompatActivity {
         setUpScreen();
     }
 
-    private void populateListView() {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_category, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_help:
+                Intent i = new Intent(CategoryActivity.this, HelpActivity.class);
+                startActivity(i);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    // Save the current state of the game category
+    public static void saveCategoryState() {
+        saveState.saveData();
+    }
+
+    // Initialize screen elements
+    private void setUpScreen() {
+        populateCategoryListView();
+        setUpEmptyState();
+        setupAddCategoryBtn();
+        registerListClickCallback();
+    }
+
+    private void populateCategoryListView() {
         ArrayList<String> gameTypes = new ArrayList<>();
-        for (int i = 0; i < gameCategory.getSize(); i++) {
+        for (int i = 0; i < gameCategory.size(); i++) {
             gameTypes.add(gameCategory.getGameManager(i).toString());
         }
 
@@ -89,13 +109,12 @@ public class CategoryActivity extends AppCompatActivity {
         categoryListView.setAdapter(adapter);
     }
 
-    // Configure the empty state when there are no more games categories
     private void setUpEmptyState() {
         ImageView emptyStateIcon = findViewById(R.id.ivEmptyStateCategory);
         TextView emptyStateDesc = findViewById(R.id.tvEmptyStateDescCategory);
 
-        // Display only if the category manager is 0
-        if (gameCategory.getSize() == 0) {
+        // Display empty state only if the category manager is empty
+        if (gameCategory.size() == 0) {
             emptyStateIcon.setVisibility(View.VISIBLE);
             emptyStateDesc.setVisibility(View.VISIBLE);
         } else {
@@ -123,23 +142,5 @@ public class CategoryActivity extends AppCompatActivity {
                     position);
             startActivity(i);
         });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_category, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_help:
-                Intent i = new Intent(CategoryActivity.this, HelpActivity.class);
-                startActivity(i);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 }

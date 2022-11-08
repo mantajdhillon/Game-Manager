@@ -30,26 +30,24 @@ import ca.cmpt276.neon_coopachievement.model.Game;
 import ca.cmpt276.neon_coopachievement.model.GameCategory;
 import ca.cmpt276.neon_coopachievement.model.GameManager;
 
-/*
-    GameActivity Class
-    - Displays the list of game of one game category.
-    - Allows user to add a new game by clicking +.
-    - Allows user to edit the game category configuration
-      by clicking pencil icon in top right.
-    - Allows user to view achievements of game category
-      for valid number of players.
+/**
+ * GameActivity Class
+ * <p>
+ * - Displays the list of game of one game category.
+ * - Allows user to add a new game.
+ * - Allows user to edit the game category configuration
+ *   by clicking pencil icon in top right.
+ * - Allows user to view achievements of game category
+ *   for valid number of players.
  */
 public class GameActivity extends AppCompatActivity {
 
     private static final String GAME_TYPE_INDEX = "Game-Type-Index";
     private static final GameCategory gameCategory = GameCategory.getInstance();
-    public static final String ACTIVITY_TITLE = "Games";
 
     private GameManager gameManager;
-    private final int GameCategorySize = gameCategory.getSize();
 
-    List<GameActivity.GameListElement> listGames = new ArrayList<GameActivity.GameListElement>();
-
+    List<GameActivity.GameListElement> listGames = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,16 +58,7 @@ public class GameActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
 
-        TextView numPlayersMsg = findViewById(R.id.numPlayersMsg);
-        numPlayersMsg.setVisibility(View.INVISIBLE);
-
-        EditText numPlayersInput = findViewById(R.id.numPlayersInput);
-        numPlayersInput.setEnabled(false);
-        numPlayersInput.setVisibility(View.INVISIBLE);
-
-        Button goBtn = findViewById(R.id.gotoAchievements);
-        goBtn.setEnabled(false);
-        goBtn.setVisibility(View.INVISIBLE);
+        updateLaunchAchievementUI(View.INVISIBLE, false);
 
         gameManager = gameCategory.getGameManager(getGameManagerIndex());
 
@@ -81,9 +70,21 @@ public class GameActivity extends AppCompatActivity {
         setupViewAchievementsBtn();
     }
 
-    private void generateGamesList() {
-        String[] games = getGameStrings();
+    // Sets up UI elements to launch achievements page
+    private void updateLaunchAchievementUI(int visibility, boolean isEnabled) {
+        TextView numPlayersMsg = findViewById(R.id.numPlayersMsg);
+        numPlayersMsg.setVisibility(visibility);
 
+        EditText numPlayersInput = findViewById(R.id.numPlayersInput);
+        numPlayersInput.setEnabled(isEnabled);
+        numPlayersInput.setVisibility(visibility);
+
+        Button goBtn = findViewById(R.id.gotoAchievements);
+        goBtn.setEnabled(isEnabled);
+        goBtn.setVisibility(visibility);
+    }
+
+    private void generateGamesList() {
         ArrayAdapter<GameListElement> adapter = new MyListAdapter();
         ListView playedGames = findViewById(R.id.gameList);
         playedGames.setAdapter(adapter);
@@ -99,7 +100,7 @@ public class GameActivity extends AppCompatActivity {
         GameManager temp = null;
         try {
             temp = gameCategory.getGameManager(getGameManagerIndex());
-        }  catch (Exception e){
+        } catch (Exception e) {
             finish();
         }
 
@@ -123,14 +124,6 @@ public class GameActivity extends AppCompatActivity {
         return intent;
     }
 
-    private String[] getGameStrings() {
-        String[] s = new String[gameManager.size()];
-        for (int i = 0; i < s.length; i++) {
-            s[i] = gameManager.getGameString(i);
-        }
-        return s;
-    }
-
     private void setUpEmptyState(int numGames) {
         ImageView emptyStateIcon = findViewById(R.id.ivEmptyStateGameActivity);
         TextView emptyStateDesc = findViewById(R.id.tvEmptyStateDescGameActivity);
@@ -147,7 +140,7 @@ public class GameActivity extends AppCompatActivity {
     private void setupAddGameBtn() {
         FloatingActionButton newGame = findViewById(R.id.addGameBtn);
         newGame.setOnClickListener(v -> {
-            Intent i = GameConfigActivity.makeLaunchIntent(GameActivity.this, false, -1, getGameManagerIndex());
+            Intent i = GameConfigActivity.makeIntent(GameActivity.this, false, -1, getGameManagerIndex());
             startActivity(i);
         });
     }
@@ -158,19 +151,11 @@ public class GameActivity extends AppCompatActivity {
             viewAchievements.setEnabled(false);
             viewAchievements.setVisibility(View.INVISIBLE);
 
+            // Disable floating action bar
             FloatingActionButton newGame = findViewById(R.id.addGameBtn);
             newGame.setEnabled(false);
 
-            TextView numPlayersMsg = findViewById(R.id.numPlayersMsg);
-            numPlayersMsg.setVisibility(View.VISIBLE);
-
-            EditText numPlayersInput = findViewById(R.id.numPlayersInput);
-            numPlayersInput.setEnabled(true);
-            numPlayersInput.setVisibility(View.VISIBLE);
-
-            Button goBtn = findViewById(R.id.gotoAchievements);
-            goBtn.setEnabled(true);
-            goBtn.setVisibility(View.VISIBLE);
+            updateLaunchAchievementUI(View.VISIBLE, true);
             setupGoAchievementsBtn();
         });
     }
@@ -197,8 +182,7 @@ public class GameActivity extends AppCompatActivity {
                             numPlayers, gameManager.getPoorScoreIndividual(), gameManager.getGreatScoreIndividual());
                     startActivity(i);
                 }
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 Toast.makeText(GameActivity.this, R.string.invalid_num_players_msg, Toast.LENGTH_SHORT).show();
             }
         } else {
@@ -269,11 +253,11 @@ public class GameActivity extends AppCompatActivity {
             }
 
             gameView.setOnClickListener(v -> {
-                Intent i = GameConfigActivity.makeLaunchIntent(GameActivity.this, true, position, getGameManagerIndex());
+                Intent i = GameConfigActivity.makeIntent(GameActivity.this, true, position, getGameManagerIndex());
                 startActivity(i);
             });
 
-            GameActivity.GameListElement currentElement= listGames.get(position);
+            GameActivity.GameListElement currentElement = listGames.get(position);
 
             ImageView icon = gameView.findViewById(R.id.achievement_icon);
             icon.setImageResource(currentElement.iconId);

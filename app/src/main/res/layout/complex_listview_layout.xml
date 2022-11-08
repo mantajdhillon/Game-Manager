@@ -7,8 +7,10 @@
         android:id="@+id/achievement_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
         android:adjustViewBounds="true"
         android:maxWidth="80dp"
         android:maxHeight="80dp"
@@ -16,12 +18,21 @@
 
     <TextView
         android:id="@+id/tvAchievementsDescription"
-        android:layout_width="wrap_content"
+        android:layout_width="307dp"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginRight="12dp"
         android:layout_marginBottom="16dp"
+        android:layout_toEndOf="@+id/achievement_icon"
         android:layout_toRightOf="@+id/achievement_icon"
         android:text="Achievement Description"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="18sp" />
 
 </RelativeLayout>

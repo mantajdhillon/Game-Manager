@@ -1,35 +1,34 @@
 package ca.cmpt276.neon_coopachievement.model;
 
-/*
-    Game Class
-    - Used to store one instance of a game.
-    - Each Game has a time which is constructed once.
-    - it takes a good score and a bad score which is used when constructing
-      the achievements and the scores are taken from the game manager
- */
-
 import androidx.annotation.NonNull;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Game Class:
+ * <p>
+ * - Used to store one instance of a game.
+ * - Each Game has a time which is constructed once.
+ * - Takes a good score and a bad score and construct an appropriate achievement object
+ */
 public class Game {
+    private static final String DATE_FORMAT = "MMM dd @ HH:mm a";
 
-    private String time;
     private int numPlayers;
     private int finalTotalScore;
     private final Achievement achievements;
     private final int rank;
+    private String time;
 
     public Game(int numPlayers, int finalTotalScore, int poorScore, int greatScore) {
         this.numPlayers = numPlayers;
         this.finalTotalScore = finalTotalScore;
-
-        DateTimeFormatter f = DateTimeFormatter.ofPattern("MMM dd @ HH:mm a");
-        this.time = LocalDateTime.now().format(f);
-
         this.achievements = new Achievement(poorScore, greatScore, numPlayers);
         this.rank = achievements.getHighestRank(finalTotalScore);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
+        this.time = LocalDateTime.now().format(formatter);
     }
 
     public int getNumPlayers() {
@@ -63,9 +62,8 @@ public class Game {
     @NonNull
     @Override
     public String toString() {
-//        DateTimeFormatter f = DateTimeFormatter.ofPattern("MMM dd @ HH:mm a -");
-        return time + " - " + numPlayers +
-                " player(s) achieved a total score of " + finalTotalScore + " and their " +
-                "achievement level is " + achievements.getAchievementName(rank);
+        return numPlayers + " player(s) - " + time + "\n"
+                + "Total score: " + finalTotalScore + "\n"
+                + "Rank #" + rank + ": " + achievements.getAchievementName(rank);
     }
 }

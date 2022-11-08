@@ -7,6 +7,12 @@ import com.google.gson.Gson;
 
 import ca.cmpt276.neon_coopachievement.model.GameCategory;
 
+/**
+ * CategorySaver
+ *
+ * - Saves an instance of a GameCategory using GSON library and SharedPreferences (must be singleton)
+ * - Upon creation, load saved GameCategory (if it exists)
+ */
 public class CategorySaver {
 
     private static final String KEY = "GAME_CATEGORY_JSON_KEY";

@@ -26,7 +26,6 @@ public class GameManagerTest {
         GameManager myManager = new GameManager("Test",5,1);
         Game myGame = new Game(2,10,1,5);
         myManager.addGame(myGame);
-        assertEquals(myGame,myManager.getGame(myGame));
     }
 
 }

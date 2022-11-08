@@ -3,14 +3,14 @@ package ca.cmpt276.neon_coopachievement.model;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
-/*
-   GameManager
-   Description: Holds the games for a single game type, such as the games for Poker or Blackjack
-                - Takes the name, and good/poor individual scores for a given game, if the parameters
-                  are valid
-                - Holds games in an ArrayList
-                - Can only be accessed through the GameCategory instance
-*/
+/**
+ * GameManager Class
+ * <p>
+ * Description: Holds the games for a single game type, such as the games for Poker or Blackjack
+ * - Takes the name, and good/poor individual scores for a given game, if the parameters are valid
+ * - Holds games in an ArrayList
+ * - Can only be accessed through the GameCategory instance
+ */
 
 public class GameManager {
     private final ArrayList<Game> games = new ArrayList<>();
@@ -18,23 +18,23 @@ public class GameManager {
     private int greatScoreIndividual;
     private int poorScoreIndividual;
 
-    public GameManager(String name, int gs, int ps){
+    public GameManager(String name, int goodScore, int poorScore) {
         isValidName(name);
-        isValidScore(gs,ps);
+        isValidScore(goodScore, poorScore);
         this.name = name;
-        this.greatScoreIndividual = gs;
-        this.poorScoreIndividual = ps;
+        this.greatScoreIndividual = goodScore;
+        this.poorScoreIndividual = poorScore;
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
 
-    public int getGreatScoreIndividual(){
+    public int getGreatScoreIndividual() {
         return greatScoreIndividual;
     }
 
-    public int getPoorScoreIndividual(){
+    public int getPoorScoreIndividual() {
         return poorScoreIndividual;
     }
 
@@ -42,41 +42,32 @@ public class GameManager {
         return games.size();
     }
 
-    public void setName(String gameName){
+    public void setName(String gameName) {
         isValidName(gameName);
         this.name = gameName;
     }
 
+    // Checks whether a given name is valid
     private void isValidName(String gameName) {
-        if(gameName == null || gameName.equals("")){
-            throw new InvalidParameterException("Invalid name");
+        if (gameName == null || gameName.isEmpty()) {
+            throw new RuntimeException("Invalid name: " + gameName);
         }
     }
 
-    public void setGreatScoreIndividual(int score){
+    public void setGreatScoreIndividual(int score) {
         this.greatScoreIndividual = score;
     }
 
-    public void setPoorScoreIndividual(int score){
+    // Checks whether a given great score is valid
+    public void setPoorScoreIndividual(int score) {
         this.poorScoreIndividual = score;
     }
 
-    public void isValidScore(int gs, int ps) {
-        if(gs <= ps){
-            throw new InvalidParameterException("Invalid score entry");
+    // Checks whether a given great and poor score are valid
+    private void isValidScore(int goodScore, int poorScore) {
+        if (goodScore <= poorScore) {
+            throw new RuntimeException("Invalid score entry: ");
         }
-    }
-
-    public Game getGame(Game toGet){
-        boolean found = this.games.contains(toGet);
-        if(found){
-            for(int i = 0; i < games.size(); i++){
-                if(games.get(i) == toGet){
-                    return toGet;
-                }
-            }
-        }
-        throw new InvalidParameterException("Game does not exist!");
     }
 
     public Game getGame(int i) {
@@ -87,12 +78,12 @@ public class GameManager {
         return games.get(i).toString();
     }
 
-    public void addGame(Game game){
-        this.games.add(game);
+    public void addGame(Game game) {
+        games.add(game);
     }
 
-    public void removeGame(int index){
-        this.games.remove(index);
+    public void removeGame(int index) {
+        games.remove(index);
     }
 
     public void updateEdits(int poorScoreNew, int greatScoreNew) {
@@ -107,6 +98,10 @@ public class GameManager {
 
     @Override
     public String toString() {
-        return name + ": " + size() + " games recorded.";
+        if (games.size() == 1) {
+            return name + ": " + games.size() + " game recorded";
+        } else {
+            return name + ": " + games.size() + " games recorded";
+        }
     }
 }

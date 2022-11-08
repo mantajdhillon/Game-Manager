@@ -2,6 +2,7 @@ package ca.cmpt276.neon_coopachievement.model;
 
 /**
  * Achievements Class:
+ * <p>
  * - Used to store the achievement boundaries of a game type.
  * - Each Game has an achievements variable that gets
  * - Constructed using the good score and bad score from the game manager, and the num players from the game.
@@ -21,7 +22,7 @@ public class Achievement {
         }
 
         this.achievementNames = new String[]{
-                "Horrendous Hamburgers", "Terrible Tacos",
+                "Horrible Hamburgers", "Terrible Tacos",
                 "Bad Broccoli's", "Alright Apples", "Mediocre Mangoes",
                 "Okay Oranges", "Great Grapes", "Superb Sausages",
                 "Awesome Avocados", "Excellent Eggs"
@@ -63,19 +64,19 @@ public class Achievement {
         // Maximum achievement rank
         if (rankIdx == MAX_RANK_IDX) {
             return "Level " + MAX_RANK + " (>"
-                    + achievementBoundaries[MAX_RANK_IDX - 1] + "): "
+                    + (int) achievementBoundaries[MAX_RANK_IDX - 1] + "): "
                     + achievementNames[MAX_RANK_IDX];
         }
 
         // Minimum achievement rank
         else if (rankIdx == MIN_RANK_IDX) {
             return "Level " + (rankIdx + 1) + " (<"
-                    + achievementBoundaries[rankIdx] + "): "
+                    + (int) achievementBoundaries[rankIdx] + "): "
                     + achievementNames[rankIdx];
         } else {
             return "Level " + (rankIdx + 1) + " ("
-                    + achievementBoundaries[rankIdx - 1] + " - "
-                    + achievementBoundaries[rankIdx]
+                    + (int) achievementBoundaries[rankIdx - 1] + " - "
+                    + (int) achievementBoundaries[rankIdx]
                     + "): " + achievementNames[rankIdx];
         }
     }

@@ -22,26 +22,25 @@ import ca.cmpt276.neon_coopachievement.model.Game;
 import ca.cmpt276.neon_coopachievement.model.GameCategory;
 import ca.cmpt276.neon_coopachievement.model.GameManager;
 
-/*
-    GameConfigActivity Class
-    - Used for add/edit/delete game.
-    - A new game is created when user inputs a number
-      of players and sum of players' scores, and clicks
-      save.
-    - Editing mode displays the previous number of players
-      and score that the user entered in the inputs fields.
-      Details updated when user changes the fields and clicks
-      save. Or the user may delete the game by clicking
-      delete.
+/**
+ * GameConfigActivity Class
+ * <p>
+ * - Used for add/edit/delete game.
+ * - A new game is created when user inputs a number
+ *   of players and sum of players' scores, and clicks
+ *   save.
+ * - Editing mode displays the previous number of players and score that
+ *   the user entered in the inputs fields.
+ * - Details are updated when user changes the fields and clicks save.
+ *   The user may delete the game by clicking delete.
  */
 public class GameConfigActivity extends AppCompatActivity {
+    private static final String EXTRA_GAME_TYPE_INDEX = "Game-Type-Index";
+    private static final String EXTRA_IS_EDIT = "isEdit";
+    private static final String EXTRA_GAME_INDEX = "gameIndex";
 
-    private static final String GAME_TYPE_INDEX = "Game-Type-Index";
-    public static final String IS_EDIT = "isEdit";
-    public static final String GAME_INDEX = "gameIndex";
-    GameCategory gameCategory;
-    GameManager gameManager;
-    Game currentGame;
+    private GameManager gameManager;
+    private Game currentGame;
 
     private EditText etNumPlayers;
     private EditText etSumScore;
@@ -51,25 +50,24 @@ public class GameConfigActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_config);
 
+        // Set up action bar (add game title by default)
         ActionBar ab = getSupportActionBar();
         ab.setTitle(R.string.game_config_activity_add_game);
         ab.setDisplayHomeAsUpEnabled(true);
 
-        gameCategory = GameCategory.getInstance();
+        // Get current game manager
+        GameCategory gameCategory = GameCategory.getInstance();
         gameManager = gameCategory.getGameManager(getGameManagerIndex());
 
+        // Set delete button to invisible
         Button deleteBtn = findViewById(R.id.btnDeleteGame);
         deleteBtn.setVisibility(View.INVISIBLE);
         deleteBtn.setEnabled(false);
 
         setUpSaveBtn();
+        setUpTextView();
 
-        etNumPlayers = findViewById(R.id.etNumPlayers);
-        etNumPlayers.addTextChangedListener(inputWatcher);
-
-        etSumScore = findViewById(R.id.etSumPlayerScores);
-        etSumScore.addTextChangedListener(inputWatcher);
-
+        // Editing a game configuration
         if (getisEdit()) {
             currentGame = gameManager.getGame(getGameIndex());
             ab.setTitle(R.string.game_config_activity_edit_game);
@@ -79,35 +77,34 @@ public class GameConfigActivity extends AppCompatActivity {
         }
     }
 
-    public static Intent makeLaunchIntent(Context c, boolean isEdit, int gameIndex, int gameManagerIndex) {
-        Intent intent = new Intent(c, GameConfigActivity.class);
-        intent.putExtra(IS_EDIT, isEdit);
-        intent.putExtra(GAME_INDEX, gameIndex);
-        intent.putExtra(GAME_TYPE_INDEX, gameManagerIndex);
-        return intent;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 
-    private int getGameManagerIndex() {
-        Intent intent = getIntent();
-        return intent.getIntExtra(GAME_TYPE_INDEX, -1);
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            case R.id.action_help:
+                Intent i = new Intent(GameConfigActivity.this, HelpActivity.class);
+                startActivity(i);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
-    private int getGameIndex() {
-        Intent intent = getIntent();
-        return intent.getIntExtra(GAME_INDEX, -1);
-    }
+    private void setUpTextView() {
+        etNumPlayers = findViewById(R.id.etNumPlayers);
+        etNumPlayers.addTextChangedListener(inputWatcher);
 
-    private boolean getisEdit() {
-        Intent intent = getIntent();
-        return intent.getBooleanExtra(IS_EDIT, false);
-    }
-
-    private void populateFields() {
-        EditText etNumPlayers = findViewById((R.id.etNumPlayers));
-        etNumPlayers.setText(Integer.toString(currentGame.getNumPlayers()));
-
-        EditText etSumScore = findViewById((R.id.etSumPlayerScores));
-        etSumScore.setText(Integer.toString(currentGame.getFinalTotalScore()));
+        etSumScore = findViewById(R.id.etSumPlayerScores);
+        etSumScore.addTextChangedListener(inputWatcher);
     }
 
     private void setUpSaveBtn() {
@@ -140,38 +137,13 @@ public class GameConfigActivity extends AppCompatActivity {
         });
     }
 
-    private int getInt(EditText et) {
-        String intStr = et.getText().toString();
-        return Integer.parseInt(intStr);
+    private void populateFields() {
+        EditText etNumPlayers = findViewById((R.id.etNumPlayers));
+        etNumPlayers.setText(Integer.toString(currentGame.getNumPlayers()));
+
+        EditText etSumScore = findViewById((R.id.etSumPlayerScores));
+        etSumScore.setText(Integer.toString(currentGame.getFinalTotalScore()));
     }
-
-    private void setUpDeleteBtn() {
-        Button deleteBtn = findViewById(R.id.btnDeleteGame);
-        deleteBtn.setVisibility(View.VISIBLE);
-        deleteBtn.setEnabled(true);
-        deleteBtn.setOnClickListener(v -> {
-            gameManager.removeGame(getGameIndex());
-            finish();
-        });
-    }
-
-    private final TextWatcher inputWatcher = new TextWatcher() {
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            //leaving empty
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            populateAchievementView();
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            //leaving empty
-        }
-    };
 
     private void populateAchievementView() {
         String strNumPlayers = etNumPlayers.getText().toString().trim();
@@ -194,24 +166,58 @@ public class GameConfigActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+    private void setUpDeleteBtn() {
+        Button deleteBtn = findViewById(R.id.btnDeleteGame);
+        deleteBtn.setVisibility(View.VISIBLE);
+        deleteBtn.setEnabled(true);
+        deleteBtn.setOnClickListener(v -> {
+            gameManager.removeGame(getGameIndex());
+            finish();
+        });
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-            case R.id.action_help:
-                Intent i = new Intent(GameConfigActivity.this, HelpActivity.class);
-                startActivity(i);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+    public static Intent makeIntent(Context c, boolean isEdit, int gameIndex, int gameManagerIndex) {
+        Intent intent = new Intent(c, GameConfigActivity.class);
+        intent.putExtra(EXTRA_IS_EDIT, isEdit);
+        intent.putExtra(EXTRA_GAME_INDEX, gameIndex);
+        intent.putExtra(EXTRA_GAME_TYPE_INDEX, gameManagerIndex);
+        return intent;
     }
+
+    private int getGameManagerIndex() {
+        return getIntent().getIntExtra(EXTRA_GAME_TYPE_INDEX, -1);
+    }
+
+    private int getGameIndex() {
+        return getIntent().getIntExtra(EXTRA_GAME_INDEX, -1);
+    }
+
+    private boolean getisEdit() {
+        return getIntent().getBooleanExtra(EXTRA_IS_EDIT, false);
+    }
+
+    private int getInt(EditText et) {
+        String intStr = et.getText().toString();
+        return Integer.parseInt(intStr);
+    }
+
+    private final TextWatcher inputWatcher = new TextWatcher() {
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            try {
+                populateAchievementView();
+            } catch (Exception e) {
+                Toast.makeText(GameConfigActivity.this, "Not a valid integer", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+        }
+    };
 }
