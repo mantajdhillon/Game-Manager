@@ -8,6 +8,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+/*
+    HelpActivity Class
+    - Displays one big text which describes the app
+      and explain the purpose of each screen (activity)
+      in the app.
+    - Accessed through ? icon in top right corner of
+      every activity.
+ */
 public class HelpActivity extends AppCompatActivity {
 
     @Override
@@ -15,7 +23,6 @@ public class HelpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help);
 
-        // Set up Action Bar
         ActionBar ab = getSupportActionBar();
         ab.setTitle(R.string.help_activity_title);
         ab.setDisplayHomeAsUpEnabled(true);
