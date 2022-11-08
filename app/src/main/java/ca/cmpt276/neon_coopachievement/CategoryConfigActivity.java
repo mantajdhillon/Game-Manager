@@ -18,6 +18,17 @@ import android.widget.Toast;
 import ca.cmpt276.neon_coopachievement.model.GameCategory;
 import ca.cmpt276.neon_coopachievement.model.GameManager;
 
+/*
+    CategoryConfigActivity Class
+    - Used for add/edit/delete game category configurations.
+    - A new game category is created when user inputs a game
+      name, good score and bad score, and clicks save.
+    - Editing mode displays the previous name and scores
+      the user entered in the inputs fields. Configurations
+      updated when user changes the fields and clicks save.
+      Or the user may delete the game category by clicking
+      delete.
+ */
 public class CategoryConfigActivity extends AppCompatActivity {
 
     public static final String GAME_INDEX = "gameIndex";
@@ -38,14 +49,12 @@ public class CategoryConfigActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_config);
 
-        // Set up Action Bar
         ActionBar ab = getSupportActionBar();
         ab.setTitle(R.string.category_config_activity_add_game);
         ab.setDisplayHomeAsUpEnabled(true);
 
         extractDataFromIntent();
 
-        // Set up buttons
         setUpSaveBtn();
 
         if (isEdit) {

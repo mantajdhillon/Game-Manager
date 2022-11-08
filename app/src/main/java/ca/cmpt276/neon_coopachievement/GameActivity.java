@@ -31,6 +31,15 @@ import ca.cmpt276.neon_coopachievement.model.Game;
 import ca.cmpt276.neon_coopachievement.model.GameCategory;
 import ca.cmpt276.neon_coopachievement.model.GameManager;
 
+/*
+    GameActivity Class
+    - Displays the list of game of one game category.
+    - Allows user to add a new game by clicking +.
+    - Allows user to edit the game category configuration
+      by clicking pencil icon in top right.
+    - Allows user to view achievements of game category
+      for valid number of players.
+ */
 public class GameActivity extends AppCompatActivity {
 
     private static final String GAME_TYPE_INDEX = "Game-Type-Index";
@@ -96,7 +105,6 @@ public class GameActivity extends AppCompatActivity {
             finish();
         }
 
-        // Check if the game manager was deleted
         if (!gameManager.equals(temp)) {
             finish();
         } else {
@@ -126,12 +134,10 @@ public class GameActivity extends AppCompatActivity {
         return s;
     }
 
-    // Configure the empty state when there are no more games
     private void setUpEmptyState(int numGames) {
         ImageView emptyStateIcon = findViewById(R.id.ivEmptyStateGameActivity);
         TextView emptyStateDesc = findViewById(R.id.tvEmptyStateDescGameActivity);
 
-        // Display only if the category manager is 0
         if (numGames == 0) {
             emptyStateIcon.setVisibility(View.VISIBLE);
             emptyStateDesc.setVisibility(View.VISIBLE);

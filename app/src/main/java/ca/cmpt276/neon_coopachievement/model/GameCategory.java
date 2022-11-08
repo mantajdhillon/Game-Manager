@@ -3,7 +3,11 @@ package ca.cmpt276.neon_coopachievement.model;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
-// GameCategory class: Holds an the Game Managers for several different game types
+/**  GameCategory
+    Description: Holds the Game Managers for several different game types, such as Poker or Blackjack
+                - Singleton design: returns an instance of the GameCategory
+                - GameManagers are held in an ArrayList
+*/
 public class GameCategory {
     private static GameCategory instance;
     private final ArrayList<GameManager> gameManagerList;
@@ -12,7 +16,6 @@ public class GameCategory {
         gameManagerList = new ArrayList<>();
     }
 
-    // Getters and Setters
     public int getSize() {
         return gameManagerList.size();
     }
@@ -50,12 +53,10 @@ public class GameCategory {
         return gameManagerList.get(i).toString();
     }
 
-    // addGameManager: adds a game manager
     public void addGameManager(GameManager toAdd) {
         this.gameManagerList.add(toAdd);
     }
 
-    // removeGameManager: removes a game manager
     public void removeGameManager(int toRemove) {
         this.gameManagerList.remove(toRemove);
     }
