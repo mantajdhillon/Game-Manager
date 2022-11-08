@@ -59,7 +59,6 @@ public class GameConfigActivity extends AppCompatActivity {
         etSumScore.addTextChangedListener(inputWatcher);
 
         if(getisEdit()){
-            Toast.makeText(this, "isEdit", Toast.LENGTH_SHORT).show();
             game = gameManager.getGame(getGameIndex());
             ab.setTitle(R.string.game_config_activity_edit_game);
             populateFields();
@@ -111,6 +110,8 @@ public class GameConfigActivity extends AppCompatActivity {
                 if(getisEdit()){
                     game.setNumPlayers(numPlayers);
                     game.setFinalTotalScore(sumScores);
+                    gameManager.updateEdits
+                            (gameManager.getPoorScoreIndividual(), gameManager.getGreatScoreIndividual());
                 }
                 else {
                     Game newGame = new Game(numPlayers, sumScores,

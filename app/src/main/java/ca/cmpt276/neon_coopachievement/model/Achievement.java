@@ -1,6 +1,12 @@
 package ca.cmpt276.neon_coopachievement.model;
 
-import java.util.Arrays;
+/*
+    Achievements Class
+    - Used to store the achievement boundaries of a game type.
+    - Each Game has an achievements variable that gets
+      constructed using the good score and bad score from the game
+      manager, and the num players from the game.
+ */
 
 public class Achievement {
     private static final byte MAX_ACHIEVEMENTS = 10;
