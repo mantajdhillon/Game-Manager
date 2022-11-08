@@ -53,6 +53,10 @@ public class Game {
         return this.time;
     }
 
+    public int getRank() {
+        return this.rank;
+    }
+
     @NonNull
     @Override
     public String toString() {
