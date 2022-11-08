@@ -140,7 +140,7 @@ public class GameActivity extends AppCompatActivity {
     private void setupAddGameBtn() {
         FloatingActionButton newGame = findViewById(R.id.addGameBtn);
         newGame.setOnClickListener(v -> {
-            Intent i = GameConfigActivity.makeLaunchIntent(GameActivity.this, false, -1, getGameManagerIndex());
+            Intent i = GameConfigActivity.makeIntent(GameActivity.this, false, -1, getGameManagerIndex());
             startActivity(i);
         });
     }
@@ -249,7 +249,7 @@ public class GameActivity extends AppCompatActivity {
             }
 
             gameView.setOnClickListener(v -> {
-                Intent i = GameConfigActivity.makeLaunchIntent(GameActivity.this, true, position, getGameManagerIndex());
+                Intent i = GameConfigActivity.makeIntent(GameActivity.this, true, position, getGameManagerIndex());
                 startActivity(i);
             });
 
