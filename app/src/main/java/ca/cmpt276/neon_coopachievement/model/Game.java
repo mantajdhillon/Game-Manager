@@ -75,6 +75,10 @@ public class Game {
         this.difficulty = difficulty;
     }
 
+    public String getAchievementTheme() {
+        return this.achievements.getTheme();
+    }
+
     @NonNull
     @Override
     public String toString() {
