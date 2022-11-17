@@ -23,8 +23,9 @@ public class Achievement {
     private final int low;
     private final int high;
     private Game.Difficulty difficulty;
+    private static int theme;
 
-    public Achievement(int low, int high, int numPlayers, Game.Difficulty diff) {
+    public Achievement(int low, int high, int numPlayers, Game.Difficulty diff, int theme) {
         // Error handling for low and high
         if (low > high) {
             throw new RuntimeException("Low score can not be greater than high score");
@@ -35,17 +36,13 @@ public class Achievement {
         }
 
         // update variables
+        this.theme = theme;
         this.low = low;
         this.high = high;
         this.numPlayers = numPlayers;
         this.difficulty = diff;
         this.rankBoundaries = new double[MAX_ACHIEVEMENT_RANK - 1];
-        this.achievementNames = new String[]{
-                "Horrible Hamburgers", "Terrible Tacos",
-                "Bad Broccoli's", "Alright Apples", "Mediocre Mangoes",
-                "Okay Oranges", "Great Grapes", "Superb Sausages",
-                "Awesome Avocados", "Excellent Eggs"
-        };
+        this.achievementNames = changeAchievementNames(theme);
 
         // Initialize boundaries for different achievements
         initializeRankBoundaries(low, high, numPlayers, diff);
@@ -139,12 +136,61 @@ public class Achievement {
                     + achievementNames[rankIdx];
         }
 
-        // Ohetr
+        // Other
         else {
             return "Level " + (rankIdx + 1) + " ("
                     + (int) rankBoundaries[rankIdx - 1] + " - "
                     + (int) rankBoundaries[rankIdx]
                     + "): " + achievementNames[rankIdx];
         }
+    }
+
+    //Changes the achievements names based on the theme 1-3 which are selected by the user.
+    public String[] changeAchievementNames(int theme) {
+        if (theme < 1 || theme > 3) {
+            throw new IllegalArgumentException("The theme must be 1, 2, or 3");
+        }
+        String[] s;
+        if (theme == 1) {
+            s = new String[]{
+                    "Horrible Hamburgers", "Terrible Tacos",
+                    "Bad Broccoli's", "Alright Apples", "Mediocre Mangoes",
+                    "Okay Oranges", "Great Grapes", "Superb Sausages",
+                    "Awesome Avocados", "Excellent Eggs"
+            };
+        }
+        else if (theme == 2) {
+            s = new String[]{
+                    "Nasty Neptunes", "Underwhelming Uranus'",
+                    "Sucky Saturns", "Just enough Jupiters", "Moderate Mars'",
+                    "Endearing Earths", "Vigorous Venuses", "Marvelous Mercury's",
+                    "Precious Plutos", "Stunning Suns"
+            };
+        }
+        else {
+            s = new String[]{
+                    "Revolting Reds", "Obnoxious Oranges",
+                    "Yucky Yellows", "Good Enough Greens", "Not Bad Blues",
+                    "Inferior Indigos", "Valuable Violets", "Pretty Pinks",
+                    "Breathtaking Browns", "Gorgeous Greys"
+            };
+        }
+        return s;
+    }
+
+    public String getTheme() {
+        if (theme == 1) {
+            return "one";
+        }
+        else if (theme == 2) {
+            return "two";
+        }
+        else {
+            return "three";
+        }
+    }
+
+    public static void setTheme(int theme) {
+        Achievement.theme = theme;
     }
 }

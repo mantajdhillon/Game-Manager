@@ -31,7 +31,7 @@ public class Game {
     public Game(int numPlayers, int finalTotalScore, int poorScore, int greatScore, Difficulty difficulty) {
         this.numPlayers = numPlayers;
         this.finalTotalScore = finalTotalScore;
-        this.achievements = new Achievement(poorScore, greatScore, numPlayers, difficulty);     // TODO TEST
+        this.achievements = new Achievement(poorScore, greatScore, numPlayers, difficulty, 1);     // TODO TEST
         this.rank = achievements.getHighestRank(finalTotalScore);
         this.difficulty = difficulty;
 

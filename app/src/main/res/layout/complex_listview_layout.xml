@@ -14,7 +14,7 @@
         android:adjustViewBounds="true"
         android:maxWidth="80dp"
         android:maxHeight="80dp"
-        android:src="@drawable/level_4" />
+        android:src="@drawable/one_level_4" />
 
     <TextView
         android:id="@+id/tvAchievementsDescription"

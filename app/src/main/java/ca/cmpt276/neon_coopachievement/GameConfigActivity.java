@@ -162,7 +162,7 @@ public class GameConfigActivity extends AppCompatActivity {
                     gameManager.getPoorScoreIndividual(),
                     gameManager.getGreatScoreIndividual(),
                     Integer.parseInt(strNumPlayers),
-                    HARD_CODED_DIFFICULTY);     // FIXME remove hardcoded difficulty
+                    HARD_CODED_DIFFICULTY, 1);     // FIXME remove hardcoded difficulty
 
             int rank = achievements.getHighestRank(Integer.parseInt(strSumScore));
             String rankName = achievements.getAchievementName(rank);
