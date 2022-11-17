@@ -1,13 +1,11 @@
 package ca.cmpt276.neon_coopachievement;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +14,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
 
 import ca.cmpt276.neon_coopachievement.model.Achievement;
 import ca.cmpt276.neon_coopachievement.model.Game;
@@ -45,6 +52,8 @@ public class GameConfigActivity extends AppCompatActivity {
     private EditText etNumPlayers;
     private EditText etSumScore;
 
+    private ArrayList<Integer> scores = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +68,9 @@ public class GameConfigActivity extends AppCompatActivity {
         GameCategory gameCategory = GameCategory.getInstance();
         gameManager = gameCategory.getGameManager(getGameManagerIndex());
 
+        setUpAddPlayerBtn();
+
+/**
         // Set delete button to invisible
         Button deleteBtn = findViewById(R.id.btnDeleteGame);
         deleteBtn.setVisibility(View.INVISIBLE);
@@ -75,6 +87,42 @@ public class GameConfigActivity extends AppCompatActivity {
             populateAchievementView();
             setUpDeleteBtn();
         }
+ */
+    }
+
+    private void setUpAddPlayerBtn() {
+        FloatingActionButton newPlayer = findViewById(R.id.addPlayer);
+        newPlayer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder playerDialog = new AlertDialog.Builder(GameConfigActivity.this);
+                playerDialog.setTitle("Player Score:");
+
+                final EditText playerScore = new EditText(GameConfigActivity.this);
+                playerScore.setInputType(InputType.TYPE_CLASS_NUMBER);
+                playerDialog.setView(playerScore);
+
+                playerDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        scores.add(Integer.parseInt(playerScore.getText().toString().trim()));
+                        Toast.makeText(GameConfigActivity.this,
+                                " new player score is " + scores.get(scores.size()-1),
+                                Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                });
+
+                playerDialog.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                playerDialog.show();
+            }
+        });
     }
 
 
@@ -100,11 +148,13 @@ public class GameConfigActivity extends AppCompatActivity {
     }
 
     private void setUpTextView() {
+        /**
         etNumPlayers = findViewById(R.id.etNumPlayers);
         etNumPlayers.addTextChangedListener(inputWatcher);
 
         etSumScore = findViewById(R.id.etSumPlayerScores);
         etSumScore.addTextChangedListener(inputWatcher);
+         */
     }
 
     private void setUpSaveBtn() {
@@ -138,11 +188,13 @@ public class GameConfigActivity extends AppCompatActivity {
     }
 
     private void populateFields() {
+        /**
         EditText etNumPlayers = findViewById((R.id.etNumPlayers));
         etNumPlayers.setText(Integer.toString(currentGame.getNumPlayers()));
 
         EditText etSumScore = findViewById((R.id.etSumPlayerScores));
         etSumScore.setText(Integer.toString(currentGame.getFinalTotalScore()));
+         */
     }
 
     private void populateAchievementView() {
@@ -167,6 +219,7 @@ public class GameConfigActivity extends AppCompatActivity {
     }
 
     private void setUpDeleteBtn() {
+        /**
         Button deleteBtn = findViewById(R.id.btnDeleteGame);
         deleteBtn.setVisibility(View.VISIBLE);
         deleteBtn.setEnabled(true);
@@ -174,6 +227,7 @@ public class GameConfigActivity extends AppCompatActivity {
             gameManager.removeGame(getGameIndex());
             finish();
         });
+         */
     }
 
     public static Intent makeIntent(Context c, boolean isEdit, int gameIndex, int gameManagerIndex) {
