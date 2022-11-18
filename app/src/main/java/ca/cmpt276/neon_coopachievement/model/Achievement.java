@@ -51,15 +51,7 @@ public class Achievement {
         initializeRankBoundaries(low, high, numPlayers, diff);
     }
 
-    // todo test
     private void initializeRankBoundaries(int low, int high, int numPlayers, Game.Difficulty difficulty) {
-        // todo, repeated code?
-        if (low > high) {
-            throw new RuntimeException("Low score can not be greater than high score");
-        } else if (numPlayers < 0) {
-            throw new RuntimeException("Invalid number of players");
-        }
-
         final double MULTIPLIER = getDifficultlyMultiplier(difficulty);
 
         double difference = (double) (high - low) / (MAX_ACHIEVEMENT_RANK - 2);
