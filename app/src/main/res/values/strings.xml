@@ -39,4 +39,6 @@
     <string name="achievement_display">Achievement:</string>
     <string name="IconFileName">_level_</string>
     <string name="defType">drawable</string>
+    <string name="theme_selection">theme_selection</string>
+    <string name="theme_selection_title">Select Achievement Theme</string>
 </resources>

@@ -7,4 +7,10 @@
         android:icon="@drawable/ic_baseline_help_24"
         android:title="@string/help_centre"
         app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/select_theme"
+        android:icon="@drawable/ic_baseline_select_theme_24"
+        android:title="@string/theme_selection"
+        app:showAsAction="ifRoom"/>
+
 </menu>

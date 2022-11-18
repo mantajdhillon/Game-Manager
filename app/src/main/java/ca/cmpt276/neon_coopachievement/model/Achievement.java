@@ -9,6 +9,24 @@ package ca.cmpt276.neon_coopachievement.model;
  */
 public class Achievement {
 
+    public enum Theme {
+        ONE("one", 1), TWO("two", 2), THREE("three", 3);
+        private String numberString;
+        private int numberInt;
+        private Theme(String string, int number) {
+            this.numberString = string;
+            this.numberInt = number;
+        }
+        @Override
+        public String toString(){
+            return numberString;
+        }
+
+        public int getNumberInt() {
+            return numberInt;
+        }
+    }
+
     private static final byte MIN_ACHIEVEMENT_RANK = 1;
     private static final byte MAX_ACHIEVEMENT_RANK = 10;
     private static final double EASY_MULTIPLIER = 0.75;
@@ -23,9 +41,9 @@ public class Achievement {
     private final int low;
     private final int high;
     private Game.Difficulty difficulty;
-    private static int theme;
+    private static Theme theme;
 
-    public Achievement(int low, int high, int numPlayers, Game.Difficulty diff, int theme) {
+    public Achievement(int low, int high, int numPlayers, Game.Difficulty diff) {
         // Error handling for low and high
         if (low > high) {
             throw new RuntimeException("Low score can not be greater than high score");
@@ -36,13 +54,12 @@ public class Achievement {
         }
 
         // update variables
-        this.theme = theme;
         this.low = low;
         this.high = high;
         this.numPlayers = numPlayers;
         this.difficulty = diff;
         this.rankBoundaries = new double[MAX_ACHIEVEMENT_RANK - 1];
-        this.achievementNames = changeAchievementNames(theme);
+        this.achievementNames = changeAchievementNames(Achievement.getThemeInt());
 
         // Initialize boundaries for different achievements
         initializeRankBoundaries(low, high, numPlayers, diff);
@@ -178,19 +195,15 @@ public class Achievement {
         return s;
     }
 
-    public String getTheme() {
-        if (theme == 1) {
-            return "one";
-        }
-        else if (theme == 2) {
-            return "two";
-        }
-        else {
-            return "three";
-        }
+    public static int getThemeInt() {
+        return theme.getNumberInt();
     }
 
-    public static void setTheme(int theme) {
-        Achievement.theme = theme;
+    public static String getThemeString() {
+        return theme.toString();
+    }
+
+    public static void setTheme(Theme newTheme) {
+        theme = newTheme;
     }
 }

@@ -18,6 +18,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
+import ca.cmpt276.neon_coopachievement.model.Achievement;
 import ca.cmpt276.neon_coopachievement.model.GameCategory;
 
 /**
@@ -29,11 +30,13 @@ import ca.cmpt276.neon_coopachievement.model.GameCategory;
  */
 public class CategoryActivity extends AppCompatActivity {
 
+    public static final int ORIGINAL_THEME = 1;
     private GameCategory gameCategory;
     private static CategorySaver saveState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Achievement.setTheme(Achievement.Theme.ONE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
 
@@ -75,6 +78,10 @@ public class CategoryActivity extends AppCompatActivity {
             case R.id.action_help:
                 Intent i = new Intent(CategoryActivity.this, HelpActivity.class);
                 startActivity(i);
+                return true;
+            case R.id.select_theme:
+                Intent i2 = ThemeSelectActivity.makeIntent(CategoryActivity.this);
+                startActivity(i2);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
