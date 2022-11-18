@@ -26,6 +26,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.cmpt276.neon_coopachievement.model.Achievement;
 import ca.cmpt276.neon_coopachievement.model.Game;
 import ca.cmpt276.neon_coopachievement.model.GameCategory;
 import ca.cmpt276.neon_coopachievement.model.GameManager;
@@ -291,7 +292,7 @@ public class GameActivity extends AppCompatActivity {
         listGames.clear();
         for (int i = 0; i < gameManager.size(); i++) {
             Game g = gameManager.getGame(i);
-            String filename = getString(R.string.IconFileName) + g.getRank();
+            String filename = g.getAchievementTheme() + getString(R.string.IconFileName) + g.getRank();
             int id = getResources().getIdentifier(filename, getString(R.string.defType), this.getPackageName());
             listGames.add(new GameListElement(g.toString(), id));
         }
