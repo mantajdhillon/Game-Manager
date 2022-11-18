@@ -76,10 +76,12 @@ public class GameConfigActivity extends AppCompatActivity {
         populatePlayerListView();
         populateAchievementView();
         registerListClickCallback();
+        setUpSaveBtn();
+        setUpResetBtn();
+
+        // edit game
 
 /**
-
-        setUpSaveBtn();
 
         // Editing a game configuration
         if (getisEdit()) {
@@ -94,7 +96,7 @@ public class GameConfigActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_game_config, menu);
         return true;
     }
 
@@ -109,6 +111,8 @@ public class GameConfigActivity extends AppCompatActivity {
                 Intent i = new Intent(GameConfigActivity.this, HelpActivity.class);
                 startActivity(i);
                 return true;
+            case R.id.action_delete:
+                finish();
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -234,52 +238,44 @@ public class GameConfigActivity extends AppCompatActivity {
 
         saveBtn.setOnClickListener(view -> {
 
-            try {
-                int numPlayers = getInt(etNumPlayers);
-                int sumScores = getInt(etSumScore);
+            int numPlayers = sc.getNumPlayers();
+
+            if (numPlayers != 0) {
 
                 if (getisEdit()) {
-                    currentGame.setNumPlayers(numPlayers);
-                    currentGame.setFinalTotalScore(sumScores);
-                    gameManager.updateEdits
-                            (gameManager.getPoorScoreIndividual(), gameManager.getGreatScoreIndividual());
+                    // update current game num players and final score
+                    // update game manager
                 }
 
                 // Make a new game
                 else {
+                    int sumScores = sc.getSumScores();
                     Game newGame = new Game(numPlayers, sumScores,
                             gameManager.getPoorScoreIndividual(),
                             gameManager.getGreatScoreIndividual());
                     gameManager.addGame(newGame);
                 }
                 finish();
-            } catch (Exception e) {
+
+            } else {
                 Toast.makeText(this, "Invalid input", Toast.LENGTH_SHORT).show();
             }
+
         });
     }
 
-    private void populateFields() {
-        /**
-        EditText etNumPlayers = findViewById((R.id.etNumPlayers));
-        etNumPlayers.setText(Integer.toString(currentGame.getNumPlayers()));
+    private void setUpResetBtn() {
+        Button resetBtn = findViewById(R.id.btnReset);
 
-        EditText etSumScore = findViewById((R.id.etSumPlayerScores));
-        etSumScore.setText(Integer.toString(currentGame.getFinalTotalScore()));
-         */
-    }
-
-    private void setUpDeleteBtn() {
-        /**
-        Button deleteBtn = findViewById(R.id.btnDeleteGame);
-        deleteBtn.setVisibility(View.VISIBLE);
-        deleteBtn.setEnabled(true);
-        deleteBtn.setOnClickListener(v -> {
-            gameManager.removeGame(getGameIndex());
-            finish();
+        resetBtn.setOnClickListener(view -> {
+            sc.clearAll();
+            populatePlayerListView();
+            populateAchievementView();
         });
-         */
+
     }
+
+
 
     public static Intent makeIntent(Context c, boolean isEdit, int gameIndex, int gameManagerIndex) {
         Intent intent = new Intent(c, GameConfigActivity.class);
@@ -305,6 +301,7 @@ public class GameConfigActivity extends AppCompatActivity {
         String intStr = et.getText().toString();
         return Integer.parseInt(intStr);
     }
+
 
     private final TextWatcher inputWatcher = new TextWatcher() {
 
