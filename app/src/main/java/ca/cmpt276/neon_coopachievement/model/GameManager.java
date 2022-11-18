@@ -1,6 +1,5 @@
 package ca.cmpt276.neon_coopachievement.model;
 
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
 /**
@@ -85,7 +84,7 @@ public class GameManager {
         for (int i = 0; i < games.size(); i++) {
             Game oldGame = games.get(i);
             Game newGame = new Game(oldGame.getNumPlayers(), oldGame.getFinalTotalScore(),
-                    poorScoreNew, greatScoreNew);
+                    poorScoreNew, greatScoreNew, oldGame.getDifficulty());
             newGame.setTime(oldGame.getTime());
             games.set(i, newGame);
         }

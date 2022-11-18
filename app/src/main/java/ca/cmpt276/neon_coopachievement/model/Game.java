@@ -13,6 +13,12 @@ import java.time.format.DateTimeFormatter;
  * - Takes a good score and a bad score and construct an appropriate achievement object
  */
 public class Game {
+
+    // Represents the difficulty for a game
+    public enum Difficulty {
+        EASY, NORMAL, HARD
+    }
+
     private static final String DATE_FORMAT = "MMM dd @ HH:mm a";
 
     private int numPlayers;
@@ -20,12 +26,14 @@ public class Game {
     private final Achievement achievements;
     private final int rank;
     private String time;
+    private Difficulty difficulty;
 
-    public Game(int numPlayers, int finalTotalScore, int poorScore, int greatScore) {
+    public Game(int numPlayers, int finalTotalScore, int poorScore, int greatScore, Difficulty difficulty) {
         this.numPlayers = numPlayers;
         this.finalTotalScore = finalTotalScore;
-        this.achievements = new Achievement(poorScore, greatScore, numPlayers);
+        this.achievements = new Achievement(poorScore, greatScore, numPlayers, difficulty);     // TODO TEST
         this.rank = achievements.getHighestRank(finalTotalScore);
+        this.difficulty = difficulty;
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
         this.time = LocalDateTime.now().format(formatter);
@@ -57,6 +65,14 @@ public class Game {
 
     public int getRank() {
         return this.rank;
+    }
+
+    public Difficulty getDifficulty() {
+        return this.difficulty;
+    }
+
+    public void setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
     }
 
     @NonNull

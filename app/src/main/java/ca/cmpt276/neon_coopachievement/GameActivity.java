@@ -41,6 +41,10 @@ import ca.cmpt276.neon_coopachievement.model.GameManager;
  *   for valid number of players.
  */
 public class GameActivity extends AppCompatActivity {
+    // TODO REMOVE HARDCODED DIFFICULTY
+    //  - ALLOW USER TO SELECT DIFFICULTY FOR AN INDIVIDUAL GAME
+    private static final Game.Difficulty HARD_CODED_DIFFICULTY = Game.Difficulty.HARD;
+
 
     private static final String GAME_TYPE_INDEX = "Game-Type-Index";
     private static final GameCategory gameCategory = GameCategory.getInstance();
@@ -178,8 +182,11 @@ public class GameActivity extends AppCompatActivity {
 
                     GameManager gameManager = gameCategory.getGameManager(getGameManagerIndex());
 
+                    // TODO TEST
                     Intent i = AchievementActivity.makeIntent(GameActivity.this,
-                            numPlayers, gameManager.getPoorScoreIndividual(), gameManager.getGreatScoreIndividual());
+                            numPlayers, gameManager.getPoorScoreIndividual(), gameManager.getGreatScoreIndividual(),
+                            HARD_CODED_DIFFICULTY);     // FIXME remove hardcoded difficulty
+
                     startActivity(i);
                 }
             } catch (Exception e) {

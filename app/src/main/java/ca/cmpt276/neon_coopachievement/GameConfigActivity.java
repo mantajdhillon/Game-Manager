@@ -35,6 +35,11 @@ import ca.cmpt276.neon_coopachievement.model.GameManager;
  *   The user may delete the game by clicking delete.
  */
 public class GameConfigActivity extends AppCompatActivity {
+
+    // TODO REMOVE HARDCODED DIFFICULTY
+    //  - ALLOW USER TO SELECT DIFFICULTY FOR AN INDIVIDUAL GAME
+    private static final Game.Difficulty HARD_CODED_DIFFICULTY = Game.Difficulty.HARD;
+
     private static final String EXTRA_GAME_TYPE_INDEX = "Game-Type-Index";
     private static final String EXTRA_IS_EDIT = "isEdit";
     private static final String EXTRA_GAME_INDEX = "gameIndex";
@@ -127,7 +132,8 @@ public class GameConfigActivity extends AppCompatActivity {
                 else {
                     Game newGame = new Game(numPlayers, sumScores,
                             gameManager.getPoorScoreIndividual(),
-                            gameManager.getGreatScoreIndividual());
+                            gameManager.getGreatScoreIndividual(),
+                            HARD_CODED_DIFFICULTY);     // FIXME remove hardcoded difficulty
                     gameManager.addGame(newGame);
                 }
                 finish();
@@ -155,7 +161,8 @@ public class GameConfigActivity extends AppCompatActivity {
             Achievement achievements = new Achievement(
                     gameManager.getPoorScoreIndividual(),
                     gameManager.getGreatScoreIndividual(),
-                    Integer.parseInt(strNumPlayers));
+                    Integer.parseInt(strNumPlayers),
+                    HARD_CODED_DIFFICULTY);     // FIXME remove hardcoded difficulty
 
             int rank = achievements.getHighestRank(Integer.parseInt(strSumScore));
             String rankName = achievements.getAchievementName(rank);

@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.cmpt276.neon_coopachievement.model.Achievement;
+import ca.cmpt276.neon_coopachievement.model.Game;
 
 /**
  * AchievementActivity Class
@@ -33,6 +34,7 @@ public class AchievementActivity extends AppCompatActivity {
     private static final String EXTRA_NUM_PLAYERS = "numPlayers";
     private static final String EXTRA_GOOD_SCORE = "goodScore";
     private static final String EXTRA_POOR_SCORE = "poorScore";
+    private static final String EXTRA_DIFFICULTY = "gameDifficulty";
 
     private final List<AchievementListElement> achievementList = new ArrayList<>();
 
@@ -71,11 +73,12 @@ public class AchievementActivity extends AppCompatActivity {
         }
     }
 
-    public static Intent makeIntent(Context c, int numPlayers, int poorScore, int goodScore) {
+    public static Intent makeIntent(Context c, int numPlayers, int poorScore, int goodScore, Game.Difficulty difficulty) {
         Intent intent = new Intent(c, AchievementActivity.class);
         intent.putExtra(EXTRA_NUM_PLAYERS, numPlayers);
         intent.putExtra(EXTRA_GOOD_SCORE, goodScore);
         intent.putExtra(EXTRA_POOR_SCORE, poorScore);
+        intent.putExtra(EXTRA_DIFFICULTY, difficulty);
         return intent;
     }
 
@@ -91,8 +94,14 @@ public class AchievementActivity extends AppCompatActivity {
         return getIntent().getIntExtra(EXTRA_GOOD_SCORE, -1);
     }
 
+    // TODO TEST
+    private Game.Difficulty getDifficulty() {
+        return (Game.Difficulty) getIntent().getSerializableExtra(EXTRA_DIFFICULTY);
+    }
+
     private void populateAchievementsList() {
-        Achievement achievements = new Achievement(getPoorScore(), getGoodScore(), getNumPlayers());
+        Achievement achievements = new Achievement(getPoorScore(), getGoodScore(),
+                getNumPlayers(), getDifficulty());
 
         for (int i = 0; i < MAX_ACHIEVEMENTS; i++) {
             String filename = getString(R.string.IconFileName) + (i + 1);
