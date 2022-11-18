@@ -139,7 +139,7 @@ public class Achievement {
                     + achievementNames[rankIdx];
         }
 
-        // Ohetr
+        // Other
         else {
             return "Level " + (rankIdx + 1) + " ("
                     + (int) rankBoundaries[rankIdx - 1] + " - "
