@@ -7,19 +7,6 @@
     tools:context=".GameConfigActivity">
 
 
-    <TextView
-        android:id="@+id/tvNumPlayers"
-        android:layout_width="153dp"
-        android:layout_height="27dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/game_config_num_players"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.946"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <Button
         android:id="@+id/btnSaveGame"
         android:layout_width="wrap_content"
@@ -47,8 +34,8 @@
 
     <TextView
         android:id="@+id/tvAchieveGenerator"
-        android:layout_width="222dp"
-        android:layout_height="54dp"
+        android:layout_width="219dp"
+        android:layout_height="37dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="12dp"
@@ -86,11 +73,16 @@
         app:layout_constraintVertical_bias="0.3" />
 
     <ListView
-        android:layout_width="385dp"
-        android:layout_height="516dp"
+        android:id="@+id/playersList"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toTopOf="@+id/tvAchieveGenerator"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvNumPlayers" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

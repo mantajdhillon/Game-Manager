@@ -10,8 +10,11 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +31,7 @@ import ca.cmpt276.neon_coopachievement.model.Achievement;
 import ca.cmpt276.neon_coopachievement.model.Game;
 import ca.cmpt276.neon_coopachievement.model.GameCategory;
 import ca.cmpt276.neon_coopachievement.model.GameManager;
+import ca.cmpt276.neon_coopachievement.model.ScoreCalculator;
 
 /**
  * GameConfigActivity Class
@@ -52,7 +56,7 @@ public class GameConfigActivity extends AppCompatActivity {
     private EditText etNumPlayers;
     private EditText etSumScore;
 
-    private ArrayList<Integer> scores = new ArrayList<>();
+    private ScoreCalculator sc = new ScoreCalculator();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,15 +73,13 @@ public class GameConfigActivity extends AppCompatActivity {
         gameManager = gameCategory.getGameManager(getGameManagerIndex());
 
         setUpAddPlayerBtn();
+        populatePlayerListView();
+        populateAchievementView();
+        registerListClickCallback();
 
 /**
-        // Set delete button to invisible
-        Button deleteBtn = findViewById(R.id.btnDeleteGame);
-        deleteBtn.setVisibility(View.INVISIBLE);
-        deleteBtn.setEnabled(false);
 
         setUpSaveBtn();
-        setUpTextView();
 
         // Editing a game configuration
         if (getisEdit()) {
@@ -88,6 +90,28 @@ public class GameConfigActivity extends AppCompatActivity {
             setUpDeleteBtn();
         }
  */
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        // add delete game config
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            case R.id.action_help:
+                Intent i = new Intent(GameConfigActivity.this, HelpActivity.class);
+                startActivity(i);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void setUpAddPlayerBtn() {
@@ -105,11 +129,9 @@ public class GameConfigActivity extends AppCompatActivity {
                 playerDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        scores.add(Integer.parseInt(playerScore.getText().toString().trim()));
-                        Toast.makeText(GameConfigActivity.this,
-                                " new player score is " + scores.get(scores.size()-1),
-                                Toast.LENGTH_SHORT)
-                                .show();
+                        sc.addScore(Integer.parseInt(playerScore.getText().toString().trim()));
+                        populatePlayerListView();
+                        populateAchievementView();
                     }
                 });
 
@@ -125,36 +147,86 @@ public class GameConfigActivity extends AppCompatActivity {
         });
     }
 
+    private void populatePlayerListView() {
+        ArrayList<String> players = new ArrayList<>();
+        for (int i = 0; i < sc.getNumPlayers(); i++) {
+            players.add(sc.toString(i));
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this,
+                R.layout.items,
+                players);
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+        ListView playersListView = findViewById(R.id.playersList);
+        playersListView.setAdapter(adapter);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-            case R.id.action_help:
-                Intent i = new Intent(GameConfigActivity.this, HelpActivity.class);
-                startActivity(i);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+    private void populateAchievementView() {
+
+        int numPlayers = sc.getNumPlayers();
+        int sumScores = sc.getSumScores();
+
+        TextView tvAchieveGenerator = findViewById(R.id.tvAchieveGenerator);
+
+        if (numPlayers != 0) {
+
+
+            Achievement achievements = new Achievement(
+                    gameManager.getPoorScoreIndividual(),
+                    gameManager.getGreatScoreIndividual(),
+                    numPlayers);
+
+            int rank = achievements.getHighestRank(sumScores);
+            String rankName = achievements.getAchievementName(rank);
+
+            tvAchieveGenerator.setText(rankName);
+        } else {
+            tvAchieveGenerator.setText("");
         }
     }
 
-    private void setUpTextView() {
-        /**
-        etNumPlayers = findViewById(R.id.etNumPlayers);
-        etNumPlayers.addTextChangedListener(inputWatcher);
+    private void registerListClickCallback() {
+        ListView playersListView = findViewById(R.id.playersList);
+        playersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                int prevScore = sc.getScore(position + 1);
 
-        etSumScore = findViewById(R.id.etSumPlayerScores);
-        etSumScore.addTextChangedListener(inputWatcher);
-         */
+                AlertDialog.Builder playerDialog = new AlertDialog.Builder(GameConfigActivity.this);
+                playerDialog.setTitle("Edit Player Score:");
+
+                EditText playerScore = new EditText(GameConfigActivity.this);
+                playerScore.setInputType(InputType.TYPE_CLASS_NUMBER);
+                playerDialog.setView(playerScore);
+
+                playerDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        sc.updateScore(position + 1, Integer.parseInt(playerScore.getText().toString().trim()));
+                        populatePlayerListView();
+                        populateAchievementView();
+                    }
+                });
+
+                playerDialog.setNeutralButton("CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                playerDialog.setNegativeButton("DELETE", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        sc.removeScore(position + 1);
+                        populatePlayerListView();
+                        populateAchievementView();
+                    }
+                });
+
+                playerDialog.show();
+            }
+        });
     }
 
     private void setUpSaveBtn() {
@@ -195,27 +267,6 @@ public class GameConfigActivity extends AppCompatActivity {
         EditText etSumScore = findViewById((R.id.etSumPlayerScores));
         etSumScore.setText(Integer.toString(currentGame.getFinalTotalScore()));
          */
-    }
-
-    private void populateAchievementView() {
-        String strNumPlayers = etNumPlayers.getText().toString().trim();
-        String strSumScore = etSumScore.getText().toString().trim();
-
-        TextView tvAchieveGenerator = findViewById(R.id.tvAchieveGenerator);
-
-        if (!strNumPlayers.isEmpty() && !strSumScore.isEmpty()) {
-            Achievement achievements = new Achievement(
-                    gameManager.getPoorScoreIndividual(),
-                    gameManager.getGreatScoreIndividual(),
-                    Integer.parseInt(strNumPlayers));
-
-            int rank = achievements.getHighestRank(Integer.parseInt(strSumScore));
-            String rankName = achievements.getAchievementName(rank);
-
-            tvAchieveGenerator.setText(rankName);
-        } else {
-            tvAchieveGenerator.setText("");
-        }
     }
 
     private void setUpDeleteBtn() {

@@ -4,50 +4,59 @@ import java.util.ArrayList;
 
 public class ScoreCalculator {
 
-    int numPlayers;
-    int finalScore;
-    ArrayList<Integer> scores = new ArrayList<>();
+    private int numPlayers = 0;
+    private int sumScores;
+    private ArrayList<Integer> scores = new ArrayList<>();
 
 
-    public ScoreCalculator(int numPlayers) {
+    public void setNumPlayers(int numPlayers) {
         this.numPlayers = numPlayers;
     }
 
-    void setNumPlayers(int numPlayers) {
-        this.numPlayers = numPlayers;
-    }
-
-    int getNumPlayers() {
+    public int getNumPlayers() {
         return numPlayers;
     }
 
-    void addScore(int score) {
+    public void addScore(int score) {
         scores.add(score);
         numPlayers++;
+        calculateSum();
     }
 
-    void removeScore(int player) {
-        scores.remove(player-1);
+    public void updateScore(int player, int score) {
+        scores.remove(player - 1);
+        scores.add(player - 1, score);
+        calculateSum();
+    }
+
+    public void removeScore(int player) {
+        scores.remove(player - 1);
         numPlayers--;
+        calculateSum();
     }
 
-    int getScore(int player) {
+    public int getScore(int player) {
         return scores.get(player-1);
     }
 
-    void calculateFinal() {
-        finalScore = 0;
-        for (int i=0; i <= scores.size(); i++) {
-            finalScore += scores.get(i);
+    private void calculateSum() {
+        sumScores = 0;
+        for (int i = 0; i < scores.size(); i++) {
+            sumScores += scores.get(i);
         }
     }
 
-    int getFinalScore() {
-        return finalScore;
+    public int getSumScores() {
+        return sumScores;
     }
 
-    void clearAll() {
+    public void clearAll() {
         numPlayers = 0;
         scores = new ArrayList<>();
+    }
+
+    // takes in player - 1
+    public String toString(int index) {
+        return "Player " + (index + 1) + ": " + scores.get(index);
     }
 }
