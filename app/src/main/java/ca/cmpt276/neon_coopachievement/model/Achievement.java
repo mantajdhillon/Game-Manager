@@ -59,7 +59,7 @@ public class Achievement {
         this.numPlayers = numPlayers;
         this.difficulty = diff;
         this.rankBoundaries = new double[MAX_ACHIEVEMENT_RANK - 1];
-        this.achievementNames = changeAchievementNames(Achievement.getThemeInt());
+        this.achievementNames = changeAchievementNames();
 
         // Initialize boundaries for different achievements
         initializeRankBoundaries(low, high, numPlayers, diff);
@@ -163,34 +163,35 @@ public class Achievement {
     }
 
     //Changes the achievements names based on the theme 1-3 which are selected by the user.
-    public String[] changeAchievementNames(int theme) {
-        if (theme < 1 || theme > 3) {
-            throw new IllegalArgumentException("The theme must be 1, 2, or 3");
-        }
+    public String[] changeAchievementNames() {
         String[] s;
-        if (theme == 1) {
-            s = new String[]{
-                    "Horrible Hamburgers", "Terrible Tacos",
-                    "Bad Broccoli's", "Alright Apples", "Mediocre Mangoes",
-                    "Okay Oranges", "Great Grapes", "Superb Sausages",
-                    "Awesome Avocados", "Excellent Eggs"
-            };
-        }
-        else if (theme == 2) {
-            s = new String[]{
-                    "Nasty Neptunes", "Underwhelming Uranus'",
-                    "Sucky Saturns", "Just enough Jupiters", "Moderate Mars'",
-                    "Endearing Earths", "Vigorous Venuses", "Marvelous Mercury's",
-                    "Precious Plutos", "Stunning Suns"
-            };
-        }
-        else {
-            s = new String[]{
-                    "Revolting Reds", "Obnoxious Oranges",
-                    "Yucky Yellows", "Good Enough Greens", "Not Bad Blues",
-                    "Inferior Indigos", "Valuable Violets", "Pretty Pinks",
-                    "Breathtaking Browns", "Gorgeous Greys"
-            };
+        switch (Achievement.theme) {
+            case ONE:
+                s = new String[]{
+                        "Horrible Hamburgers", "Terrible Tacos",
+                        "Bad Broccoli's", "Alright Apples", "Mediocre Mangoes",
+                        "Okay Oranges", "Great Grapes", "Superb Sausages",
+                        "Awesome Avocados", "Excellent Eggs"
+                };
+                break;
+            case TWO:
+                s = new String[]{
+                        "Nasty Neptunes", "Underwhelming Uranus'",
+                        "Sucky Saturns", "Just enough Jupiters", "Moderate Mars'",
+                        "Endearing Earths", "Vigorous Venuses", "Marvelous Mercury's",
+                        "Precious Plutos", "Stunning Suns"
+                };
+                break;
+            case THREE:
+                s = new String[]{
+                        "Revolting Reds", "Obnoxious Oranges",
+                        "Yucky Yellows", "Good Enough Greens", "Not Bad Blues",
+                        "Inferior Indigos", "Valuable Violets", "Pretty Pinks",
+                        "Breathtaking Browns", "Gorgeous Greys"
+                };
+                break;
+            default:
+                s = new String[MAX_ACHIEVEMENT_RANK];
         }
         return s;
     }

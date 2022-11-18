@@ -36,7 +36,7 @@ public class CategoryActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Achievement.setTheme(Achievement.Theme.ONE);
+        Achievement.setTheme(Achievement.Theme.TWO);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
 
