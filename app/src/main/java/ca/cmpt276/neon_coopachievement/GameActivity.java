@@ -158,6 +158,7 @@ public class GameActivity extends AppCompatActivity {
             // Disable floating action bar
             FloatingActionButton newGame = findViewById(R.id.addGameBtn);
             newGame.setEnabled(false);
+            newGame.setVisibility(View.INVISIBLE);
 
             updateLaunchAchievementUI(View.VISIBLE, true);
             setupGoAchievementsBtn();
