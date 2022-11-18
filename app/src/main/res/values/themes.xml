@@ -4,7 +4,7 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/bright_pink</item>
         <item name="colorPrimaryVariant">@color/bright_pink</item>
-        <!-- colorOnPrimary -> used in toolbar text -->
+        <!-- colorOnPrimary -> used in button text -->
         <item name="colorOnPrimary">@color/white</item>
 
         <!-- Secondary brand color. -->

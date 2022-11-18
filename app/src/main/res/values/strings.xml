@@ -39,4 +39,5 @@
     <string name="achievement_display">Achievement:</string>
     <string name="IconFileName">_level_</string>
     <string name="defType">drawable</string>
+    <string name="achievements_settings">Achievements Settings</string>
 </resources>

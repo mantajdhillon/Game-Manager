@@ -7,4 +7,9 @@
         android:icon="@drawable/ic_baseline_help_24"
         android:title="@string/help_centre"
         app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/action_achievements"
+        android:icon="@drawable/ic_baseline_settings_24"
+        android:title="@string/achievements_settings"
+        app:showAsAction="ifRoom"/>
 </menu>
