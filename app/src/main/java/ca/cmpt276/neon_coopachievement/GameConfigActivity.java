@@ -56,7 +56,7 @@ public class GameConfigActivity extends AppCompatActivity {
     private EditText etNumPlayers;
     private EditText etSumScore;
 
-    private ScoreCalculator sc = new ScoreCalculator();
+    private ScoreCalculator sc = new ScoreCalculator(0, 0, null);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,19 +79,14 @@ public class GameConfigActivity extends AppCompatActivity {
         setUpSaveBtn();
         setUpResetBtn();
 
-        // edit game
-
-/**
-
         // Editing a game configuration
         if (getisEdit()) {
             currentGame = gameManager.getGame(getGameIndex());
             ab.setTitle(R.string.game_config_activity_edit_game);
-            populateFields();
+            sc = new ScoreCalculator(currentGame.getNumPlayers(), currentGame.getFinalTotalScore(), currentGame.getScores());
+            populatePlayerListView();
             populateAchievementView();
-            setUpDeleteBtn();
         }
- */
     }
 
     @Override
@@ -252,7 +247,8 @@ public class GameConfigActivity extends AppCompatActivity {
                     int sumScores = sc.getSumScores();
                     Game newGame = new Game(numPlayers, sumScores,
                             gameManager.getPoorScoreIndividual(),
-                            gameManager.getGreatScoreIndividual());
+                            gameManager.getGreatScoreIndividual(),
+                            sc.getScores());
                     gameManager.addGame(newGame);
                 }
                 finish();
@@ -303,6 +299,7 @@ public class GameConfigActivity extends AppCompatActivity {
     }
 
 
+    // need this?
     private final TextWatcher inputWatcher = new TextWatcher() {
 
         @Override

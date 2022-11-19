@@ -4,9 +4,15 @@ import java.util.ArrayList;
 
 public class ScoreCalculator {
 
-    private int numPlayers = 0;
+    private int numPlayers;
     private int sumScores;
     private ArrayList<Integer> scores = new ArrayList<>();
+
+    public ScoreCalculator(int numPlayers, int sumScores, ArrayList<Integer> scores) {
+        this.numPlayers = numPlayers;
+        this.sumScores = sumScores;
+        this.scores = scores;
+    }
 
 
     public void setNumPlayers(int numPlayers) {
@@ -37,6 +43,10 @@ public class ScoreCalculator {
 
     public int getScore(int player) {
         return scores.get(player-1);
+    }
+
+    public ArrayList<Integer> getScores() {
+        return scores;
     }
 
     private void calculateSum() {

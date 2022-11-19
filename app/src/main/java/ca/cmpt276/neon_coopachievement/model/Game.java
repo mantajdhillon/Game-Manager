@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 /**
  * Game Class:
@@ -21,11 +22,14 @@ public class Game {
     private final int rank;
     private String time;
 
-    public Game(int numPlayers, int finalTotalScore, int poorScore, int greatScore) {
+    private ArrayList<Integer> scores = new ArrayList<>();
+
+    public Game(int numPlayers, int finalTotalScore, int poorScore, int greatScore, ArrayList<Integer> scores) {
         this.numPlayers = numPlayers;
         this.finalTotalScore = finalTotalScore;
         this.achievements = new Achievement(poorScore, greatScore, numPlayers);
         this.rank = achievements.getHighestRank(finalTotalScore);
+        this.scores = scores;
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
         this.time = LocalDateTime.now().format(formatter);
@@ -37,6 +41,10 @@ public class Game {
 
     public int getFinalTotalScore() {
         return finalTotalScore;
+    }
+
+    public ArrayList<Integer> getScores() {
+        return scores;
     }
 
     public void setNumPlayers(int numPlayers) {
