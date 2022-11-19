@@ -32,8 +32,6 @@ public class CategoryActivity extends AppCompatActivity {
 
     private GameCategory gameCategory;
     private static CategorySaver saveState;
-    // TODO: Add private static theme variable
-    private static int currentTheme;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
