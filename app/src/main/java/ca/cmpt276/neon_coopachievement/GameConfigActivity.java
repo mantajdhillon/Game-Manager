@@ -257,13 +257,30 @@ public class GameConfigActivity extends AppCompatActivity {
                             sc.getScores(), HARD_CODED_DIFFICULTY);
                     gameManager.addGame(newGame);
                 }
-                finish();
+                makeAchievement();
 
             } else {
                 Toast.makeText(this, "Invalid input", Toast.LENGTH_SHORT).show();
             }
 
         });
+    }
+
+    private void makeAchievement(){
+        AlertDialog.Builder achievementDialog = new AlertDialog.Builder(GameConfigActivity.this);
+        achievementDialog.setTitle("Achievement!");
+        final EditText achievement = new EditText(GameConfigActivity.this);
+        achievement.setText("Achievement");
+        achievementDialog.setView(achievement);
+
+        achievementDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+
+        achievementDialog.show();
     }
 
     private void setUpClearBtn() {
