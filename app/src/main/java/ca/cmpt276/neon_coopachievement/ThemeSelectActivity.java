@@ -6,12 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 
 import ca.cmpt276.neon_coopachievement.model.Achievement;
-import ca.cmpt276.neon_coopachievement.model.GameCategory;
 
 public class ThemeSelectActivity extends AppCompatActivity {
 
@@ -23,10 +20,10 @@ public class ThemeSelectActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         ab.setTitle(R.string.theme_selection_title);
 
-        setupRadioButtons();
+        setupRadioGroup();
     }
 
-    private void setupRadioButtons() {
+    private void setupRadioGroup() {
         setRadioButtonListeners(R.id.radioTheme1, Achievement.Theme.ONE);
         setRadioButtonListeners(R.id.radioTheme2, Achievement.Theme.TWO);
         setRadioButtonListeners(R.id.radioTheme3, Achievement.Theme.THREE);
@@ -40,7 +37,6 @@ public class ThemeSelectActivity extends AppCompatActivity {
         }
         themeChoice.setOnClickListener(v -> Achievement.setTheme(theme));
     }
-
 
     public static Intent makeIntent(Context c) {
         Intent intent = new Intent(c, ThemeSelectActivity.class);
