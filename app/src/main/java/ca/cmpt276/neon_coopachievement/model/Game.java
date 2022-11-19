@@ -85,7 +85,7 @@ public class Game {
     }
 
     public int getGameScore(int index){
-        if(index >= 0 && index < numPlayers){
+        if(index < numPlayers && index >= 0){
             return scores.get(index);
         }
         else{
