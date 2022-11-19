@@ -153,6 +153,7 @@ public class GameConfigActivity extends AppCompatActivity {
                     }
                     populatePlayerListView();
                     populateAchievementView();
+                    setUpEmptyState(sc.getNumPlayers());
                 }
             });
 
