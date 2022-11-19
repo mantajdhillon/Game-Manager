@@ -131,7 +131,11 @@ public class GameConfigActivity extends AppCompatActivity {
                 playerDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        sc.addScore(Integer.parseInt(playerScore.getText().toString().trim()));
+                        try {
+                            sc.addScore(Integer.parseInt(playerScore.getText().toString().trim()));
+                        } catch(Exception e) {
+                            Toast.makeText(GameConfigActivity.this, "Invalid Input", Toast.LENGTH_SHORT).show();
+                        }
                         populatePlayerListView();
                         populateAchievementView();
                     }
@@ -197,12 +201,17 @@ public class GameConfigActivity extends AppCompatActivity {
 
                 EditText playerScore = new EditText(GameConfigActivity.this);
                 playerScore.setInputType(InputType.TYPE_CLASS_NUMBER);
+                playerScore.setText(Integer.toString(sc.getScore(position + 1)));
                 playerDialog.setView(playerScore);
 
                 playerDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        sc.updateScore(position + 1, Integer.parseInt(playerScore.getText().toString().trim()));
+                        try {
+                            sc.updateScore(position + 1, Integer.parseInt(playerScore.getText().toString().trim()));
+                        } catch(Exception e) {
+                            Toast.makeText(GameConfigActivity.this, "Invalid Input", Toast.LENGTH_SHORT).show();
+                        }
                         populatePlayerListView();
                         populateAchievementView();
                     }
