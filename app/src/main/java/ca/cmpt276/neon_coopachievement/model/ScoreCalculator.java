@@ -6,17 +6,21 @@ public class ScoreCalculator {
 
     private int numPlayers;
     private int sumScores;
-    private ArrayList<Integer> scores = new ArrayList<>();
+    private ArrayList<Integer> scores;
 
-    public ScoreCalculator(int numPlayers, int sumScores, ArrayList<Integer> scores) {
-        this.numPlayers = numPlayers;
-        this.sumScores = sumScores;
-        this.scores = scores;
+    public ScoreCalculator() {
+        this.numPlayers = 0;
+        this.scores = new ArrayList<>();
     }
 
-
-    public void setNumPlayers(int numPlayers) {
+    public ScoreCalculator(int numPlayers, int sumScores, ArrayList<Integer> scoresList) {
         this.numPlayers = numPlayers;
+        this.sumScores = sumScores;
+        this.scores = new ArrayList<>();
+        for (int i = 0; i < numPlayers; i++) {
+            this.scores.add(scoresList.get(i));
+            System.out.println();
+        }
     }
 
     public int getNumPlayers() {

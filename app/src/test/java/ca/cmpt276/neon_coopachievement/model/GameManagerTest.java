@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.Test;
 
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
 
 public class GameManagerTest {
     @Test
@@ -24,7 +25,8 @@ public class GameManagerTest {
     @Test
     public void gameTest(){
         GameManager myManager = new GameManager("Test",5,1);
-        Game myGame = new Game(2,10,1,5);
+        ArrayList<Integer> scores = new ArrayList<>();
+        Game myGame = new Game(2,10,1,5, scores);
         myManager.addGame(myGame);
     }
 

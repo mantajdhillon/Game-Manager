@@ -4,9 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.InputType;
-import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,10 +51,7 @@ public class GameConfigActivity extends AppCompatActivity {
     private GameManager gameManager;
     private Game currentGame;
 
-    private EditText etNumPlayers;
-    private EditText etSumScore;
-
-    private ScoreCalculator sc = new ScoreCalculator(0, 0, null);
+    private ScoreCalculator sc = new ScoreCalculator();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +72,7 @@ public class GameConfigActivity extends AppCompatActivity {
         populateAchievementView();
         registerListClickCallback();
         setUpSaveBtn();
-        setUpResetBtn();
+        setUpClearBtn();
 
         // Editing a game configuration
         if (getisEdit()) {
@@ -107,6 +102,9 @@ public class GameConfigActivity extends AppCompatActivity {
                 startActivity(i);
                 return true;
             case R.id.action_delete:
+                if (getisEdit()) {
+                    gameManager.removeGame(getGameIndex());
+                }
                 finish();
             default:
                 return super.onOptionsItemSelected(item);
@@ -189,7 +187,6 @@ public class GameConfigActivity extends AppCompatActivity {
         playersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                int prevScore = sc.getScore(position + 1);
 
                 AlertDialog.Builder playerDialog = new AlertDialog.Builder(GameConfigActivity.this);
                 playerDialog.setTitle("Edit Player Score:");
@@ -237,14 +234,18 @@ public class GameConfigActivity extends AppCompatActivity {
 
             if (numPlayers != 0) {
 
-                if (getisEdit()) {
-                    // update current game num players and final score
-                    // update game manager
-                }
+                int sumScores = sc.getSumScores();
 
+                if (getisEdit()) {
+                    currentGame.setNumPlayers(numPlayers);
+                    currentGame.setFinalTotalScore(sumScores);
+                    currentGame.setScores(sc.getScores());
+                    gameManager.updateEdits(
+                            gameManager.getPoorScoreIndividual(),
+                            gameManager.getGreatScoreIndividual());
+                }
                 // Make a new game
                 else {
-                    int sumScores = sc.getSumScores();
                     Game newGame = new Game(numPlayers, sumScores,
                             gameManager.getPoorScoreIndividual(),
                             gameManager.getGreatScoreIndividual(),
@@ -260,18 +261,15 @@ public class GameConfigActivity extends AppCompatActivity {
         });
     }
 
-    private void setUpResetBtn() {
-        Button resetBtn = findViewById(R.id.btnReset);
+    private void setUpClearBtn() {
+        Button clearBtn = findViewById(R.id.btnClear);
 
-        resetBtn.setOnClickListener(view -> {
+        clearBtn.setOnClickListener(view -> {
             sc.clearAll();
             populatePlayerListView();
             populateAchievementView();
         });
-
     }
-
-
 
     public static Intent makeIntent(Context c, boolean isEdit, int gameIndex, int gameManagerIndex) {
         Intent intent = new Intent(c, GameConfigActivity.class);
@@ -297,26 +295,4 @@ public class GameConfigActivity extends AppCompatActivity {
         String intStr = et.getText().toString();
         return Integer.parseInt(intStr);
     }
-
-
-    // need this?
-    private final TextWatcher inputWatcher = new TextWatcher() {
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            try {
-                populateAchievementView();
-            } catch (Exception e) {
-                Toast.makeText(GameConfigActivity.this, "Not a valid integer", Toast.LENGTH_SHORT).show();
-            }
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-        }
-    };
 }

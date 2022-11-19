@@ -22,14 +22,17 @@ public class Game {
     private final int rank;
     private String time;
 
-    private ArrayList<Integer> scores = new ArrayList<>();
+    private ArrayList<Integer> scores;
 
-    public Game(int numPlayers, int finalTotalScore, int poorScore, int greatScore, ArrayList<Integer> scores) {
+    public Game(int numPlayers, int finalTotalScore, int poorScore, int greatScore, ArrayList<Integer> scoresList) {
         this.numPlayers = numPlayers;
         this.finalTotalScore = finalTotalScore;
         this.achievements = new Achievement(poorScore, greatScore, numPlayers);
         this.rank = achievements.getHighestRank(finalTotalScore);
-        this.scores = scores;
+        this.scores = new ArrayList<>();
+        for (int i = 0; i < numPlayers; i++) {
+            this.scores.add(scoresList.get(i));
+        }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
         this.time = LocalDateTime.now().format(formatter);
@@ -53,6 +56,12 @@ public class Game {
 
     public void setFinalTotalScore(int finalTotalScore) {
         this.finalTotalScore = finalTotalScore;
+    }
+
+    public void setScores(ArrayList<Integer> scoresList) {
+        for (int i = 0; i < numPlayers; i ++) {
+            this.scores.add(i, scoresList.get(i));
+        }
     }
 
     public void setTime(String time) {
