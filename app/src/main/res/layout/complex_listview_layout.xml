@@ -1,38 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-
-    <ImageView
-        android:id="@+id/achievement_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="0dp"
-        android:adjustViewBounds="true"
-        android:maxWidth="80dp"
-        android:maxHeight="80dp"
-        android:src="@drawable/level_4" />
 
     <TextView
         android:id="@+id/tvAchievementsDescription"
         android:layout_width="307dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="4dp"
         android:layout_marginLeft="12dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginRight="12dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginRight="-34dp"
         android:layout_marginBottom="16dp"
         android:layout_toEndOf="@+id/achievement_icon"
         android:layout_toRightOf="@+id/achievement_icon"
+        android:layout_toLeftOf="@android:id/accessibilityActionPageRight"
         android:text="Achievement Description"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="18sp" />
+
+    <ImageView
+        android:id="@+id/achievement_icon"
+        android:layout_width="95dp"
+        android:layout_height="89dp"
+        app:srcCompat="@drawable/one_level_1" />
 
 </RelativeLayout>

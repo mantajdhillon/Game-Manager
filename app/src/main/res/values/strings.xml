@@ -37,6 +37,12 @@
     <string name="edit_category">Edit Category</string>
     <string name="invalid_num_players_msg">Invalid number of players</string>
     <string name="achievement_display">Achievement:</string>
-    <string name="IconFileName">level_</string>
+    <string name="IconFileName">_level_</string>
     <string name="defType">drawable</string>
+    <string name="theme_selection">theme_selection</string>
+    <string name="theme_selection_title">Select Achievement Theme</string>
+    <string name="select_theme_prompt">Choose between the following themes for your achievements:</string>
+    <string name="theme_1">Food Theme</string>
+    <string name="theme_2">Space Theme</string>
+    <string name="theme_3">Colours Theme</string>
 </resources>

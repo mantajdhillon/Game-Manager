@@ -26,6 +26,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.cmpt276.neon_coopachievement.model.Achievement;
 import ca.cmpt276.neon_coopachievement.model.Game;
 import ca.cmpt276.neon_coopachievement.model.GameCategory;
 import ca.cmpt276.neon_coopachievement.model.GameManager;
@@ -41,6 +42,10 @@ import ca.cmpt276.neon_coopachievement.model.GameManager;
  *   for valid number of players.
  */
 public class GameActivity extends AppCompatActivity {
+    // TODO REMOVE HARDCODED DIFFICULTY
+    //  - ALLOW USER TO SELECT DIFFICULTY FOR AN INDIVIDUAL GAME
+    private static final Game.Difficulty HARD_CODED_DIFFICULTY = Game.Difficulty.HARD;
+
 
     private static final String GAME_TYPE_INDEX = "Game-Type-Index";
     private static final GameCategory gameCategory = GameCategory.getInstance();
@@ -178,8 +183,11 @@ public class GameActivity extends AppCompatActivity {
 
                     GameManager gameManager = gameCategory.getGameManager(getGameManagerIndex());
 
+                    // TODO TEST
                     Intent i = AchievementActivity.makeIntent(GameActivity.this,
-                            numPlayers, gameManager.getPoorScoreIndividual(), gameManager.getGreatScoreIndividual());
+                            numPlayers, gameManager.getPoorScoreIndividual(), gameManager.getGreatScoreIndividual(),
+                            HARD_CODED_DIFFICULTY);     // FIXME remove hardcoded difficulty
+
                     startActivity(i);
                 }
             } catch (Exception e) {
@@ -283,7 +291,8 @@ public class GameActivity extends AppCompatActivity {
         listGames.clear();
         for (int i = 0; i < gameManager.size(); i++) {
             Game g = gameManager.getGame(i);
-            String filename = getString(R.string.IconFileName) + g.getRank();
+            g.updateAchievements();
+            String filename = g.getAchievementTheme() + getString(R.string.IconFileName) + g.getRank();
             int id = getResources().getIdentifier(filename, getString(R.string.defType), this.getPackageName());
             listGames.add(new GameListElement(g.toString(), id));
         }

@@ -44,6 +44,11 @@ import ca.cmpt276.neon_coopachievement.model.ScoreCalculator;
  *   The user may delete the game by clicking delete.
  */
 public class GameConfigActivity extends AppCompatActivity {
+
+    // TODO REMOVE HARDCODED DIFFICULTY
+    //  - ALLOW USER TO SELECT DIFFICULTY FOR AN INDIVIDUAL GAME
+    private static final Game.Difficulty HARD_CODED_DIFFICULTY = Game.Difficulty.HARD;
+
     private static final String EXTRA_GAME_TYPE_INDEX = "Game-Type-Index";
     private static final String EXTRA_IS_EDIT = "isEdit";
     private static final String EXTRA_GAME_INDEX = "gameIndex";
@@ -244,6 +249,7 @@ public class GameConfigActivity extends AppCompatActivity {
                             gameManager.getPoorScoreIndividual(),
                             gameManager.getGreatScoreIndividual());
                 }
+
                 // Make a new game
                 else {
                     Game newGame = new Game(numPlayers, sumScores,

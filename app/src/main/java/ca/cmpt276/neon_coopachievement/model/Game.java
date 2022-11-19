@@ -14,6 +14,12 @@ import java.util.ArrayList;
  * - Takes a good score and a bad score and construct an appropriate achievement object
  */
 public class Game {
+
+    // Represents the difficulty for a game
+    public enum Difficulty {
+        EASY, NORMAL, HARD
+    }
+
     private static final String DATE_FORMAT = "MMM dd @ HH:mm a";
 
     private int numPlayers;
@@ -21,14 +27,16 @@ public class Game {
     private final Achievement achievements;
     private final int rank;
     private String time;
+    private Difficulty difficulty;
 
     private ArrayList<Integer> scores;
 
-    public Game(int numPlayers, int finalTotalScore, int poorScore, int greatScore, ArrayList<Integer> scoresList) {
+    public Game(int numPlayers, int finalTotalScore, int poorScore, int greatScore, ArrayList<Integer> scoresList, Difficulty difficulty) {
         this.numPlayers = numPlayers;
         this.finalTotalScore = finalTotalScore;
-        this.achievements = new Achievement(poorScore, greatScore, numPlayers);
+        this.achievements = new Achievement(poorScore, greatScore, numPlayers, difficulty);     // TODO TEST
         this.rank = achievements.getHighestRank(finalTotalScore);
+        this.difficulty = difficulty;
         this.scores = new ArrayList<>();
         for (int i = 0; i < numPlayers; i++) {
             this.scores.add(scoresList.get(i));
@@ -74,6 +82,22 @@ public class Game {
 
     public int getRank() {
         return this.rank;
+    }
+
+    public Difficulty getDifficulty() {
+        return this.difficulty;
+    }
+
+    public void setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    public String getAchievementTheme() {
+        return this.achievements.getThemeString();
+    }
+
+    public void updateAchievements() {
+        achievements.changeAchievementNames();
     }
 
     @NonNull
