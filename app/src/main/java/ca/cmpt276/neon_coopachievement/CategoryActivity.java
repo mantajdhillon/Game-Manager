@@ -30,13 +30,14 @@ import ca.cmpt276.neon_coopachievement.model.GameCategory;
  */
 public class CategoryActivity extends AppCompatActivity {
 
-    public static final int ORIGINAL_THEME = 1;
     private GameCategory gameCategory;
     private static CategorySaver saveState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Achievement.setTheme(Achievement.Theme.TWO);
+        if (Achievement.getTheme() == null) {
+            Achievement.setTheme(Achievement.Theme.ONE);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
 

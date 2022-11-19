@@ -82,6 +82,7 @@ public class Game {
     @NonNull
     @Override
     public String toString() {
+        achievements.changeAchievementNames();
         return numPlayers + " player(s) - " + time + "\n"
                 + "Total score: " + finalTotalScore + "\n"
                 + "Rank #" + rank + ": " + achievements.getAchievementName(rank);

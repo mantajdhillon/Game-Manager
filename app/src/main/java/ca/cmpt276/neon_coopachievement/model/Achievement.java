@@ -1,5 +1,7 @@
 package ca.cmpt276.neon_coopachievement.model;
 
+import androidx.annotation.NonNull;
+
 /**
  * Achievements Class:
  * <p>
@@ -9,21 +11,17 @@ package ca.cmpt276.neon_coopachievement.model;
  */
 public class Achievement {
 
+    //Enum to denote the Theme for the Achievements
     public enum Theme {
-        ONE("one", 1), TWO("two", 2), THREE("three", 3);
-        private String numberString;
-        private int numberInt;
-        private Theme(String string, int number) {
+        ONE("one"), TWO("two"), THREE("three");
+        private final String numberString;
+        Theme(String string) {
             this.numberString = string;
-            this.numberInt = number;
         }
+        @NonNull
         @Override
         public String toString(){
             return numberString;
-        }
-
-        public int getNumberInt() {
-            return numberInt;
         }
     }
 
@@ -34,7 +32,7 @@ public class Achievement {
     private static final double HARD_MULTIPLIER = 1.25;
 
     private final double[] rankBoundaries;
-    private final String[] achievementNames;
+    private String[] achievementNames;
 
     // Game variables needed for making score
     private final int numPlayers;
@@ -59,7 +57,7 @@ public class Achievement {
         this.numPlayers = numPlayers;
         this.difficulty = diff;
         this.rankBoundaries = new double[MAX_ACHIEVEMENT_RANK - 1];
-        this.achievementNames = changeAchievementNames();
+        changeAchievementNames();
 
         // Initialize boundaries for different achievements
         initializeRankBoundaries(low, high, numPlayers, diff);
@@ -155,7 +153,7 @@ public class Achievement {
     }
 
     //Changes the achievements names based on the theme 1-3 which are selected by the user.
-    public String[] changeAchievementNames() {
+    public void changeAchievementNames() {
         String[] s;
         switch (Achievement.theme) {
             case ONE:
@@ -185,11 +183,7 @@ public class Achievement {
             default:
                 s = new String[MAX_ACHIEVEMENT_RANK];
         }
-        return s;
-    }
-
-    public static int getThemeInt() {
-        return theme.getNumberInt();
+        this.achievementNames = s;
     }
 
     public static String getThemeString() {
@@ -198,5 +192,9 @@ public class Achievement {
 
     public static void setTheme(Theme newTheme) {
         theme = newTheme;
+    }
+
+    public static Theme getTheme() {
+        return theme;
     }
 }
