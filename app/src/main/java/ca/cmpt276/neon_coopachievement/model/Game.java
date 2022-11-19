@@ -84,6 +84,15 @@ public class Game {
         return this.rank;
     }
 
+    public int getGameScore(int index){
+        if(index >= 0 && index < numPlayers){
+            return scores.get(index);
+        }
+        else{
+            throw new IllegalArgumentException("Invalid index!");
+        }
+    }
+
     public Difficulty getDifficulty() {
         return this.difficulty;
     }

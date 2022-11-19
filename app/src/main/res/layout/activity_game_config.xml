@@ -6,7 +6,32 @@
     android:layout_height="match_parent"
     tools:context=".GameConfigActivity">
 
+    <ImageView
+        android:id="@+id/ivEmptyStateGameConfigActivity"
+        android:layout_width="276dp"
+        android:layout_height="287dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.367"
+        app:srcCompat="@drawable/empty_state" />
 
+    <TextView
+        android:id="@+id/tvEmptyStateDescGameConfigActivity"
+        android:layout_width="368dp"
+        android:layout_height="71dp"
+        android:text="No players found!\n Click the + to add a new player."
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.627"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.716" />
     <Button
         android:id="@+id/btnSaveGame"
         android:layout_width="wrap_content"
