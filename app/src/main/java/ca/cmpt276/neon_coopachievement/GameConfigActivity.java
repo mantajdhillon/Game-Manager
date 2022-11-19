@@ -91,9 +91,7 @@ public class GameConfigActivity extends AppCompatActivity {
             populateAchievementView();
             setUpEmptyState(sc.getNumPlayers());
         }
-
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -152,9 +150,8 @@ public class GameConfigActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         try {
                             sc.addScore(Integer.parseInt(playerScore.getText().toString().trim()));
-                        }
-                        catch (Exception e){
-                            Toast.makeText(GameConfigActivity.this,"Invalid score entry", Toast.LENGTH_SHORT).show();
+                        } catch(Exception e) {
+                            Toast.makeText(GameConfigActivity.this, "Invalid Input", Toast.LENGTH_SHORT).show();
                         }
                         populatePlayerListView();
                         populateAchievementView();
@@ -222,13 +219,17 @@ public class GameConfigActivity extends AppCompatActivity {
 
                 EditText playerScore = new EditText(GameConfigActivity.this);
                 playerScore.setInputType(InputType.TYPE_CLASS_NUMBER);
-                playerScore.setText(Integer.toString(sc.getScore(position+1)));
+                playerScore.setText(Integer.toString(sc.getScore(position + 1)));
                 playerDialog.setView(playerScore);
 
                 playerDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        sc.updateScore(position + 1, Integer.parseInt(playerScore.getText().toString().trim()));
+                        try {
+                            sc.updateScore(position + 1, Integer.parseInt(playerScore.getText().toString().trim()));
+                        } catch(Exception e) {
+                            Toast.makeText(GameConfigActivity.this, "Invalid Input", Toast.LENGTH_SHORT).show();
+                        }
                         populatePlayerListView();
                         populateAchievementView();
                     }
