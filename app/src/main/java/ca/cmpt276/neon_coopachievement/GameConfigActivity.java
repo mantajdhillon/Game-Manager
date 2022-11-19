@@ -8,10 +8,12 @@ import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewDebug;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -72,6 +74,7 @@ public class GameConfigActivity extends AppCompatActivity {
         GameCategory gameCategory = GameCategory.getInstance();
         gameManager = gameCategory.getGameManager(getGameManagerIndex());
 
+        setUpEmptyState(sc.getNumPlayers());
         setUpAddPlayerBtn();
         populatePlayerListView();
         populateAchievementView();
@@ -86,6 +89,7 @@ public class GameConfigActivity extends AppCompatActivity {
             sc = new ScoreCalculator(currentGame.getNumPlayers(), currentGame.getFinalTotalScore(), currentGame.getScores());
             populatePlayerListView();
             populateAchievementView();
+            setUpEmptyState(sc.getNumPlayers());
         }
     }
 
@@ -113,6 +117,19 @@ public class GameConfigActivity extends AppCompatActivity {
                 finish();
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void setUpEmptyState(int numGames) {
+        ImageView emptyStateIcon = findViewById(R.id.ivEmptyStateGameConfigActivity);
+        TextView emptyStateDesc = findViewById(R.id.tvEmptyStateDescGameConfigActivity);
+
+        if (numGames == 0) {
+            emptyStateIcon.setVisibility(View.VISIBLE);
+            emptyStateDesc.setVisibility(View.VISIBLE);
+        } else {
+            emptyStateIcon.setVisibility(View.INVISIBLE);
+            emptyStateDesc.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -279,6 +296,7 @@ public class GameConfigActivity extends AppCompatActivity {
             sc.clearAll();
             populatePlayerListView();
             populateAchievementView();
+            setUpEmptyState(sc.getNumPlayers());
         });
     }
 
