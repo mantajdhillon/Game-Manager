@@ -83,7 +83,7 @@ public class GameConfigActivity extends AppCompatActivity {
         setUpClearBtn();
 
         // Editing a game configuration
-        if (getisEdit()) {
+        if (getIsEdit()) {
             currentGame = gameManager.getGame(getGameIndex());
             ab.setTitle(R.string.game_config_activity_edit_game);
             sc = new ScoreCalculator(currentGame.getNumPlayers(), currentGame.getFinalTotalScore(), currentGame.getScores());
@@ -111,7 +111,7 @@ public class GameConfigActivity extends AppCompatActivity {
                 startActivity(i);
                 return true;
             case R.id.action_delete:
-                if (getisEdit()) {
+                if (getIsEdit()) {
                     gameManager.removeGame(getGameIndex());
                 }
                 finish();
@@ -135,39 +135,35 @@ public class GameConfigActivity extends AppCompatActivity {
 
     private void setUpAddPlayerBtn() {
         FloatingActionButton newPlayer = findViewById(R.id.addPlayer);
-        newPlayer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder playerDialog = new AlertDialog.Builder(GameConfigActivity.this);
-                playerDialog.setTitle("Player Score:");
+        newPlayer.setOnClickListener(view -> {
+            AlertDialog.Builder playerDialog = new AlertDialog.Builder(GameConfigActivity.this);
+            playerDialog.setTitle(R.string.player_score_prompt);
 
-                final EditText playerScore = new EditText(GameConfigActivity.this);
-                playerScore.setInputType(InputType.TYPE_CLASS_NUMBER);
-                playerDialog.setView(playerScore);
+            final EditText playerScore = new EditText(GameConfigActivity.this);
+            playerScore.setInputType(InputType.TYPE_CLASS_NUMBER);
+            playerDialog.setView(playerScore);
 
-                playerDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        try {
-                            sc.addScore(Integer.parseInt(playerScore.getText().toString().trim()));
-                        } catch(Exception e) {
-                            Toast.makeText(GameConfigActivity.this, "Invalid Input", Toast.LENGTH_SHORT).show();
-                        }
-                        populatePlayerListView();
-                        populateAchievementView();
-                        setUpEmptyState(sc.getNumPlayers());
+            playerDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    try {
+                        sc.addScore(Integer.parseInt(playerScore.getText().toString().trim()));
+                    } catch(Exception e) {
+                        Toast.makeText(GameConfigActivity.this, R.string.invalid_input, Toast.LENGTH_SHORT).show();
                     }
-                });
+                    populatePlayerListView();
+                    populateAchievementView();
+                }
+            });
 
-                playerDialog.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
+            playerDialog.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
 
-                playerDialog.show();
-            }
+            playerDialog.show();
         });
     }
 
@@ -215,7 +211,7 @@ public class GameConfigActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 AlertDialog.Builder playerDialog = new AlertDialog.Builder(GameConfigActivity.this);
-                playerDialog.setTitle("Edit Player Score:");
+                playerDialog.setTitle(R.string.edit_player_score_prompt);
 
                 EditText playerScore = new EditText(GameConfigActivity.this);
                 playerScore.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -228,7 +224,7 @@ public class GameConfigActivity extends AppCompatActivity {
                         try {
                             sc.updateScore(position + 1, Integer.parseInt(playerScore.getText().toString().trim()));
                         } catch(Exception e) {
-                            Toast.makeText(GameConfigActivity.this, "Invalid Input", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(GameConfigActivity.this, R.string.invalid_input , Toast.LENGTH_SHORT).show();
                         }
                         populatePlayerListView();
                         populateAchievementView();
@@ -267,7 +263,7 @@ public class GameConfigActivity extends AppCompatActivity {
 
                 int sumScores = sc.getSumScores();
 
-                if (getisEdit()) {
+                if (getIsEdit()) {
                     currentGame.setNumPlayers(numPlayers);
                     currentGame.setFinalTotalScore(sumScores);
                     currentGame.setScores(sc.getScores());
@@ -287,7 +283,7 @@ public class GameConfigActivity extends AppCompatActivity {
                 finish();
 
             } else {
-                Toast.makeText(this, "Invalid input", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.invalid_input, Toast.LENGTH_SHORT).show();
             }
 
         });
@@ -320,12 +316,7 @@ public class GameConfigActivity extends AppCompatActivity {
         return getIntent().getIntExtra(EXTRA_GAME_INDEX, -1);
     }
 
-    private boolean getisEdit() {
+    private boolean getIsEdit() {
         return getIntent().getBooleanExtra(EXTRA_IS_EDIT, false);
-    }
-
-    private int getInt(EditText et) {
-        String intStr = et.getText().toString();
-        return Integer.parseInt(intStr);
     }
 }
