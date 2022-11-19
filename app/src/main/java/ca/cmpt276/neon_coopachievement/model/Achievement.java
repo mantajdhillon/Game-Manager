@@ -159,7 +159,7 @@ public class Achievement {
             case ONE:
                 s = new String[]{
                         "Horrible Hamburgers", "Terrible Tacos",
-                        "Bad Broccoli's", "Alright Apples", "Mediocre Mangoes",
+                        "Bad Broccolis", "Alright Apples", "Mediocre Mangoes",
                         "Okay Oranges", "Great Grapes", "Superb Sausages",
                         "Awesome Avocados", "Excellent Eggs"
                 };
@@ -168,7 +168,7 @@ public class Achievement {
                 s = new String[]{
                         "Nasty Neptunes", "Underwhelming Uranus'",
                         "Sucky Saturns", "Just enough Jupiters", "Moderate Mars'",
-                        "Endearing Earths", "Vigorous Venuses", "Marvelous Mercury's",
+                        "Endearing Earths", "Vigorous Venuses", "Marvelous Mercurys",
                         "Precious Plutos", "Stunning Suns"
                 };
                 break;
@@ -181,7 +181,7 @@ public class Achievement {
                 };
                 break;
             default:
-                s = new String[MAX_ACHIEVEMENT_RANK];
+                throw new RuntimeException("Invalid Theme");
         }
         this.achievementNames = s;
     }

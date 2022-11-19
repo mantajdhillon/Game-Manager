@@ -1,11 +1,13 @@
 package ca.cmpt276.neon_coopachievement;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.RadioButton;
 
 import ca.cmpt276.neon_coopachievement.model.Achievement;
@@ -19,6 +21,8 @@ public class ThemeSelectActivity extends AppCompatActivity {
 
         ActionBar ab = getSupportActionBar();
         ab.setTitle(R.string.theme_selection_title);
+        ab.setDisplayHomeAsUpEnabled(true);
+
 
         setupRadioGroup();
     }
@@ -41,5 +45,14 @@ public class ThemeSelectActivity extends AppCompatActivity {
     public static Intent makeIntent(Context c) {
         Intent intent = new Intent(c, ThemeSelectActivity.class);
         return intent;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
