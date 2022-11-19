@@ -1,26 +1,35 @@
 package ca.cmpt276.neon_coopachievement;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
 
 import ca.cmpt276.neon_coopachievement.model.Achievement;
 import ca.cmpt276.neon_coopachievement.model.Game;
 import ca.cmpt276.neon_coopachievement.model.GameCategory;
 import ca.cmpt276.neon_coopachievement.model.GameManager;
+import ca.cmpt276.neon_coopachievement.model.ScoreCalculator;
 
 /**
  * GameConfigActivity Class
@@ -47,8 +56,7 @@ public class GameConfigActivity extends AppCompatActivity {
     private GameManager gameManager;
     private Game currentGame;
 
-    private EditText etNumPlayers;
-    private EditText etSumScore;
+    private ScoreCalculator sc = new ScoreCalculator();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,33 +72,32 @@ public class GameConfigActivity extends AppCompatActivity {
         GameCategory gameCategory = GameCategory.getInstance();
         gameManager = gameCategory.getGameManager(getGameManagerIndex());
 
-        // Set delete button to invisible
-        Button deleteBtn = findViewById(R.id.btnDeleteGame);
-        deleteBtn.setVisibility(View.INVISIBLE);
-        deleteBtn.setEnabled(false);
-
+        setUpAddPlayerBtn();
+        populatePlayerListView();
+        populateAchievementView();
+        registerListClickCallback();
         setUpSaveBtn();
-        setUpTextView();
+        setUpClearBtn();
 
         // Editing a game configuration
         if (getisEdit()) {
             currentGame = gameManager.getGame(getGameIndex());
             ab.setTitle(R.string.game_config_activity_edit_game);
-            populateFields();
+            sc = new ScoreCalculator(currentGame.getNumPlayers(), currentGame.getFinalTotalScore(), currentGame.getScores());
+            populatePlayerListView();
             populateAchievementView();
-            setUpDeleteBtn();
         }
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_game_config, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        // add delete game config
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
@@ -99,72 +106,78 @@ public class GameConfigActivity extends AppCompatActivity {
                 Intent i = new Intent(GameConfigActivity.this, HelpActivity.class);
                 startActivity(i);
                 return true;
+            case R.id.action_delete:
+                if (getisEdit()) {
+                    gameManager.removeGame(getGameIndex());
+                }
+                finish();
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private void setUpTextView() {
-        etNumPlayers = findViewById(R.id.etNumPlayers);
-        etNumPlayers.addTextChangedListener(inputWatcher);
+    private void setUpAddPlayerBtn() {
+        FloatingActionButton newPlayer = findViewById(R.id.addPlayer);
+        newPlayer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder playerDialog = new AlertDialog.Builder(GameConfigActivity.this);
+                playerDialog.setTitle("Player Score:");
 
-        etSumScore = findViewById(R.id.etSumPlayerScores);
-        etSumScore.addTextChangedListener(inputWatcher);
-    }
+                final EditText playerScore = new EditText(GameConfigActivity.this);
+                playerScore.setInputType(InputType.TYPE_CLASS_NUMBER);
+                playerDialog.setView(playerScore);
 
-    private void setUpSaveBtn() {
-        Button saveBtn = findViewById(R.id.btnSaveGame);
+                playerDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        sc.addScore(Integer.parseInt(playerScore.getText().toString().trim()));
+                        populatePlayerListView();
+                        populateAchievementView();
+                    }
+                });
 
-        saveBtn.setOnClickListener(view -> {
+                playerDialog.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
 
-            try {
-                int numPlayers = getInt(etNumPlayers);
-                int sumScores = getInt(etSumScore);
-
-                if (getisEdit()) {
-                    currentGame.setNumPlayers(numPlayers);
-                    currentGame.setFinalTotalScore(sumScores);
-                    gameManager.updateEdits
-                            (gameManager.getPoorScoreIndividual(), gameManager.getGreatScoreIndividual());
-                }
-
-                // Make a new game
-                else {
-                    Game newGame = new Game(numPlayers, sumScores,
-                            gameManager.getPoorScoreIndividual(),
-                            gameManager.getGreatScoreIndividual(),
-                            HARD_CODED_DIFFICULTY);     // FIXME remove hardcoded difficulty
-                    gameManager.addGame(newGame);
-                }
-                finish();
-            } catch (Exception e) {
-                Toast.makeText(this, "Invalid input", Toast.LENGTH_SHORT).show();
+                playerDialog.show();
             }
         });
     }
 
-    private void populateFields() {
-        EditText etNumPlayers = findViewById((R.id.etNumPlayers));
-        etNumPlayers.setText(Integer.toString(currentGame.getNumPlayers()));
+    private void populatePlayerListView() {
+        ArrayList<String> players = new ArrayList<>();
+        for (int i = 0; i < sc.getNumPlayers(); i++) {
+            players.add(sc.toString(i));
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this,
+                R.layout.items,
+                players);
 
-        EditText etSumScore = findViewById((R.id.etSumPlayerScores));
-        etSumScore.setText(Integer.toString(currentGame.getFinalTotalScore()));
+        ListView playersListView = findViewById(R.id.playersList);
+        playersListView.setAdapter(adapter);
     }
 
     private void populateAchievementView() {
-        String strNumPlayers = etNumPlayers.getText().toString().trim();
-        String strSumScore = etSumScore.getText().toString().trim();
+
+        int numPlayers = sc.getNumPlayers();
+        int sumScores = sc.getSumScores();
 
         TextView tvAchieveGenerator = findViewById(R.id.tvAchieveGenerator);
 
-        if (!strNumPlayers.isEmpty() && !strSumScore.isEmpty()) {
+        if (numPlayers != 0) {
+
             Achievement achievements = new Achievement(
                     gameManager.getPoorScoreIndividual(),
                     gameManager.getGreatScoreIndividual(),
-                    Integer.parseInt(strNumPlayers),
-                    HARD_CODED_DIFFICULTY);     // FIXME remove hardcoded difficulty
+                    numPlayers, HARD_CODED_DIFFICULTY);
 
-            int rank = achievements.getHighestRank(Integer.parseInt(strSumScore));
+            int rank = achievements.getHighestRank(sumScores);
             String rankName = achievements.getAchievementName(rank);
 
             tvAchieveGenerator.setText(rankName);
@@ -173,13 +186,93 @@ public class GameConfigActivity extends AppCompatActivity {
         }
     }
 
-    private void setUpDeleteBtn() {
-        Button deleteBtn = findViewById(R.id.btnDeleteGame);
-        deleteBtn.setVisibility(View.VISIBLE);
-        deleteBtn.setEnabled(true);
-        deleteBtn.setOnClickListener(v -> {
-            gameManager.removeGame(getGameIndex());
-            finish();
+    private void registerListClickCallback() {
+        ListView playersListView = findViewById(R.id.playersList);
+        playersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                AlertDialog.Builder playerDialog = new AlertDialog.Builder(GameConfigActivity.this);
+                playerDialog.setTitle("Edit Player Score:");
+
+                EditText playerScore = new EditText(GameConfigActivity.this);
+                playerScore.setInputType(InputType.TYPE_CLASS_NUMBER);
+                playerDialog.setView(playerScore);
+
+                playerDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        sc.updateScore(position + 1, Integer.parseInt(playerScore.getText().toString().trim()));
+                        populatePlayerListView();
+                        populateAchievementView();
+                    }
+                });
+
+                playerDialog.setNeutralButton("CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                playerDialog.setNegativeButton("DELETE", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        sc.removeScore(position + 1);
+                        populatePlayerListView();
+                        populateAchievementView();
+                    }
+                });
+
+                playerDialog.show();
+            }
+        });
+    }
+
+    private void setUpSaveBtn() {
+        Button saveBtn = findViewById(R.id.btnSaveGame);
+
+        saveBtn.setOnClickListener(view -> {
+
+            int numPlayers = sc.getNumPlayers();
+
+            if (numPlayers != 0) {
+
+                int sumScores = sc.getSumScores();
+
+                if (getisEdit()) {
+                    currentGame.setNumPlayers(numPlayers);
+                    currentGame.setFinalTotalScore(sumScores);
+                    currentGame.setScores(sc.getScores());
+                    gameManager.updateEdits(
+                            gameManager.getPoorScoreIndividual(),
+                            gameManager.getGreatScoreIndividual());
+                }
+
+                // Make a new game
+                else {
+                    Game newGame = new Game(numPlayers, sumScores,
+                            gameManager.getPoorScoreIndividual(),
+                            gameManager.getGreatScoreIndividual(),
+                            sc.getScores(), HARD_CODED_DIFFICULTY);
+                    gameManager.addGame(newGame);
+                }
+                finish();
+
+            } else {
+                Toast.makeText(this, "Invalid input", Toast.LENGTH_SHORT).show();
+            }
+
+        });
+    }
+
+    private void setUpClearBtn() {
+        Button clearBtn = findViewById(R.id.btnClear);
+
+        clearBtn.setOnClickListener(view -> {
+            sc.clearAll();
+            populatePlayerListView();
+            populateAchievementView();
         });
     }
 
@@ -207,24 +300,4 @@ public class GameConfigActivity extends AppCompatActivity {
         String intStr = et.getText().toString();
         return Integer.parseInt(intStr);
     }
-
-    private final TextWatcher inputWatcher = new TextWatcher() {
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            try {
-                populateAchievementView();
-            } catch (Exception e) {
-                Toast.makeText(GameConfigActivity.this, "Not a valid integer", Toast.LENGTH_SHORT).show();
-            }
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-        }
-    };
 }
