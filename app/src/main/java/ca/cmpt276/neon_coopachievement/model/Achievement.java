@@ -1,5 +1,7 @@
 package ca.cmpt276.neon_coopachievement.model;
 
+import androidx.annotation.NonNull;
+
 /**
  * Achievements Class:
  * <p>
@@ -9,6 +11,20 @@ package ca.cmpt276.neon_coopachievement.model;
  */
 public class Achievement {
 
+    //Enum to denote the Theme for the Achievements
+    public enum Theme {
+        ONE("one"), TWO("two"), THREE("three");
+        private final String numberString;
+        Theme(String string) {
+            this.numberString = string;
+        }
+        @NonNull
+        @Override
+        public String toString(){
+            return numberString;
+        }
+    }
+
     private static final byte MIN_ACHIEVEMENT_RANK = 1;
     private static final byte MAX_ACHIEVEMENT_RANK = 10;
     private static final double EASY_MULTIPLIER = 0.75;
@@ -16,16 +32,16 @@ public class Achievement {
     private static final double HARD_MULTIPLIER = 1.25;
 
     private final double[] rankBoundaries;
-    private final String[] achievementNames;
+    private String[] achievementNames;
 
     // Game variables needed for making score
     private final int numPlayers;
     private final int low;
     private final int high;
     private Game.Difficulty difficulty;
-    private static int theme;
+    private static Theme theme;
 
-    public Achievement(int low, int high, int numPlayers, Game.Difficulty diff, int theme) {
+    public Achievement(int low, int high, int numPlayers, Game.Difficulty diff) {
         // Error handling for low and high
         if (low > high) {
             throw new RuntimeException("Low score can not be greater than high score");
@@ -36,27 +52,18 @@ public class Achievement {
         }
 
         // update variables
-        this.theme = theme;
         this.low = low;
         this.high = high;
         this.numPlayers = numPlayers;
         this.difficulty = diff;
         this.rankBoundaries = new double[MAX_ACHIEVEMENT_RANK - 1];
-        this.achievementNames = changeAchievementNames(theme);
+        changeAchievementNames();
 
         // Initialize boundaries for different achievements
         initializeRankBoundaries(low, high, numPlayers, diff);
     }
 
-    // todo test
     private void initializeRankBoundaries(int low, int high, int numPlayers, Game.Difficulty difficulty) {
-        // todo, repeated code?
-        if (low > high) {
-            throw new RuntimeException("Low score can not be greater than high score");
-        } else if (numPlayers < 0) {
-            throw new RuntimeException("Invalid number of players");
-        }
-
         final double MULTIPLIER = getDifficultlyMultiplier(difficulty);
 
         double difference = (double) (high - low) / (MAX_ACHIEVEMENT_RANK - 2);
@@ -146,51 +153,48 @@ public class Achievement {
     }
 
     //Changes the achievements names based on the theme 1-3 which are selected by the user.
-    public String[] changeAchievementNames(int theme) {
-        if (theme < 1 || theme > 3) {
-            throw new IllegalArgumentException("The theme must be 1, 2, or 3");
-        }
+    public void changeAchievementNames() {
         String[] s;
-        if (theme == 1) {
-            s = new String[]{
-                    "Horrible Hamburgers", "Terrible Tacos",
-                    "Bad Broccoli's", "Alright Apples", "Mediocre Mangoes",
-                    "Okay Oranges", "Great Grapes", "Superb Sausages",
-                    "Awesome Avocados", "Excellent Eggs"
-            };
+        switch (Achievement.theme) {
+            case ONE:
+                s = new String[]{
+                        "Horrible Hamburgers", "Terrible Tacos",
+                        "Bad Broccolis", "Alright Apples", "Mediocre Mangoes",
+                        "Okay Oranges", "Great Grapes", "Superb Sausages",
+                        "Awesome Avocados", "Excellent Eggs"
+                };
+                break;
+            case TWO:
+                s = new String[]{
+                        "Nasty Neptunes", "Underwhelming Uranus'",
+                        "Sucky Saturns", "Just enough Jupiters", "Moderate Mars'",
+                        "Endearing Earths", "Vigorous Venuses", "Marvelous Mercurys",
+                        "Precious Plutos", "Stunning Suns"
+                };
+                break;
+            case THREE:
+                s = new String[]{
+                        "Revolting Reds", "Obnoxious Oranges",
+                        "Yucky Yellows", "Good Enough Greens", "Not Bad Blues",
+                        "Inferior Indigos", "Valuable Violets", "Pretty Pinks",
+                        "Breathtaking Browns", "Gorgeous Greys"
+                };
+                break;
+            default:
+                throw new RuntimeException("Invalid Theme");
         }
-        else if (theme == 2) {
-            s = new String[]{
-                    "Nasty Neptunes", "Underwhelming Uranus'",
-                    "Sucky Saturns", "Just enough Jupiters", "Moderate Mars'",
-                    "Endearing Earths", "Vigorous Venuses", "Marvelous Mercury's",
-                    "Precious Plutos", "Stunning Suns"
-            };
-        }
-        else {
-            s = new String[]{
-                    "Revolting Reds", "Obnoxious Oranges",
-                    "Yucky Yellows", "Good Enough Greens", "Not Bad Blues",
-                    "Inferior Indigos", "Valuable Violets", "Pretty Pinks",
-                    "Breathtaking Browns", "Gorgeous Greys"
-            };
-        }
-        return s;
+        this.achievementNames = s;
     }
 
-    public String getTheme() {
-        if (theme == 1) {
-            return "one";
-        }
-        else if (theme == 2) {
-            return "two";
-        }
-        else {
-            return "three";
-        }
+    public static String getThemeString() {
+        return theme.toString();
     }
 
-    public static void setTheme(int theme) {
-        Achievement.theme = theme;
+    public static void setTheme(Theme newTheme) {
+        theme = newTheme;
+    }
+
+    public static Theme getTheme() {
+        return theme;
     }
 }

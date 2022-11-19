@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 /**
  * Game Class:
@@ -28,12 +29,18 @@ public class Game {
     private String time;
     private Difficulty difficulty;
 
-    public Game(int numPlayers, int finalTotalScore, int poorScore, int greatScore, Difficulty difficulty) {
+    private ArrayList<Integer> scores;
+
+    public Game(int numPlayers, int finalTotalScore, int poorScore, int greatScore, ArrayList<Integer> scoresList, Difficulty difficulty) {
         this.numPlayers = numPlayers;
         this.finalTotalScore = finalTotalScore;
-        this.achievements = new Achievement(poorScore, greatScore, numPlayers, difficulty, 1);     // TODO TEST
+        this.achievements = new Achievement(poorScore, greatScore, numPlayers, difficulty);     // TODO TEST
         this.rank = achievements.getHighestRank(finalTotalScore);
         this.difficulty = difficulty;
+        this.scores = new ArrayList<>();
+        for (int i = 0; i < numPlayers; i++) {
+            this.scores.add(scoresList.get(i));
+        }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
         this.time = LocalDateTime.now().format(formatter);
@@ -47,12 +54,22 @@ public class Game {
         return finalTotalScore;
     }
 
+    public ArrayList<Integer> getScores() {
+        return scores;
+    }
+
     public void setNumPlayers(int numPlayers) {
         this.numPlayers = numPlayers;
     }
 
     public void setFinalTotalScore(int finalTotalScore) {
         this.finalTotalScore = finalTotalScore;
+    }
+
+    public void setScores(ArrayList<Integer> scoresList) {
+        for (int i = 0; i < numPlayers; i ++) {
+            this.scores.add(i, scoresList.get(i));
+        }
     }
 
     public void setTime(String time) {
@@ -76,7 +93,11 @@ public class Game {
     }
 
     public String getAchievementTheme() {
-        return this.achievements.getTheme();
+        return this.achievements.getThemeString();
+    }
+
+    public void updateAchievements() {
+        achievements.changeAchievementNames();
     }
 
     @NonNull

@@ -84,7 +84,7 @@ public class GameManager {
         for (int i = 0; i < games.size(); i++) {
             Game oldGame = games.get(i);
             Game newGame = new Game(oldGame.getNumPlayers(), oldGame.getFinalTotalScore(),
-                    poorScoreNew, greatScoreNew, oldGame.getDifficulty());
+                    poorScoreNew, greatScoreNew, oldGame.getScores(), oldGame.getDifficulty());
             newGame.setTime(oldGame.getTime());
             games.set(i, newGame);
         }
