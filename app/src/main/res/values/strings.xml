@@ -45,4 +45,7 @@
     <string name="theme_1">Food Theme</string>
     <string name="theme_2">Space Theme</string>
     <string name="theme_3">Colours Theme</string>
+    <string name="player_score_prompt">Player Score:</string>
+    <string name="invalid_input">Invalid Input</string>
+    <string name="edit_player_score_prompt">Edit Player Score:</string>
 </resources>
