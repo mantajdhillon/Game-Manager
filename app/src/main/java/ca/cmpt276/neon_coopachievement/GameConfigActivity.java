@@ -172,11 +172,10 @@ public class GameConfigActivity extends AppCompatActivity {
 
         if (numPlayers != 0) {
 
-
             Achievement achievements = new Achievement(
                     gameManager.getPoorScoreIndividual(),
                     gameManager.getGreatScoreIndividual(),
-                    numPlayers);
+                    numPlayers, HARD_CODED_DIFFICULTY);
 
             int rank = achievements.getHighestRank(sumScores);
             String rankName = achievements.getAchievementName(rank);
@@ -255,7 +254,7 @@ public class GameConfigActivity extends AppCompatActivity {
                     Game newGame = new Game(numPlayers, sumScores,
                             gameManager.getPoorScoreIndividual(),
                             gameManager.getGreatScoreIndividual(),
-                            sc.getScores());
+                            sc.getScores(), HARD_CODED_DIFFICULTY);
                     gameManager.addGame(newGame);
                 }
                 finish();
