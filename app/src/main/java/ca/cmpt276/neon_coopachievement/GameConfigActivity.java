@@ -8,10 +8,12 @@ import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewDebug;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -72,6 +74,7 @@ public class GameConfigActivity extends AppCompatActivity {
         GameCategory gameCategory = GameCategory.getInstance();
         gameManager = gameCategory.getGameManager(getGameManagerIndex());
 
+        setUpEmptyState(sc.getNumPlayers());
         setUpAddPlayerBtn();
         populatePlayerListView();
         populateAchievementView();
@@ -86,8 +89,11 @@ public class GameConfigActivity extends AppCompatActivity {
             sc = new ScoreCalculator(currentGame.getNumPlayers(), currentGame.getFinalTotalScore(), currentGame.getScores());
             populatePlayerListView();
             populateAchievementView();
+            setUpEmptyState(sc.getNumPlayers());
         }
+
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -116,6 +122,19 @@ public class GameConfigActivity extends AppCompatActivity {
         }
     }
 
+    private void setUpEmptyState(int numGames) {
+        ImageView emptyStateIcon = findViewById(R.id.ivEmptyStateGameConfigActivity);
+        TextView emptyStateDesc = findViewById(R.id.tvEmptyStateDescGameConfigActivity);
+
+        if (numGames == 0) {
+            emptyStateIcon.setVisibility(View.VISIBLE);
+            emptyStateDesc.setVisibility(View.VISIBLE);
+        } else {
+            emptyStateIcon.setVisibility(View.INVISIBLE);
+            emptyStateDesc.setVisibility(View.INVISIBLE);
+        }
+    }
+
     private void setUpAddPlayerBtn() {
         FloatingActionButton newPlayer = findViewById(R.id.addPlayer);
         newPlayer.setOnClickListener(new View.OnClickListener() {
@@ -131,9 +150,15 @@ public class GameConfigActivity extends AppCompatActivity {
                 playerDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        sc.addScore(Integer.parseInt(playerScore.getText().toString().trim()));
+                        try {
+                            sc.addScore(Integer.parseInt(playerScore.getText().toString().trim()));
+                        }
+                        catch (Exception e){
+                            Toast.makeText(GameConfigActivity.this,"Invalid score entry", Toast.LENGTH_SHORT).show();
+                        }
                         populatePlayerListView();
                         populateAchievementView();
+                        setUpEmptyState(sc.getNumPlayers());
                     }
                 });
 
@@ -197,6 +222,7 @@ public class GameConfigActivity extends AppCompatActivity {
 
                 EditText playerScore = new EditText(GameConfigActivity.this);
                 playerScore.setInputType(InputType.TYPE_CLASS_NUMBER);
+                playerScore.setText(Integer.toString(sc.getScore(position+1)));
                 playerDialog.setView(playerScore);
 
                 playerDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -290,6 +316,7 @@ public class GameConfigActivity extends AppCompatActivity {
             sc.clearAll();
             populatePlayerListView();
             populateAchievementView();
+            setUpEmptyState(sc.getNumPlayers());
         });
     }
 

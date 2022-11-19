@@ -39,6 +39,7 @@
     <string name="achievement_display">Achievement:</string>
     <string name="IconFileName">_level_</string>
     <string name="defType">drawable</string>
+    <string name="achievements_settings">Achievements Settings</string>
     <string name="theme_selection">theme_selection</string>
     <string name="theme_selection_title">Select Achievement Theme</string>
     <string name="select_theme_prompt">Choose between the following themes for your achievements:</string>
