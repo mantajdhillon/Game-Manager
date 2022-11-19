@@ -104,7 +104,7 @@ public class AchievementActivity extends AppCompatActivity {
                 getNumPlayers(), getDifficulty());
 
         for (int i = 0; i < MAX_ACHIEVEMENTS; i++) {
-            String filename = getString(R.string.IconFileName) + (i + 1);
+            String filename = achievements.getThemeString() + getString(R.string.IconFileName) + (i + 1);
             int id = getResources().getIdentifier(filename, getString(R.string.defType), this.getPackageName());
             achievementList.add(new AchievementListElement(achievements.getAchievementString(i), id));
         }

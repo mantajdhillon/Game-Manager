@@ -1,5 +1,7 @@
 package ca.cmpt276.neon_coopachievement.model;
 
+import androidx.annotation.NonNull;
+
 /**
  * Achievements Class:
  * <p>
@@ -9,6 +11,20 @@ package ca.cmpt276.neon_coopachievement.model;
  */
 public class Achievement {
 
+    //Enum to denote the Theme for the Achievements
+    public enum Theme {
+        ONE("one"), TWO("two"), THREE("three");
+        private final String numberString;
+        Theme(String string) {
+            this.numberString = string;
+        }
+        @NonNull
+        @Override
+        public String toString(){
+            return numberString;
+        }
+    }
+
     private static final byte MIN_ACHIEVEMENT_RANK = 1;
     private static final byte MAX_ACHIEVEMENT_RANK = 10;
     private static final double EASY_MULTIPLIER = 0.75;
@@ -16,13 +32,14 @@ public class Achievement {
     private static final double HARD_MULTIPLIER = 1.25;
 
     private final double[] rankBoundaries;
-    private final String[] achievementNames;
+    private String[] achievementNames;
 
     // Game variables needed for making score
     private final int numPlayers;
     private final int low;
     private final int high;
     private Game.Difficulty difficulty;
+    private static Theme theme;
 
     public Achievement(int low, int high, int numPlayers, Game.Difficulty diff) {
         // Error handling for low and high
@@ -40,12 +57,7 @@ public class Achievement {
         this.numPlayers = numPlayers;
         this.difficulty = diff;
         this.rankBoundaries = new double[MAX_ACHIEVEMENT_RANK - 1];
-        this.achievementNames = new String[]{
-                "Horrible Hamburgers", "Terrible Tacos",
-                "Bad Broccoli's", "Alright Apples", "Mediocre Mangoes",
-                "Okay Oranges", "Great Grapes", "Superb Sausages",
-                "Awesome Avocados", "Excellent Eggs"
-        };
+        changeAchievementNames();
 
         // Initialize boundaries for different achievements
         initializeRankBoundaries(low, high, numPlayers, diff);
@@ -138,5 +150,51 @@ public class Achievement {
                     + (int) rankBoundaries[rankIdx]
                     + "): " + achievementNames[rankIdx];
         }
+    }
+
+    //Changes the achievements names based on the theme 1-3 which are selected by the user.
+    public void changeAchievementNames() {
+        String[] s;
+        switch (Achievement.theme) {
+            case ONE:
+                s = new String[]{
+                        "Horrible Hamburgers", "Terrible Tacos",
+                        "Bad Broccolis", "Alright Apples", "Mediocre Mangoes",
+                        "Okay Oranges", "Great Grapes", "Superb Sausages",
+                        "Awesome Avocados", "Excellent Eggs"
+                };
+                break;
+            case TWO:
+                s = new String[]{
+                        "Nasty Neptunes", "Underwhelming Uranus'",
+                        "Sucky Saturns", "Just enough Jupiters", "Moderate Mars'",
+                        "Endearing Earths", "Vigorous Venuses", "Marvelous Mercurys",
+                        "Precious Plutos", "Stunning Suns"
+                };
+                break;
+            case THREE:
+                s = new String[]{
+                        "Revolting Reds", "Obnoxious Oranges",
+                        "Yucky Yellows", "Good Enough Greens", "Not Bad Blues",
+                        "Inferior Indigos", "Valuable Violets", "Pretty Pinks",
+                        "Breathtaking Browns", "Gorgeous Greys"
+                };
+                break;
+            default:
+                throw new RuntimeException("Invalid Theme");
+        }
+        this.achievementNames = s;
+    }
+
+    public static String getThemeString() {
+        return theme.toString();
+    }
+
+    public static void setTheme(Theme newTheme) {
+        theme = newTheme;
+    }
+
+    public static Theme getTheme() {
+        return theme;
     }
 }
