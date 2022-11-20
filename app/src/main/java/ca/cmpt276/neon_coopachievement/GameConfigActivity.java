@@ -3,6 +3,7 @@ package ca.cmpt276.neon_coopachievement;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -300,9 +301,8 @@ public class GameConfigActivity extends AppCompatActivity {
                 numPlayers, HARD_CODED_DIFFICULTY);
 
         int rank = achievements.getHighestRank(sumScores);
-        String rankName = achievements.getAchievementName(rank);
 
-        this.achievement = "Your rank is: " + rankName;
+        this.achievement = achievements.getAchievementName(rank);
 
 
         // Make the fragment manager
@@ -311,6 +311,11 @@ public class GameConfigActivity extends AppCompatActivity {
 
         // Show dialog
         achievementDialog.show(manager, "Achievement Dialog");
+
+        // Make sound
+        // Cheering audio downloaded from here: https://mixkit.co/free-sound-effects/applause/
+        MediaPlayer cheering = MediaPlayer.create(this, R.raw.cheering);
+        cheering.start();
     }
 
 
