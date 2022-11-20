@@ -30,12 +30,11 @@ public class AchievementFragment extends AppCompatDialogFragment {
         // Return alert dialog
         AlertDialog.Builder achievementBuilder = new AlertDialog.Builder(getActivity());
         achievementBuilder.setPositiveButton(android.R.string.ok, listener);
+        achievementBuilder.setView(v);
+        achievementBuilder.setTitle("Great job!");
+        achievementBuilder.setMessage(GameConfigActivity.achievement);
 
         AlertDialog achievementDialog = achievementBuilder.create();
-
-        achievementDialog.setTitle("Great job!");
-        achievementDialog.setMessage(GameConfigActivity.achievement);
-        achievementDialog.setView(v);
 
         return achievementDialog;
     }

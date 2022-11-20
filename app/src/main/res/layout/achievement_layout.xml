@@ -7,17 +7,15 @@
 
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="368dp"
-        android:layout_height="351dp"
-        android:background="#E91E63"
-        android:backgroundTint="#00BCD4"
+        android:id="@+id/ivAchievementImage"
+        android:layout_width="276dp"
+        android:layout_height="287dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.627"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.329"
-        tools:srcCompat="@drawable/one_level_1" />
+        app:layout_constraintVertical_bias="0.367"
+        app:srcCompat="@drawable/neon_achievement" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
