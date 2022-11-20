@@ -10,16 +10,20 @@ public class ScoreCalculator {
 
     public ScoreCalculator() {
         this.numPlayers = 0;
+        this.sumScores = 0;
         this.scores = new ArrayList<>();
     }
 
-    public ScoreCalculator(int numPlayers, int sumScores, ArrayList<Integer> scoresList) {
-        this.numPlayers = numPlayers;
-        this.sumScores = sumScores;
-        this.scores = new ArrayList<>();
-        for (int i = 0; i < numPlayers; i++) {
-            this.scores.add(scoresList.get(i));
-            System.out.println();
+    public void setScores(ArrayList<Integer> scoresList) {
+        if (scoresList == null) {
+            throw new IllegalArgumentException("Invalid list of scores");
+        } else {
+            this.numPlayers = scoresList.size();
+            this.scores = new ArrayList<>();
+            for (int i = 0; i < numPlayers; i++) {
+                this.scores.add(scoresList.get(i));
+            }
+            calculateSum();
         }
     }
 
@@ -28,25 +32,43 @@ public class ScoreCalculator {
     }
 
     public void addScore(int score) {
-        scores.add(score);
-        numPlayers++;
-        calculateSum();
+        if (score < 0) {
+            throw new IllegalArgumentException("Invalid score");
+        } else {
+            scores.add(score);
+            numPlayers++;
+            calculateSum();
+        }
     }
 
     public void updateScore(int player, int score) {
-        scores.remove(player - 1);
-        scores.add(player - 1, score);
-        calculateSum();
+        if (player <= 0 || player > numPlayers) {
+            throw new IllegalArgumentException("Invalid player");
+        } else if (score < 0) {
+            throw new IllegalArgumentException("Invalid score");
+        } else {
+            scores.remove(player - 1);
+            scores.add(player - 1, score);
+            calculateSum();
+        }
     }
 
     public void removeScore(int player) {
-        scores.remove(player - 1);
-        numPlayers--;
-        calculateSum();
+        if (player <= 0  || player > numPlayers) {
+            throw new IllegalArgumentException("Invalid player");
+        } else {
+            scores.remove(player - 1);
+            numPlayers--;
+            calculateSum();
+        }
     }
 
     public int getScore(int player) {
-        return scores.get(player-1);
+        if (player <= 0 || player > numPlayers) {
+            throw new IllegalArgumentException("Invalid player");
+        } else {
+            return scores.get(player - 1);
+        }
     }
 
     public ArrayList<Integer> getScores() {
@@ -66,11 +88,16 @@ public class ScoreCalculator {
 
     public void clearAll() {
         numPlayers = 0;
+        sumScores = 0;
         scores = new ArrayList<>();
     }
 
     // takes in player - 1
     public String toString(int index) {
-        return "Player " + (index + 1) + ": " + scores.get(index);
+        if (index < 0 || index >= numPlayers) {
+            throw new IllegalArgumentException("Invalid index");
+        } else {
+            return "Player " + (index + 1) + ": " + scores.get(index);
+        }
     }
 }
