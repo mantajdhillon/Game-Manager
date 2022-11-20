@@ -13,6 +13,7 @@ import java.util.ArrayList;
 public class GameCategory {
     private static GameCategory instance;
     private final ArrayList<GameManager> gameManagerList;
+    private Theme currentTheme = Theme.ONE;
 
     private GameCategory() {
         gameManagerList = new ArrayList<>();
@@ -44,5 +45,13 @@ public class GameCategory {
 
     public void removeGameManager(int toRemove) {
         this.gameManagerList.remove(toRemove);
+    }
+
+    public Theme getCurrentTheme() {
+        return currentTheme;
+    }
+
+    public void setCurrentTheme(Theme currentTheme) {
+        this.currentTheme = currentTheme;
     }
 }

@@ -10,21 +10,6 @@ import androidx.annotation.NonNull;
  *   the good score, bad score, and the # of players from the game.
  */
 public class Achievement {
-
-    //Enum to denote the Theme for the Achievements
-    public enum Theme {
-        ONE("one"), TWO("two"), THREE("three");
-        private final String numberString;
-        Theme(String string) {
-            this.numberString = string;
-        }
-        @NonNull
-        @Override
-        public String toString(){
-            return numberString;
-        }
-    }
-
     private static final byte MIN_ACHIEVEMENT_RANK = 1;
     private static final byte MAX_ACHIEVEMENT_RANK = 10;
     private static final double EASY_MULTIPLIER = 0.75;
@@ -39,7 +24,6 @@ public class Achievement {
     private final int low;
     private final int high;
     private Game.Difficulty difficulty;
-    private static Theme theme;
 
     public Achievement(int low, int high, int numPlayers, Game.Difficulty diff) {
         // Error handling for low and high
@@ -51,7 +35,7 @@ public class Achievement {
             throw new RuntimeException("Difficulty can not be null");
         }
 
-        // update variables
+        // Update variables
         this.low = low;
         this.high = high;
         this.numPlayers = numPlayers;
@@ -155,7 +139,7 @@ public class Achievement {
     //Changes the achievements names based on the theme 1-3 which are selected by the user.
     public void changeAchievementNames() {
         String[] s;
-        switch (Achievement.theme) {
+        switch (GameCategory.getInstance().getCurrentTheme()) {
             case ONE:
                 s = new String[]{
                         "Horrible Hamburgers", "Terrible Tacos",
@@ -184,17 +168,5 @@ public class Achievement {
                 throw new RuntimeException("Invalid Theme");
         }
         this.achievementNames = s;
-    }
-
-    public static String getThemeString() {
-        return theme.toString();
-    }
-
-    public static void setTheme(Theme newTheme) {
-        theme = newTheme;
-    }
-
-    public static Theme getTheme() {
-        return theme;
     }
 }

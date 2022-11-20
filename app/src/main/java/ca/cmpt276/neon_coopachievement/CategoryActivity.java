@@ -20,6 +20,7 @@ import java.util.ArrayList;
 
 import ca.cmpt276.neon_coopachievement.model.Achievement;
 import ca.cmpt276.neon_coopachievement.model.GameCategory;
+import ca.cmpt276.neon_coopachievement.model.Theme;
 
 /**
  * CategoryActivity Class
@@ -35,7 +36,6 @@ public class CategoryActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Achievement.setTheme(Achievement.Theme.ONE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
 
