@@ -9,11 +9,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import ca.cmpt276.neon_coopachievement.model.Achievement;
 import ca.cmpt276.neon_coopachievement.model.GameCategory;
 import ca.cmpt276.neon_coopachievement.model.Theme;
 
+/**
+ * Theme Select Activity
+ *
+ * - Changes theme based on click of radio buttons
+ * - Loads old theme from Game Category Manager
+ */
 public class ThemeSelectActivity extends AppCompatActivity {
 
     @Override
@@ -25,7 +32,6 @@ public class ThemeSelectActivity extends AppCompatActivity {
         ab.setTitle(R.string.theme_selection_title);
         ab.setDisplayHomeAsUpEnabled(true);
 
-
         setupRadioGroup();
     }
 
@@ -33,20 +39,25 @@ public class ThemeSelectActivity extends AppCompatActivity {
         setRadioButtonListeners(R.id.radioTheme1, Theme.ONE);
         setRadioButtonListeners(R.id.radioTheme2, Theme.TWO);
         setRadioButtonListeners(R.id.radioTheme3, Theme.THREE);
-
     }
 
     private void setRadioButtonListeners(int btnId, Theme theme) {
         RadioButton themeChoice = findViewById(btnId);
-        if (GameCategory.currentTheme == theme) {
+        if (GameCategory.getInstance().getCurrentTheme() == theme) {
             themeChoice.setChecked(true);
         }
-        themeChoice.setOnClickListener(v -> GameCategory.currentTheme = theme);
+
+        themeChoice.setOnClickListener(v -> {
+                    GameCategory.getInstance().setCurrentTheme(theme);
+
+                    // Save date for SharedPreferences
+                    CategoryActivity.saveCategoryState();
+                }
+        );
     }
 
     public static Intent makeIntent(Context c) {
-        Intent intent = new Intent(c, ThemeSelectActivity.class);
-        return intent;
+        return new Intent(c, ThemeSelectActivity.class);
     }
 
     @Override

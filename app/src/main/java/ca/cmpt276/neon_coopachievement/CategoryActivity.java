@@ -44,7 +44,7 @@ public class CategoryActivity extends AppCompatActivity {
         ab.setTitle(R.string.category_config_activity_title);
 
         saveState = new CategorySaver(this);
-        gameCategory = GameCategory.getInstance();
+            gameCategory = GameCategory.getInstance();
 
         setUpScreen();
     }
