@@ -83,7 +83,7 @@ public class GameConfigActivity extends AppCompatActivity {
         if (getisEdit()) {
             currentGame = gameManager.getGame(getGameIndex());
             ab.setTitle(R.string.game_config_activity_edit_game);
-            sc = new ScoreCalculator(currentGame.getNumPlayers(), currentGame.getFinalTotalScore(), currentGame.getScores());
+            sc.setScores(currentGame.getScores());
             populatePlayerListView();
             populateAchievementView();
         }
