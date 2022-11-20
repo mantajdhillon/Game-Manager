@@ -105,15 +105,17 @@ public class Game {
         return this.achievements.getThemeString();
     }
 
-    public void updateAchievements() {
+    public void updateAchievements(Difficulty difficulty) {
         achievements.changeAchievementNames();
+        achievements.changeDifficulty(difficulty);
     }
 
     @NonNull
     @Override
     public String toString() {
         return numPlayers + " player(s) - " + time + "\n"
-                + "Total score: " + finalTotalScore + "\n"
-                + "Rank #" + rank + ": " + achievements.getAchievementName(rank);
+                + "Total score: " + finalTotalScore + "\n" +
+                "Difficulty: " + difficulty.toString() + "\n" +
+                "Rank #" + rank + ": " + achievements.getAchievementName(rank);
     }
 }

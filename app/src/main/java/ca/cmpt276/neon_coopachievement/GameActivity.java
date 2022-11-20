@@ -262,7 +262,7 @@ public class GameActivity extends AppCompatActivity {
         listGames.clear();
         for (int i = 0; i < gameManager.size(); i++) {
             Game g = gameManager.getGame(i);
-            g.updateAchievements();
+            g.updateAchievements(g.getDifficulty());
             String filename = g.getAchievementTheme() + getString(R.string.IconFileName) + g.getRank();
             int id = getResources().getIdentifier(filename, getString(R.string.defType), this.getPackageName());
             listGames.add(new GameListElement(g.toString(), id));
