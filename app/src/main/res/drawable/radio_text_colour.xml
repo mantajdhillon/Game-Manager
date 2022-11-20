@@ -5,6 +5,6 @@
         android:color="@color/white"/>
 
     <item android:state_checked="false"
-        android:color="@color/purple_200"/>
+        android:color="@color/medium_pink"/>
 
 </selector>
