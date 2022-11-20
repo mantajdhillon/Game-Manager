@@ -13,9 +13,11 @@ import java.util.ArrayList;
 public class GameCategory {
     private static GameCategory instance;
     private final ArrayList<GameManager> gameManagerList;
+    public static Theme currentTheme;
 
     private GameCategory() {
         gameManagerList = new ArrayList<>();
+        currentTheme = Theme.ONE;
     }
 
     public static GameCategory getInstance() {

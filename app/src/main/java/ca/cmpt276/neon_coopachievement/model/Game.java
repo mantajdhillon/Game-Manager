@@ -101,9 +101,9 @@ public class Game {
         this.difficulty = difficulty;
     }
 
-    public String getAchievementTheme() {
-        return this.achievements.getThemeString();
-    }
+//    public String getAchievementTheme() {
+//        return this.achievements.getThemeString();
+//    }
 
     public void updateAchievements() {
         achievements.changeAchievementNames();
