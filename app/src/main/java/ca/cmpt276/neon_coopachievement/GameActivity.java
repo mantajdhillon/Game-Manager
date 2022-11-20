@@ -258,6 +258,7 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+
     private void populateGamesList() {
         listGames.clear();
         for (int i = 0; i < gameManager.size(); i++) {
