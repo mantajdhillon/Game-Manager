@@ -1,9 +1,10 @@
 package ca.cmpt276.neon_coopachievement;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +20,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -53,6 +60,8 @@ public class GameActivity extends AppCompatActivity {
 
     List<GameActivity.GameListElement> listGames = new ArrayList<>();
 
+    private int numPlayers;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,8 +71,6 @@ public class GameActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
 
-        updateLaunchAchievementUI(View.INVISIBLE, false);
-
         gameManager = gameCategory.getGameManager(getGameManagerIndex());
 
         populateGamesList();
@@ -72,20 +79,6 @@ public class GameActivity extends AppCompatActivity {
         setUpEmptyState(gameManager.size());
         setupAddGameBtn();
         setupViewAchievementsBtn();
-    }
-
-    // Sets up UI elements to launch achievements page
-    private void updateLaunchAchievementUI(int visibility, boolean isEnabled) {
-        TextView numPlayersMsg = findViewById(R.id.numPlayersMsg);
-        numPlayersMsg.setVisibility(visibility);
-
-        EditText numPlayersInput = findViewById(R.id.numPlayersInput);
-        numPlayersInput.setEnabled(isEnabled);
-        numPlayersInput.setVisibility(visibility);
-
-        Button goBtn = findViewById(R.id.gotoAchievements);
-        goBtn.setEnabled(isEnabled);
-        goBtn.setVisibility(visibility);
     }
 
     private void generateGamesList() {
@@ -152,67 +145,46 @@ public class GameActivity extends AppCompatActivity {
     private void setupViewAchievementsBtn() {
         Button viewAchievements = findViewById(R.id.viewAchievementsBtn);
         viewAchievements.setOnClickListener(v -> {
-            viewAchievements.setEnabled(false);
-            viewAchievements.setVisibility(View.INVISIBLE);
+            AlertDialog.Builder achievementDialog = new AlertDialog.Builder(GameActivity.this);
+            achievementDialog.setTitle("Number of Players:");
 
-            // Disable floating action bar
-            FloatingActionButton newGame = findViewById(R.id.addGameBtn);
-            newGame.setEnabled(false);
+            final EditText etNumPlayers = new EditText(GameActivity.this);
+            etNumPlayers.setInputType(InputType.TYPE_CLASS_NUMBER);
+            achievementDialog.setView(etNumPlayers);
 
-            updateLaunchAchievementUI(View.VISIBLE, true);
-            setupGoAchievementsBtn();
-        });
-    }
+            achievementDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    try {
+                        numPlayers = Integer.parseInt(etNumPlayers.getText().toString().trim());
+                        if (numPlayers <= 0) {
+                            Toast.makeText(GameActivity.this, R.string.invalid_num_players_msg, Toast.LENGTH_SHORT).show();
+                        } else {
 
-    private void setupGoAchievementsBtn() {
-        Button goBtn = findViewById(R.id.gotoAchievements);
-        goBtn.setOnClickListener(v -> setupAchievementsBtn(goBtn));
-    }
+                            GameManager gameManager = gameCategory.getGameManager(getGameManagerIndex());
 
-    private void setupAchievementsBtn(Button goBtn) {
-        EditText etNumPlayers = findViewById(R.id.numPlayersInput);
-        String strNumPlayers = etNumPlayers.getText().toString().trim();
-        if (!TextUtils.isEmpty(strNumPlayers)) {
-            try {
-                int numPlayers = Integer.parseInt(strNumPlayers);
-                if (numPlayers <= 0) {
-                    Toast.makeText(GameActivity.this, R.string.invalid_num_players_msg, Toast.LENGTH_SHORT).show();
-                } else {
-                    hideButtonAndText(goBtn, etNumPlayers);
+                            // TODO TEST
+                            Intent i = AchievementActivity.makeIntent(GameActivity.this,
+                                    numPlayers, gameManager.getPoorScoreIndividual(), gameManager.getGreatScoreIndividual(),
+                                    HARD_CODED_DIFFICULTY);     // FIXME remove hardcoded difficulty
 
-                    GameManager gameManager = gameCategory.getGameManager(getGameManagerIndex());
-
-                    // TODO TEST
-                    Intent i = AchievementActivity.makeIntent(GameActivity.this,
-                            numPlayers, gameManager.getPoorScoreIndividual(), gameManager.getGreatScoreIndividual(),
-                            HARD_CODED_DIFFICULTY);     // FIXME remove hardcoded difficulty
-
-                    startActivity(i);
+                            startActivity(i);
+                        }
+                    } catch(Exception e) {
+                        Toast.makeText(GameActivity.this, "Invalid number of players", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            } catch (Exception e) {
-                Toast.makeText(GameActivity.this, R.string.invalid_num_players_msg, Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            Toast.makeText(GameActivity.this, R.string.invalid_num_players_msg, Toast.LENGTH_SHORT).show();
-        }
-    }
+            });
 
-    private void hideButtonAndText(Button goBtn, EditText etNumPlayers) {
-        Button viewAchievements = findViewById(R.id.viewAchievementsBtn);
-        viewAchievements.setEnabled(true);
-        viewAchievements.setVisibility(View.VISIBLE);
+            achievementDialog.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
 
-        FloatingActionButton newGame = findViewById(R.id.addGameBtn);
-        newGame.setEnabled(true);
-
-        TextView numPlayersMsg = findViewById(R.id.numPlayersMsg);
-        numPlayersMsg.setVisibility(View.INVISIBLE);
-
-        etNumPlayers.setEnabled(false);
-        etNumPlayers.setVisibility(View.INVISIBLE);
-
-        goBtn.setEnabled(false);
-        goBtn.setVisibility(View.INVISIBLE);
+            achievementDialog.show();
+        });
     }
 
     private int getGameManagerIndex() {
