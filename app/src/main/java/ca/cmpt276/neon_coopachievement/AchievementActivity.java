@@ -23,6 +23,7 @@ import java.util.List;
 
 import ca.cmpt276.neon_coopachievement.model.Achievement;
 import ca.cmpt276.neon_coopachievement.model.Game;
+import ca.cmpt276.neon_coopachievement.model.GameCategory;
 
 /**
  * AchievementActivity Class
@@ -122,7 +123,7 @@ public class AchievementActivity extends AppCompatActivity {
         // Empty list before populating
         achievementList = new ArrayList<>();
         for (int i = 0; i < MAX_ACHIEVEMENTS; i++) {
-            String filename = achievements.getThemeString() + getString(R.string.IconFileName) + (i + 1);
+            String filename = GameCategory.getInstance().getCurrentTheme() + getString(R.string.IconFileName) + (i + 1);
             int id = getResources().getIdentifier(filename, getString(R.string.defType), this.getPackageName());
             achievementList.add(new AchievementListElement(achievements.getAchievementString(i), id));
         }
