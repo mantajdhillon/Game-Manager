@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -59,6 +61,7 @@ public class GameConfigActivity extends AppCompatActivity {
     private Game currentGame;
 
     private ScoreCalculator sc = new ScoreCalculator();
+    public static String achievement = "Achievement";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -281,7 +284,7 @@ public class GameConfigActivity extends AppCompatActivity {
                             sc.getScores(), HARD_CODED_DIFFICULTY);
                     gameManager.addGame(newGame);
                 }
-                makeAchievement();
+                makeAchievementDialog(numPlayers, sumScores);
 
             } else {
                 Toast.makeText(this, R.string.invalid_input, Toast.LENGTH_SHORT).show();
@@ -290,22 +293,26 @@ public class GameConfigActivity extends AppCompatActivity {
         });
     }
 
-    private void makeAchievement(){
-        AlertDialog.Builder achievementDialog = new AlertDialog.Builder(GameConfigActivity.this);
-        achievementDialog.setTitle("Achievement!");
-        final EditText achievement = new EditText(GameConfigActivity.this);
-        achievement.setText("Achievement");
-        achievementDialog.setView(achievement);
+    private void makeAchievementDialog(int numPlayers, int sumScores) {
+        Achievement achievements = new Achievement(
+                gameManager.getPoorScoreIndividual(),
+                gameManager.getGreatScoreIndividual(),
+                numPlayers, HARD_CODED_DIFFICULTY);
 
-        achievementDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                finish();
-            }
-        });
+        int rank = achievements.getHighestRank(sumScores);
+        String rankName = achievements.getAchievementName(rank);
 
-        achievementDialog.show();
+        this.achievement = "Your rank is: " + rankName;
+
+
+        // Make the fragment manager
+        FragmentManager manager = getSupportFragmentManager();
+        AchievementFragment achievementDialog = new AchievementFragment();
+
+        // Show dialog
+        achievementDialog.show(manager, "Achievement Dialog");
     }
+
 
     private void setUpClearBtn() {
         Button clearBtn = findViewById(R.id.btnClear);
