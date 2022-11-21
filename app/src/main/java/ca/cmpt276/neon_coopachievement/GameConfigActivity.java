@@ -321,7 +321,7 @@ public class GameConfigActivity extends AppCompatActivity {
         Achievement achievements = new Achievement(
                 gameManager.getPoorScoreIndividual(),
                 gameManager.getGreatScoreIndividual(),
-                numPlayers, HARD_CODED_DIFFICULTY);
+                numPlayers, currentDifficulty);
 
         int rank = achievements.getHighestRank(sumScores);
 
