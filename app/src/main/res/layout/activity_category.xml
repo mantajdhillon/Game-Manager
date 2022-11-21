@@ -10,17 +10,16 @@
         android:id="@+id/ivEmptyStateCategory"
         android:layout_width="276dp"
         android:layout_height="287dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/tvEmptyStateDescCategory"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.367"
         app:srcCompat="@drawable/empty_state" />
 
     <TextView
         android:id="@+id/tvEmptyStateDescCategory"
-        android:layout_width="368dp"
+        android:layout_width="match_parent"
         android:layout_height="71dp"
         android:text="@string/category_activity_empty_state_desc"
         android:textAlignment="center"
@@ -35,8 +34,8 @@
 
     <ListView
         android:id="@+id/categoryList"
-        android:layout_width="411dp"
-        android:layout_height="638dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
