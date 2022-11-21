@@ -98,14 +98,14 @@ public class Achievement {
         return achievementNames[gameRank - 1];
     }
 
-    // Return the highest achievement rank index obtainable given the sum of player scores
+    // Return the highest achievement rank obtainable given the sum of player scores (1-10)
     public int getHighestRank(int totalScore) {
-        int maxRank = 1;
+        int highestRank = 1;
         for (int i = 0; i < rankBoundaries.length
                 && totalScore > rankBoundaries[i]; i++) {
-            maxRank++;
+            highestRank++;
         }
-        return maxRank;
+        return highestRank;
     }
 
     // Print the Achievement at a given index
