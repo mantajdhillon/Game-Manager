@@ -41,8 +41,8 @@ public class AchievementFragment extends AppCompatDialogFragment {
         AlertDialog.Builder achievementBuilder = new AlertDialog.Builder(getActivity());
         achievementBuilder.setPositiveButton(android.R.string.ok, listener);
         achievementBuilder.setView(v);
-        achievementBuilder.setTitle("Great job!");
-        String message = "Your rank is: " + GameConfigActivity.achievement;
+        achievementBuilder.setTitle(R.string.great_job);
+        String message = getString(R.string.your_rank) + " " + GameConfigActivity.achievement;
         achievementBuilder.setMessage(message);
 
         AlertDialog achievementDialog = achievementBuilder.create();

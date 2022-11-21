@@ -135,7 +135,7 @@ public class GameActivity extends AppCompatActivity {
             etNumPlayers.setInputType(InputType.TYPE_CLASS_NUMBER);
             playerDialog.setView(etNumPlayers);
 
-            playerDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            playerDialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     try {
@@ -147,12 +147,12 @@ public class GameActivity extends AppCompatActivity {
                             startActivity(i);
                         }
                     } catch(Exception e) {
-                        Toast.makeText(GameActivity.this, "Invalid number of players", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(GameActivity.this, R.string.invalid_num_players_msg, Toast.LENGTH_SHORT).show();
                     }
                 }
             });
 
-            playerDialog.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            playerDialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.cancel();
@@ -173,7 +173,7 @@ public class GameActivity extends AppCompatActivity {
             etNumPlayers.setInputType(InputType.TYPE_CLASS_NUMBER);
             achievementDialog.setView(etNumPlayers);
 
-            achievementDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            achievementDialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     try {
@@ -195,7 +195,7 @@ public class GameActivity extends AppCompatActivity {
                 }
             });
 
-            achievementDialog.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            achievementDialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.cancel();

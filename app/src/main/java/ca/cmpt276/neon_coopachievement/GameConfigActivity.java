@@ -168,7 +168,7 @@ public class GameConfigActivity extends AppCompatActivity {
             playerScore.setInputType(InputType.TYPE_CLASS_NUMBER);
             playerDialog.setView(playerScore);
 
-            playerDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            playerDialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     try {
@@ -182,7 +182,7 @@ public class GameConfigActivity extends AppCompatActivity {
                 }
             });
 
-            playerDialog.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            playerDialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.cancel();
@@ -252,7 +252,7 @@ public class GameConfigActivity extends AppCompatActivity {
                 playerScore.setText(Integer.toString(sc.getScore(position + 1)));
                 playerDialog.setView(playerScore);
 
-                playerDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                playerDialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         try {
@@ -265,14 +265,14 @@ public class GameConfigActivity extends AppCompatActivity {
                     }
                 });
 
-                playerDialog.setNeutralButton("CANCEL", new DialogInterface.OnClickListener() {
+                playerDialog.setNeutralButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                     }
                 });
 
-                playerDialog.setNegativeButton("DELETE", new DialogInterface.OnClickListener() {
+                playerDialog.setNegativeButton(R.string.delete_cap, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         sc.removeScore(position + 1);
