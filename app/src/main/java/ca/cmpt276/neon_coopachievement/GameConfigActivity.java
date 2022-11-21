@@ -7,6 +7,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,6 +27,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -41,11 +44,11 @@ import ca.cmpt276.neon_coopachievement.model.ScoreCalculator;
  * <p>
  * - Used for add/edit/delete game.
  * - A new game is created when user inputs a number
- *   of players. User may input the scores per player and calculate the total score
+ * of players. User may input the scores per player and calculate the total score
  * - Editing mode displays the previous number of players and scores that
- *   the user entered in the inputs fields.
+ * the user entered in the inputs fields.
  * - Details are updated when user changes the fields and clicks save.
- *   The user may delete the game by clicking delete.
+ * The user may delete the game by clicking delete.
  */
 public class GameConfigActivity extends AppCompatActivity {
 
@@ -59,8 +62,7 @@ public class GameConfigActivity extends AppCompatActivity {
     private GameManager gameManager;
     private Game currentGame;
 
-    private ScoreCalculator sc = new ScoreCalculator();
-    public static String achievement = "Achievement";
+    private final ScoreCalculator sc = new ScoreCalculator();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,6 +148,7 @@ public class GameConfigActivity extends AppCompatActivity {
         setRadioButtonListeners(R.id.radioDifficultyHard, Game.Difficulty.HARD);
 
     }
+
     private void setRadioButtonListeners(int btnId, Game.Difficulty difficulty) {
         RadioButton themeChoice = findViewById(btnId);
         if (currentDifficulty == difficulty) {
@@ -167,26 +170,18 @@ public class GameConfigActivity extends AppCompatActivity {
             playerScore.setInputType(InputType.TYPE_CLASS_NUMBER);
             playerDialog.setView(playerScore);
 
-            playerDialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    try {
-                        sc.addScore(Integer.parseInt(playerScore.getText().toString().trim()));
-                    } catch(Exception e) {
-                        Toast.makeText(GameConfigActivity.this, R.string.invalid_input, Toast.LENGTH_SHORT).show();
-                    }
-                    populatePlayerListView();
-                    populateAchievementView();
-                    setUpEmptyState(sc.getNumPlayers());
+            playerDialog.setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                try {
+                    sc.addScore(Integer.parseInt(playerScore.getText().toString().trim()));
+                } catch (Exception e) {
+                    Toast.makeText(GameConfigActivity.this, R.string.invalid_input, Toast.LENGTH_SHORT).show();
                 }
+                populatePlayerListView();
+                populateAchievementView();
+                setUpEmptyState(sc.getNumPlayers());
             });
 
-            playerDialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            });
+            playerDialog.setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel());
 
             playerDialog.show();
         });
@@ -256,8 +251,8 @@ public class GameConfigActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         try {
                             sc.updateScore(position + 1, Integer.parseInt(playerScore.getText().toString().trim()));
-                        } catch(Exception e) {
-                            Toast.makeText(GameConfigActivity.this, R.string.invalid_input , Toast.LENGTH_SHORT).show();
+                        } catch (Exception e) {
+                            Toast.makeText(GameConfigActivity.this, R.string.invalid_input, Toast.LENGTH_SHORT).show();
                         }
                         populatePlayerListView();
                         populateAchievementView();
@@ -325,29 +320,53 @@ public class GameConfigActivity extends AppCompatActivity {
     }
 
     private void makeAchievementDialog(int numPlayers, int sumScores) {
-        Achievement achievements = new Achievement(
-                gameManager.getPoorScoreIndividual(),
-                gameManager.getGreatScoreIndividual(),
-                numPlayers, currentDifficulty);
+        // Create view
+        View v = LayoutInflater.from(this).inflate(R.layout.achievement_layout, null);
 
-        int rank = achievements.getHighestRank(sumScores);
+        // Set up animations
+        YoYo.with(Techniques.Tada).duration(500).repeat(YoYo.INFINITE).playOn(v);
 
-        this.achievement = achievements.getAchievementName(rank);
-
-
-        // Make the fragment manager
-        FragmentManager manager = getSupportFragmentManager();
-        AchievementFragment achievementDialog = new AchievementFragment();
-
-        // Show dialog
-        achievementDialog.show(manager, getString(R.string.achievement_dialog));
-
-        // Make sound
-        // Cheering audio downloaded from here: https://mixkit.co/free-sound-effects/applause/
+        // Play celebration sound
         MediaPlayer cheering = MediaPlayer.create(this, R.raw.cheering);
         cheering.start();
-    }
 
+        // Set up listener when ok (positive button) is clicked
+        DialogInterface.OnClickListener positiveButtonListener = (dialogInterface, which) -> {
+            if (which == DialogInterface.BUTTON_POSITIVE) {
+                finish();
+            }
+        };
+
+        // Set up dismiss listener
+        DialogInterface.OnDismissListener dismissListener = (dialogInterface) -> {
+            cheering.stop();
+            this.finish();
+        };
+
+        // Build the alert dialog (achievement builder)
+        android.app.AlertDialog achievementDialog = new android.app.AlertDialog.Builder(this)
+                .setView(v)
+                .setTitle("Great job!")
+//                .setCancelable(false)
+                .setPositiveButton(android.R.string.ok, positiveButtonListener)
+                .setOnDismissListener(dismissListener)
+                .create();
+
+        // Get current achievement
+        Achievement currAchievement = new Achievement(
+                gameManager.getPoorScoreIndividual(),
+                gameManager.getGreatScoreIndividual(),
+                numPlayers,
+                currentDifficulty);
+
+        // Set body message for dialog
+        int highestRank = currAchievement.getHighestRank(sumScores);
+        String achievement = currAchievement.getAchievementName(highestRank);
+        String gameRank = getString(R.string.your_rank_is) + " " + achievement;
+
+        achievementDialog.setMessage(gameRank);
+        achievementDialog.show();
+    }
 
     private void setUpClearBtn() {
         Button clearBtn = findViewById(R.id.btnClear);
