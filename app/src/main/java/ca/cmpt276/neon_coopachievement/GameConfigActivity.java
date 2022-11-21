@@ -10,13 +10,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewDebug;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,7 +52,7 @@ public class GameConfigActivity extends AppCompatActivity {
 
     // TODO REMOVE HARDCODED DIFFICULTY
     //  - ALLOW USER TO SELECT DIFFICULTY FOR AN INDIVIDUAL GAME
-    private static final Game.Difficulty HARD_CODED_DIFFICULTY = Game.Difficulty.HARD;
+    private Game.Difficulty currentDifficulty = Game.Difficulty.NORMAL;
 
     private static final String EXTRA_GAME_TYPE_INDEX = "Game-Type-Index";
     private static final String EXTRA_IS_EDIT = "isEdit";
@@ -79,6 +79,7 @@ public class GameConfigActivity extends AppCompatActivity {
         gameManager = gameCategory.getGameManager(getGameManagerIndex());
 
         setUpEmptyState(sc.getNumPlayers());
+        setupRadioGroup();
         setUpAddPlayerBtn();
         populatePlayerListView();
         populateAchievementView();
@@ -89,6 +90,9 @@ public class GameConfigActivity extends AppCompatActivity {
         // Editing a game configuration
         if (getIsEdit()) {
             currentGame = gameManager.getGame(getGameIndex());
+            currentDifficulty = currentGame.getDifficulty();
+            setupRadioGroup();
+            currentGame.updateAchievements(currentDifficulty);
             ab.setTitle(R.string.game_config_activity_edit_game);
             sc.setScores(currentGame.getScores());
             populatePlayerListView();
@@ -135,6 +139,23 @@ public class GameConfigActivity extends AppCompatActivity {
             emptyStateIcon.setVisibility(View.INVISIBLE);
             emptyStateDesc.setVisibility(View.INVISIBLE);
         }
+    }
+
+    private void setupRadioGroup() {
+        setRadioButtonListeners(R.id.radioDifficultyEasy, Game.Difficulty.EASY);
+        setRadioButtonListeners(R.id.radioDifficultyNormal, Game.Difficulty.NORMAL);
+        setRadioButtonListeners(R.id.radioDifficultyHard, Game.Difficulty.HARD);
+
+    }
+    private void setRadioButtonListeners(int btnId, Game.Difficulty difficulty) {
+        RadioButton themeChoice = findViewById(btnId);
+        if (currentDifficulty == difficulty) {
+            themeChoice.setChecked(true);
+        }
+        themeChoice.setOnClickListener(v -> {
+            currentDifficulty = difficulty;
+            populateAchievementView();
+        });
     }
 
     private void setUpAddPlayerBtn() {
@@ -198,7 +219,7 @@ public class GameConfigActivity extends AppCompatActivity {
             Achievement achievements = new Achievement(
                     gameManager.getPoorScoreIndividual(),
                     gameManager.getGreatScoreIndividual(),
-                    numPlayers, HARD_CODED_DIFFICULTY);
+                    numPlayers, currentDifficulty);
 
             int rank = achievements.getHighestRank(sumScores);
             String rankName = achievements.getAchievementName(rank);
@@ -272,6 +293,8 @@ public class GameConfigActivity extends AppCompatActivity {
                     currentGame.setNumPlayers(numPlayers);
                     currentGame.setFinalTotalScore(sumScores);
                     currentGame.setScores(sc.getScores());
+                    currentGame.setDifficulty(currentDifficulty);
+                    currentGame.updateAchievements(currentDifficulty);
                     gameManager.updateEdits(
                             gameManager.getPoorScoreIndividual(),
                             gameManager.getGreatScoreIndividual());
@@ -282,7 +305,7 @@ public class GameConfigActivity extends AppCompatActivity {
                     Game newGame = new Game(numPlayers, sumScores,
                             gameManager.getPoorScoreIndividual(),
                             gameManager.getGreatScoreIndividual(),
-                            sc.getScores(), HARD_CODED_DIFFICULTY);
+                            sc.getScores(), currentDifficulty);
                     gameManager.addGame(newGame);
                 }
                 makeAchievementDialog(numPlayers, sumScores);

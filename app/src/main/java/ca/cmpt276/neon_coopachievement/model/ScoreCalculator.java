@@ -2,6 +2,12 @@ package ca.cmpt276.neon_coopachievement.model;
 
 import java.util.ArrayList;
 
+/**
+ * Score Calculator Class:
+ * <p>
+ *    - Used to calculate the sum of all scores of an individual player in a single game.
+ *    - Holds scores of each player, sum scores, and num players.
+ */
 public class ScoreCalculator {
 
     private int numPlayers;

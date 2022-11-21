@@ -6,16 +6,69 @@
     android:layout_height="match_parent"
     tools:context=".AchievementActivity">
 
-    <ListView
-        android:id="@+id/achievementList"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <RadioGroup
+        android:id="@+id/rgThemeSelection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/achievementList"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RadioButton
+            android:id="@+id/radioAchieveDifficultyEasy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:background="@drawable/radio_selector"
+            android:button="@android:color/transparent"
+            android:elevation="4dp"
+            android:padding="16dp"
+            android:text="@string/easy"
+            android:textColor="@drawable/radio_text_colour"
+            android:textSize="11sp" />
+
+        <RadioButton
+            android:id="@+id/radioAchieveDifficultyNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:background="@drawable/radio_selector"
+            android:button="@android:color/transparent"
+            android:elevation="4dp"
+            android:padding="16dp"
+            android:text="@string/normal"
+            android:textColor="@drawable/radio_text_colour"
+            android:textSize="11sp" />
+
+        <RadioButton
+            android:id="@+id/radioAchieveDifficultyHard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:background="@drawable/radio_selector"
+            android:button="@android:color/transparent"
+            android:elevation="4dp"
+            android:padding="16dp"
+            android:text="@string/hard"
+            android:textColor="@drawable/radio_text_colour"
+            android:textSize="11sp" />
+
+    </RadioGroup>
+
+    <ListView
+        android:id="@+id/achievementList"
+        android:layout_width="400dp"
+        android:layout_height="480dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.555"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.869" />
 </androidx.constraintlayout.widget.ConstraintLayout>

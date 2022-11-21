@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import java.util.List;
 
 import ca.cmpt276.neon_coopachievement.model.Achievement;
 import ca.cmpt276.neon_coopachievement.model.Game;
+import ca.cmpt276.neon_coopachievement.model.GameCategory;
 
 /**
  * AchievementActivity Class
@@ -36,8 +38,9 @@ public class AchievementActivity extends AppCompatActivity {
     private static final String EXTRA_POOR_SCORE = "poorScore";
     private static final String EXTRA_DIFFICULTY = "gameDifficulty";
 
-    private final List<AchievementListElement> achievementList = new ArrayList<>();
+    private List<AchievementListElement> achievementList = new ArrayList<>();
 
+    private Game.Difficulty currentDifficulty = Game.Difficulty.NORMAL;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +51,7 @@ public class AchievementActivity extends AppCompatActivity {
         ab.setTitle(R.string.achievement_activity_title);
         ab.setDisplayHomeAsUpEnabled(true);
 
+        setupRadioGroup();
         populateAchievementsList();
         populateListView();
     }
@@ -94,17 +98,32 @@ public class AchievementActivity extends AppCompatActivity {
         return getIntent().getIntExtra(EXTRA_GOOD_SCORE, -1);
     }
 
-    // TODO TEST
-    private Game.Difficulty getDifficulty() {
-        return (Game.Difficulty) getIntent().getSerializableExtra(EXTRA_DIFFICULTY);
+
+    private void setupRadioGroup() {
+        setRadioButtonListeners(R.id.radioAchieveDifficultyEasy, Game.Difficulty.EASY);
+        setRadioButtonListeners(R.id.radioAchieveDifficultyNormal, Game.Difficulty.NORMAL);
+        setRadioButtonListeners(R.id.radioAchieveDifficultyHard, Game.Difficulty.HARD);
+
+    }
+    private void setRadioButtonListeners(int btnId, Game.Difficulty difficulty) {
+        RadioButton themeChoice = findViewById(btnId);
+        if (currentDifficulty== difficulty) {
+            themeChoice.setChecked(true);
+        }
+        themeChoice.setOnClickListener(v -> {
+            currentDifficulty = difficulty;
+            populateAchievementsList();
+            populateListView();
+        });
     }
 
     private void populateAchievementsList() {
         Achievement achievements = new Achievement(getPoorScore(), getGoodScore(),
-                getNumPlayers(), getDifficulty());
-
+                getNumPlayers(), currentDifficulty);
+        // Empty list before populating
+        achievementList = new ArrayList<>();
         for (int i = 0; i < MAX_ACHIEVEMENTS; i++) {
-            String filename = achievements.getThemeString() + getString(R.string.IconFileName) + (i + 1);
+            String filename = GameCategory.getInstance().getCurrentTheme() + getString(R.string.IconFileName) + (i + 1);
             int id = getResources().getIdentifier(filename, getString(R.string.defType), this.getPackageName());
             achievementList.add(new AchievementListElement(achievements.getAchievementString(i), id));
         }

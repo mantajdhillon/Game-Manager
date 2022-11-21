@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import ca.cmpt276.neon_coopachievement.model.GameCategory;
+import ca.cmpt276.neon_coopachievement.model.Theme;
 
 /**
  * CategorySaver
