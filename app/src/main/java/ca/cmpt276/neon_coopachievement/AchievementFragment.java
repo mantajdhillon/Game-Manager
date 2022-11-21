@@ -19,6 +19,14 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 
+/**
+ * Achievement Fragment
+ * <p>
+ * - Used to create AlertDialog with photos and animation
+ * - Returns an alert dialog from a dialog builder with
+ *   text and animation, inflated from achievement_layout
+ */
+
 public class AchievementFragment extends AppCompatDialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){

@@ -41,9 +41,8 @@ import ca.cmpt276.neon_coopachievement.model.ScoreCalculator;
  * <p>
  * - Used for add/edit/delete game.
  * - A new game is created when user inputs a number
- *   of players and sum of players' scores, and clicks
- *   save.
- * - Editing mode displays the previous number of players and score that
+ *   of players. User may input the scores per player and calculate the total score
+ * - Editing mode displays the previous number of players and scores that
  *   the user entered in the inputs fields.
  * - Details are updated when user changes the fields and clicks save.
  *   The user may delete the game by clicking delete.
