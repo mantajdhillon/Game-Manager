@@ -310,7 +310,7 @@ public class GameConfigActivity extends AppCompatActivity {
         AchievementFragment achievementDialog = new AchievementFragment();
 
         // Show dialog
-        achievementDialog.show(manager, "Achievement Dialog");
+        achievementDialog.show(manager, getString(R.string.achievement_dialog));
 
         // Make sound
         // Cheering audio downloaded from here: https://mixkit.co/free-sound-effects/applause/

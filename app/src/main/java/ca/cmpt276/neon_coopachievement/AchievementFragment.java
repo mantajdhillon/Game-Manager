@@ -50,9 +50,4 @@ public class AchievementFragment extends AppCompatDialogFragment {
         return achievementDialog;
     }
 
-    private void rotateImage(){
-        ImageView achievementImage = getActivity().findViewById(R.id.ivAchievementImage);
-        Animation imageAnimate = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate);
-        achievementImage.startAnimation(imageAnimate);
-    }
 }

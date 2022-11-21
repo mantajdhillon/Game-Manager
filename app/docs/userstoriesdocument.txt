@@ -1,7 +1,3 @@
-Notes for the marker:
-
-Style Guide: https://opencoursehub.cs.sfu.ca/bfraser/grav-cms/cmpt276/course-info/styleguide
-
 User Stories:
 
 Changing Difficulty: implement ability to change/set game difficulty, amount of work: 4-5 hours

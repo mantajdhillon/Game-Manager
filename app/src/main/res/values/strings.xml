@@ -49,4 +49,5 @@
     <string name="player_score_prompt">Player Score:</string>
     <string name="invalid_input">Invalid Input</string>
     <string name="edit_player_score_prompt">Edit Player Score:</string>
+    <string name="achievement_dialog">Achievement Dialog</string>
 </resources>
