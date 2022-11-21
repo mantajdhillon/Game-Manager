@@ -3,8 +3,10 @@ package ca.cmpt276.neon_coopachievement;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +24,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -59,6 +62,7 @@ public class GameConfigActivity extends AppCompatActivity {
     private Game currentGame;
 
     private ScoreCalculator sc = new ScoreCalculator();
+    public static String achievement = "Achievement";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -304,7 +308,7 @@ public class GameConfigActivity extends AppCompatActivity {
                             sc.getScores(), currentDifficulty);
                     gameManager.addGame(newGame);
                 }
-                finish();
+                makeAchievementDialog(numPlayers, sumScores);
 
             } else {
                 Toast.makeText(this, R.string.invalid_input, Toast.LENGTH_SHORT).show();
@@ -312,6 +316,31 @@ public class GameConfigActivity extends AppCompatActivity {
 
         });
     }
+
+    private void makeAchievementDialog(int numPlayers, int sumScores) {
+        Achievement achievements = new Achievement(
+                gameManager.getPoorScoreIndividual(),
+                gameManager.getGreatScoreIndividual(),
+                numPlayers, currentDifficulty);
+
+        int rank = achievements.getHighestRank(sumScores);
+
+        this.achievement = achievements.getAchievementName(rank);
+
+
+        // Make the fragment manager
+        FragmentManager manager = getSupportFragmentManager();
+        AchievementFragment achievementDialog = new AchievementFragment();
+
+        // Show dialog
+        achievementDialog.show(manager, getString(R.string.achievement_dialog));
+
+        // Make sound
+        // Cheering audio downloaded from here: https://mixkit.co/free-sound-effects/applause/
+        MediaPlayer cheering = MediaPlayer.create(this, R.raw.cheering);
+        cheering.start();
+    }
+
 
     private void setUpClearBtn() {
         Button clearBtn = findViewById(R.id.btnClear);
