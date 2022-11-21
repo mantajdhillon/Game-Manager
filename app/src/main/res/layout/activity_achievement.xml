@@ -29,7 +29,7 @@
             android:padding="16dp"
             android:text="@string/easy"
             android:textColor="@drawable/radio_text_colour"
-            android:textSize="11sp" />
+            android:textSize="15sp" />
 
         <RadioButton
             android:id="@+id/radioAchieveDifficultyNormal"
@@ -42,7 +42,7 @@
             android:padding="16dp"
             android:text="@string/normal"
             android:textColor="@drawable/radio_text_colour"
-            android:textSize="11sp" />
+            android:textSize="15sp" />
 
         <RadioButton
             android:id="@+id/radioAchieveDifficultyHard"
@@ -55,7 +55,7 @@
             android:padding="16dp"
             android:text="@string/hard"
             android:textColor="@drawable/radio_text_colour"
-            android:textSize="11sp" />
+            android:textSize="15sp" />
 
     </RadioGroup>
 

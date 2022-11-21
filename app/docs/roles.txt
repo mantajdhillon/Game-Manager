@@ -1,6 +1,6 @@
 Scrum Roles:
 
-Scrum Master - Amanda
-Product Owner - Olivia
-Repo Manager - Mantaj
-Team Member - Mekdim
+Scrum Master - Olivia
+Product Owner - Mekdim
+Repo Manager - Amanda
+Team Member - Mantaj
