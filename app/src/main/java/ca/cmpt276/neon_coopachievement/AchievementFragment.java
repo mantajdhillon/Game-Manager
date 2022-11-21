@@ -16,6 +16,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatDialogFragment;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
+
 public class AchievementFragment extends AppCompatDialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
@@ -33,6 +36,8 @@ public class AchievementFragment extends AppCompatDialogFragment {
         };
 
         // Return alert dialog
+        YoYo.with(Techniques.Tada).duration(500).repeat(YoYo.INFINITE).playOn(v);
+
         AlertDialog.Builder achievementBuilder = new AlertDialog.Builder(getActivity());
         achievementBuilder.setPositiveButton(android.R.string.ok, listener);
         achievementBuilder.setView(v);
