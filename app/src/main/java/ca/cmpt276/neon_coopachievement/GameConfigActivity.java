@@ -47,13 +47,12 @@ import ca.cmpt276.neon_coopachievement.model.ScoreCalculator;
  */
 public class GameConfigActivity extends AppCompatActivity {
 
-    // TODO REMOVE HARDCODED DIFFICULTY
-    //  - ALLOW USER TO SELECT DIFFICULTY FOR AN INDIVIDUAL GAME
     private Game.Difficulty currentDifficulty = Game.Difficulty.NORMAL;
 
     private static final String EXTRA_GAME_TYPE_INDEX = "Game-Type-Index";
     private static final String EXTRA_IS_EDIT = "isEdit";
     private static final String EXTRA_GAME_INDEX = "gameIndex";
+    private static final String EXTRA_NUM_PLAYERS = "numPlayers";
 
     private GameManager gameManager;
     private Game currentGame;
@@ -74,9 +73,10 @@ public class GameConfigActivity extends AppCompatActivity {
         GameCategory gameCategory = GameCategory.getInstance();
         gameManager = gameCategory.getGameManager(getGameManagerIndex());
 
-        setUpEmptyState(sc.getNumPlayers());
         setupRadioGroup();
         setUpAddPlayerBtn();
+        setUpPlayersSlots();
+        setUpEmptyState(sc.getNumPlayers());
         populatePlayerListView();
         populateAchievementView();
         registerListClickCallback();
@@ -187,6 +187,14 @@ public class GameConfigActivity extends AppCompatActivity {
 
             playerDialog.show();
         });
+    }
+
+    private void setUpPlayersSlots() {
+        ArrayList<Integer> preScoresList = new ArrayList<>();
+        for (int i = 0; i < getNumPlayers(); i++) {
+            preScoresList.add(0);
+        }
+        sc.setScores(preScoresList);
     }
 
     private void populatePlayerListView() {
@@ -324,11 +332,12 @@ public class GameConfigActivity extends AppCompatActivity {
         });
     }
 
-    public static Intent makeIntent(Context c, boolean isEdit, int gameIndex, int gameManagerIndex) {
+    public static Intent makeIntent(Context c, boolean isEdit, int gameIndex, int gameManagerIndex, int numPlayers) {
         Intent intent = new Intent(c, GameConfigActivity.class);
         intent.putExtra(EXTRA_IS_EDIT, isEdit);
         intent.putExtra(EXTRA_GAME_INDEX, gameIndex);
         intent.putExtra(EXTRA_GAME_TYPE_INDEX, gameManagerIndex);
+        intent.putExtra(EXTRA_NUM_PLAYERS, numPlayers);
         return intent;
     }
 
@@ -342,5 +351,9 @@ public class GameConfigActivity extends AppCompatActivity {
 
     private boolean getIsEdit() {
         return getIntent().getBooleanExtra(EXTRA_IS_EDIT, false);
+    }
+
+    private int getNumPlayers() {
+        return getIntent().getIntExtra(EXTRA_NUM_PLAYERS, -1);
     }
 }

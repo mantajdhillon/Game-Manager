@@ -1,10 +1,5 @@
 package ca.cmpt276.neon_coopachievement;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +12,11 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,6 @@ public class AchievementActivity extends AppCompatActivity {
     private static final String EXTRA_NUM_PLAYERS = "numPlayers";
     private static final String EXTRA_GOOD_SCORE = "goodScore";
     private static final String EXTRA_POOR_SCORE = "poorScore";
-    private static final String EXTRA_DIFFICULTY = "gameDifficulty";
 
     private List<AchievementListElement> achievementList = new ArrayList<>();
 
@@ -77,12 +76,11 @@ public class AchievementActivity extends AppCompatActivity {
         }
     }
 
-    public static Intent makeIntent(Context c, int numPlayers, int poorScore, int goodScore, Game.Difficulty difficulty) {
+    public static Intent makeIntent(Context c, int numPlayers, int poorScore, int goodScore) {
         Intent intent = new Intent(c, AchievementActivity.class);
         intent.putExtra(EXTRA_NUM_PLAYERS, numPlayers);
         intent.putExtra(EXTRA_GOOD_SCORE, goodScore);
         intent.putExtra(EXTRA_POOR_SCORE, poorScore);
-        intent.putExtra(EXTRA_DIFFICULTY, difficulty);
         return intent;
     }
 
