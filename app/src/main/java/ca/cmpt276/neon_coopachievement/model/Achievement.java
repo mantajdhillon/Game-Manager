@@ -122,7 +122,7 @@ public class Achievement {
         // Lowest achievement rank
         else if (rankIdx == MIN_RANK_IDX) {
             return "Rank #" + (rankIdx + 1) + " (<"
-                    + (int) rankBoundaries[rankIdx] + "): "
+                    + (int) (rankBoundaries[rankIdx] + 1) + "): "
                     + achievementNames[rankIdx];
         }
 
