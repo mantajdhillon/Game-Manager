@@ -3,6 +3,8 @@ package ca.cmpt276.neon_coopachievement;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.ColorMatrix;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.InputType;
@@ -23,6 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -329,13 +332,12 @@ public class GameConfigActivity extends AppCompatActivity {
         // Build the alert dialog (achievement builder)
         android.app.AlertDialog achievementDialog = new android.app.AlertDialog.Builder(this)
                 .setView(v)
-                .setTitle("Great job!")
-//                .setCancelable(false)
+                .setTitle(R.string.great_job)
                 .setPositiveButton(android.R.string.ok, positiveButtonListener)
                 .setOnDismissListener(dismissListener)
                 .create();
 
-        // Get current achievement
+        // Get current achievement for game
         Achievement currAchievement = new Achievement(
                 gameManager.getPoorScoreIndividual(),
                 gameManager.getGreatScoreIndividual(),
@@ -346,9 +348,15 @@ public class GameConfigActivity extends AppCompatActivity {
         int highestRank = currAchievement.getHighestRank(sumScores);
         String achievement = currAchievement.getAchievementName(highestRank);
         String gameRank = getString(R.string.your_rank_is) + " " + achievement;
-
         achievementDialog.setMessage(gameRank);
+
+        // Show dialog
         achievementDialog.show();
+
+        // Update Achievement message with appropriate font
+        TextView textView = (TextView) achievementDialog.findViewById(android.R.id.message);
+        Typeface comicNeueBoldFont = ResourcesCompat.getFont(this, R.font.comic_neue_bold);
+        textView.setTypeface(comicNeueBoldFont);
     }
 
     private void setUpClearBtn() {
