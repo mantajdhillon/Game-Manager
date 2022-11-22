@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
  * <p>
  * - Used to store the achievement boundaries of a game type.
  * - Each Game has an achievements variable that gets constructed using
- *   the good score, bad score, and the # of players from the game.
+ * the good score, bad score, and the # of players from the game.
  */
 public class Achievement {
     private static final byte MIN_ACHIEVEMENT_RANK = 1;
@@ -46,6 +46,7 @@ public class Achievement {
         // Initialize boundaries for different achievements
         initializeRankBoundaries(low, high, numPlayers, diff);
     }
+
 
     private void initializeRankBoundaries(int low, int high, int numPlayers, Game.Difficulty difficulty) {
         final double MULTIPLIER = getDifficultlyMultiplier(difficulty);
@@ -115,22 +116,22 @@ public class Achievement {
 
         // Highest achievement rank
         if (rankIdx == MAX_RANK_IDX) {
-            return "Level " + MAX_ACHIEVEMENT_RANK + " (>"
+            return "Rank #" + MAX_ACHIEVEMENT_RANK + " (>"
                     + (int) rankBoundaries[MAX_RANK_IDX - 1] + "): "
                     + achievementNames[MAX_RANK_IDX];
         }
 
         // Lowest achievement rank
         else if (rankIdx == MIN_RANK_IDX) {
-            return "Level " + (rankIdx + 1) + " (<"
+            return "Rank #" + (rankIdx + 1) + " (<"
                     + (int) rankBoundaries[rankIdx] + "): "
                     + achievementNames[rankIdx];
         }
 
         // Other
         else {
-            return "Level " + (rankIdx + 1) + " ("
-                    + (int) rankBoundaries[rankIdx - 1] + " - "
+            return "Rank #" + (rankIdx + 1) + " ("
+                    + (int) (rankBoundaries[rankIdx - 1] + 1) + " - "
                     + (int) rankBoundaries[rankIdx]
                     + "): " + achievementNames[rankIdx];
         }
