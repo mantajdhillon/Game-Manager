@@ -29,7 +29,7 @@ public class Game {
     private String time;
     private Difficulty difficulty;
 
-    private ArrayList<Integer> scores;
+    private final ArrayList<Integer> scores;
 
     public Game(int numPlayers, int finalTotalScore, int poorScore, int greatScore, ArrayList<Integer> scoresList, Difficulty difficulty) {
         this.numPlayers = numPlayers;
@@ -67,7 +67,7 @@ public class Game {
     }
 
     public void setScores(ArrayList<Integer> scoresList) {
-        for (int i = 0; i < numPlayers; i ++) {
+        for (int i = 0; i < numPlayers; i++) {
             this.scores.add(i, scoresList.get(i));
         }
     }
@@ -84,11 +84,10 @@ public class Game {
         return this.rank;
     }
 
-    public int getGameScore(int index){
-        if(index < numPlayers && index >= 0){
+    public int getGameScore(int index) {
+        if (index < numPlayers && index >= 0) {
             return scores.get(index);
-        }
-        else{
+        } else {
             throw new IllegalArgumentException("Invalid index!");
         }
     }
@@ -109,9 +108,19 @@ public class Game {
     @NonNull
     @Override
     public String toString() {
-        return numPlayers + " player(s) - " + time + "\n"
-                + "Total score: " + finalTotalScore + "\n" +
+        String result = "";
+
+        if (numPlayers == 1) {
+            result += numPlayers + " Player - ";
+        } else {
+            result += numPlayers + " Players - ";
+        }
+
+        result += time + "\n" +
+                "Total score: " + finalTotalScore + "\n" +
                 "Difficulty: " + difficulty.toString() + "\n" +
                 "Rank #" + rank + ": " + achievements.getAchievementName(rank);
+
+        return result;
     }
 }
