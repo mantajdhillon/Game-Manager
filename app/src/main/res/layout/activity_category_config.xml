@@ -13,12 +13,10 @@
         android:ems="10"
         android:inputType="number"
         android:minHeight="48dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.688"
-        app:layout_constraintStart_toEndOf="@+id/tvGoodScore"
-        app:layout_constraintTop_toBottomOf="@+id/etGameName"
-        app:layout_constraintVertical_bias="0.045" />
+        app:layout_constraintBottom_toBottomOf="@+id/tvGoodScore"
+        app:layout_constraintEnd_toEndOf="@+id/etBadScore"
+        app:layout_constraintTop_toTopOf="@+id/tvGoodScore"
+        app:layout_constraintVertical_bias="0.067" />
 
     <EditText
         android:id="@+id/etGameName"
@@ -27,68 +25,74 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:minHeight="48dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.746"
-        app:layout_constraintStart_toEndOf="@+id/tvGameConfigName"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.079" />
+        app:layout_constraintBottom_toBottomOf="@+id/tvGameConfigName"
+        app:layout_constraintEnd_toEndOf="@+id/etGoodScore"
+        app:layout_constraintTop_toTopOf="@+id/tvGameConfigName"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/tvGoodScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="24dp"
         android:text="@string/game_config_good_score"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.12"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvGameConfigName"
-        app:layout_constraintVertical_bias="0.105" />
+        app:layout_constraintVertical_bias="0.132" />
 
     <TextView
         android:id="@+id/tvBadScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="24dp"
         android:text="@string/game_config_bad_score"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.115"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvGoodScore"
-        app:layout_constraintVertical_bias="0.121" />
+        app:layout_constraintVertical_bias="0.172" />
 
     <TextView
         android:id="@+id/tvGameConfigName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="24dp"
         android:text="@string/game_config_game_name"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.054"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.092" />
+        app:layout_constraintVertical_bias="0.107" />
 
     <EditText
         android:id="@+id/etBadScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="32dp"
         android:ems="10"
         android:inputType="number"
         android:minHeight="48dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/tvBadScore"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.739"
+        app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toEndOf="@+id/tvBadScore"
-        app:layout_constraintTop_toBottomOf="@+id/etGoodScore"
-        app:layout_constraintVertical_bias="0.078" />
+        app:layout_constraintTop_toTopOf="@+id/tvBadScore"
+        app:layout_constraintVertical_bias="0.086" />
 
     <Button
         android:id="@+id/btnSaveConfig"
