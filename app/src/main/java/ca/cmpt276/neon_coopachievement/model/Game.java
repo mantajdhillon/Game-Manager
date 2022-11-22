@@ -20,7 +20,7 @@ public class Game {
         EASY, NORMAL, HARD
     }
 
-    private static final String DATE_FORMAT = "MMM dd @ HH:mm a";
+    private static final String DATE_FORMAT = "MMM dd @ hh:mm a";
 
     private int numPlayers;
     private int finalTotalScore;
@@ -31,65 +31,59 @@ public class Game {
 
     private final ArrayList<Integer> scores;
 
-    public Game(int numPlayers, int finalTotalScore, int poorScore, int greatScore, ArrayList<Integer> scoresList, Difficulty difficulty) {
+    public Game(int numPlayers, int finalTotalScore, int lowScore, int highScore, ArrayList<Integer> scoresList, Difficulty difficulty) {
         this.numPlayers = numPlayers;
         this.finalTotalScore = finalTotalScore;
-        this.achievements = new Achievement(poorScore, greatScore, numPlayers, difficulty);     // TODO TEST
+        this.achievements = new Achievement(lowScore, highScore, numPlayers, difficulty);
         this.rank = achievements.getHighestRank(finalTotalScore);
         this.difficulty = difficulty;
+
+        // Populate list of scores
         this.scores = new ArrayList<>();
         for (int i = 0; i < numPlayers; i++) {
-            this.scores.add(scoresList.get(i));
+            scores.add(scoresList.get(i));
         }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
         this.time = LocalDateTime.now().format(formatter);
     }
 
-    public int getNumPlayers() {
-        return numPlayers;
-    }
-
     public int getFinalTotalScore() {
         return finalTotalScore;
-    }
-
-    public ArrayList<Integer> getScores() {
-        return scores;
-    }
-
-    public void setNumPlayers(int numPlayers) {
-        this.numPlayers = numPlayers;
     }
 
     public void setFinalTotalScore(int finalTotalScore) {
         this.finalTotalScore = finalTotalScore;
     }
 
+    public ArrayList<Integer> getScores() {
+        return scores;
+    }
+
     public void setScores(ArrayList<Integer> scoresList) {
         for (int i = 0; i < numPlayers; i++) {
-            this.scores.add(i, scoresList.get(i));
+            scores.add(i, scoresList.get(i));
         }
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public int getNumPlayers() {
+        return numPlayers;
+    }
+
+    public void setNumPlayers(int numPlayers) {
+        this.numPlayers = numPlayers;
     }
 
     public String getTime() {
         return this.time;
     }
 
-    public int getRank() {
-        return this.rank;
+    public void setTime(String time) {
+        this.time = time;
     }
 
-    public int getGameScore(int index) {
-        if (index < numPlayers && index >= 0) {
-            return scores.get(index);
-        } else {
-            throw new IllegalArgumentException("Invalid index!");
-        }
+    public int getRank() {
+        return this.rank;
     }
 
     public Difficulty getDifficulty() {
@@ -100,6 +94,7 @@ public class Game {
         this.difficulty = difficulty;
     }
 
+    // Update the game achievement
     public void updateAchievements(Difficulty difficulty) {
         achievements.changeAchievementNames();
         achievements.changeDifficulty(difficulty);
