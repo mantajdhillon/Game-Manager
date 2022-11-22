@@ -1,5 +1,7 @@
 package ca.cmpt276.neon_coopachievement.model;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 
 /**
@@ -29,6 +31,10 @@ public class GameManager {
         return name;
     }
 
+    public Game getGame(int i) {
+        return games.get(i);
+    }
+
     public int getGreatScoreIndividual() {
         return greatScoreIndividual;
     }
@@ -37,19 +43,12 @@ public class GameManager {
         return poorScoreIndividual;
     }
 
-    public int size() {
+    public int getSize() {
         return games.size();
     }
 
     public void setName(String gameName) {
         this.name = gameName;
-    }
-
-    // Checks whether a given name is valid
-    public void isValidName(String gameName) {
-        if (gameName == null || gameName.isEmpty()) {
-            throw new RuntimeException("Invalid name: " + gameName);
-        }
     }
 
     public void setGreatScoreIndividual(int score) {
@@ -61,15 +60,18 @@ public class GameManager {
         this.poorScoreIndividual = score;
     }
 
+    // Checks whether a given name is valid
+    public void isValidName(String gameName) {
+        if (gameName == null || gameName.isEmpty()) {
+            throw new RuntimeException("Invalid name: " + gameName);
+        }
+    }
+
     // Checks whether a given great and poor score are valid
     public void isValidScore(int goodScore, int poorScore) {
         if (goodScore <= poorScore) {
             throw new RuntimeException("Invalid score entry: ");
         }
-    }
-
-    public Game getGame(int i) {
-        return games.get(i);
     }
 
     public void addGame(Game game) {
@@ -90,6 +92,7 @@ public class GameManager {
         }
     }
 
+    @NonNull
     @Override
     public String toString() {
         if (games.size() == 1) {

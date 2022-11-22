@@ -36,15 +36,17 @@ import ca.cmpt276.neon_coopachievement.model.GameManager;
  * GameActivity Class
  * <p>
  * - Displays the list of game of one game category.
+ * <p>
  * - Allows user to add a new game.
+ * <p>
  * - Allows user to edit the game category configuration
- *   by clicking pencil icon in top right.
+ * by clicking pencil icon in top right.
+ * <p>
  * - Allows user to view achievements of game category
- *   for valid number of players.
+ * for valid number of players.
  */
 public class GameActivity extends AppCompatActivity {
-
-    private static final String GAME_TYPE_INDEX = "Game-Type-Index";
+    private static final String EXTRA_GAME_TYPE_INDEX = "Game-Type-Index";
     private static final GameCategory gameCategory = GameCategory.getInstance();
 
     private GameManager gameManager;
@@ -67,15 +69,9 @@ public class GameActivity extends AppCompatActivity {
         populateGamesList();
         generateGamesList();
 
-        setUpEmptyState(gameManager.size());
+        setUpEmptyState(gameManager.getSize());
         setupAddGameBtn();
         setupViewAchievementsBtn();
-    }
-
-    private void generateGamesList() {
-        ArrayAdapter<GameListElement> adapter = new MyListAdapter();
-        ListView playedGames = findViewById(R.id.gameList);
-        playedGames.setAdapter(adapter);
     }
 
     @Override
@@ -97,7 +93,7 @@ public class GameActivity extends AppCompatActivity {
         } else {
             populateGamesList();
             generateGamesList();
-            setUpEmptyState(gameManager.size());
+            setUpEmptyState(gameManager.getSize());
             setupAddGameBtn();
             setupViewAchievementsBtn();
         }
@@ -106,9 +102,40 @@ public class GameActivity extends AppCompatActivity {
         CategoryActivity.saveCategoryState();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_game, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            case R.id.action_help:
+                Intent i1 = new Intent(GameActivity.this, HelpActivity.class);
+                startActivity(i1);
+                return true;
+            case R.id.action_edit_category:
+                Intent i2 = CategoryConfigActivity.makeIntent(GameActivity.this, true, getGameManagerIndex());
+                startActivity(i2);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void generateGamesList() {
+        ArrayAdapter<GameListElement> adapter = new MyListAdapter();
+        ListView playedGames = findViewById(R.id.gameList);
+        playedGames.setAdapter(adapter);
+    }
+
     public static Intent makeIntent(Context c, int index) {
         Intent intent = new Intent(c, GameActivity.class);
-        intent.putExtra(GAME_TYPE_INDEX, index);
+        intent.putExtra(EXTRA_GAME_TYPE_INDEX, index);
         return intent;
     }
 
@@ -135,29 +162,21 @@ public class GameActivity extends AppCompatActivity {
             etNumPlayers.setInputType(InputType.TYPE_CLASS_NUMBER);
             playerDialog.setView(etNumPlayers);
 
-            playerDialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    try {
-                        numPlayers = Integer.parseInt(etNumPlayers.getText().toString().trim());
-                        if (numPlayers < 0) {
-                            Toast.makeText(GameActivity.this, R.string.invalid_num_players_msg, Toast.LENGTH_SHORT).show();
-                        } else {
-                            Intent i = GameConfigActivity.makeIntent(GameActivity.this, false, -1, getGameManagerIndex(), numPlayers);
-                            startActivity(i);
-                        }
-                    } catch(Exception e) {
+            playerDialog.setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                try {
+                    numPlayers = Integer.parseInt(etNumPlayers.getText().toString().trim());
+                    if (numPlayers < 0) {
                         Toast.makeText(GameActivity.this, R.string.invalid_num_players_msg, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Intent i = GameConfigActivity.makeIntent(GameActivity.this, false, -1, getGameManagerIndex(), numPlayers);
+                        startActivity(i);
                     }
+                } catch (Exception e) {
+                    Toast.makeText(GameActivity.this, R.string.invalid_num_players_msg, Toast.LENGTH_SHORT).show();
                 }
             });
 
-            playerDialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            });
+            playerDialog.setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel());
 
             playerDialog.show();
         });
@@ -166,6 +185,7 @@ public class GameActivity extends AppCompatActivity {
     private void setupViewAchievementsBtn() {
         Button viewAchievements = findViewById(R.id.viewAchievementsBtn);
         viewAchievements.setOnClickListener(v -> {
+
             AlertDialog.Builder achievementDialog = new AlertDialog.Builder(GameActivity.this);
             achievementDialog.setTitle(R.string.number_of_players);
 
@@ -173,34 +193,26 @@ public class GameActivity extends AppCompatActivity {
             etNumPlayers.setInputType(InputType.TYPE_CLASS_NUMBER);
             achievementDialog.setView(etNumPlayers);
 
-            achievementDialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    try {
-                        numPlayers = Integer.parseInt(etNumPlayers.getText().toString().trim());
-                        if (numPlayers <= 0) {
-                            Toast.makeText(GameActivity.this, R.string.invalid_num_players_msg, Toast.LENGTH_SHORT).show();
-                        } else {
-
-                            GameManager gameManager = gameCategory.getGameManager(getGameManagerIndex());
-
-                            Intent i = AchievementActivity.makeIntent(GameActivity.this,
-                                    numPlayers, gameManager.getPoorScoreIndividual(), gameManager.getGreatScoreIndividual());
-
-                            startActivity(i);
-                        }
-                    } catch(Exception e) {
+            achievementDialog.setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                try {
+                    numPlayers = Integer.parseInt(etNumPlayers.getText().toString().trim());
+                    if (numPlayers <= 0) {
                         Toast.makeText(GameActivity.this, R.string.invalid_num_players_msg, Toast.LENGTH_SHORT).show();
+                    } else {
+
+                        GameManager gameManager = gameCategory.getGameManager(getGameManagerIndex());
+
+                        Intent i = AchievementActivity.makeIntent(GameActivity.this,
+                                numPlayers, gameManager.getPoorScoreIndividual(), gameManager.getGreatScoreIndividual());
+
+                        startActivity(i);
                     }
+                } catch (Exception e) {
+                    Toast.makeText(GameActivity.this, R.string.invalid_num_players_msg, Toast.LENGTH_SHORT).show();
                 }
             });
 
-            achievementDialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            });
+            achievementDialog.setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel());
 
             achievementDialog.show();
         });
@@ -208,32 +220,7 @@ public class GameActivity extends AppCompatActivity {
 
     private int getGameManagerIndex() {
         Intent intent = getIntent();
-        return intent.getIntExtra(GAME_TYPE_INDEX, -1);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_game, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-            case R.id.action_help:
-                Intent i1 = new Intent(GameActivity.this, HelpActivity.class);
-                startActivity(i1);
-                return true;
-            case R.id.action_edit_category:
-                Intent i2 = CategoryConfigActivity.makeIntent(GameActivity.this, true, getGameManagerIndex());
-                startActivity(i2);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+        return intent.getIntExtra(EXTRA_GAME_TYPE_INDEX, -1);
     }
 
     private class MyListAdapter extends ArrayAdapter<GameActivity.GameListElement> {
@@ -280,7 +267,7 @@ public class GameActivity extends AppCompatActivity {
 
     private void populateGamesList() {
         listGames.clear();
-        for (int i = 0; i < gameManager.size(); i++) {
+        for (int i = 0; i < gameManager.getSize(); i++) {
             Game g = gameManager.getGame(i);
             String filename = GameCategory.getInstance().getCurrentTheme() + getString(R.string.IconFileName) + g.getRank();
             g.updateAchievements(g.getDifficulty());

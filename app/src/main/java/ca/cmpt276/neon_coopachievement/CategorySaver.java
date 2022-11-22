@@ -11,14 +11,14 @@ import ca.cmpt276.neon_coopachievement.model.Theme;
 
 /**
  * CategorySaver
- *
+ * <p>
  * - Saves an instance of a GameCategory using GSON library and SharedPreferences (must be singleton)
  * - Upon creation, load saved GameCategory (if it exists)
  */
 public class CategorySaver {
 
     private static final String KEY = "GAME_CATEGORY_JSON_KEY";
-    private static final String INVALID_PARSE_VAL = "";
+    private static final String INVALID_PARSE_VAL = "GAME_CATEGORY_INVALID_PARSE";
 
     private GameCategory gameCategory;
     private final SharedPreferences preference;

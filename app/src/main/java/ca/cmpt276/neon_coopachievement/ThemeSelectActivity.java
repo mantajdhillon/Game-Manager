@@ -17,7 +17,7 @@ import ca.cmpt276.neon_coopachievement.model.Theme;
 
 /**
  * Theme Select Activity
- *
+ * <p>
  * - Changes theme based on click of radio buttons
  * - Loads old theme from Game Category Manager
  */
@@ -33,6 +33,15 @@ public class ThemeSelectActivity extends AppCompatActivity {
         ab.setDisplayHomeAsUpEnabled(true);
 
         setupRadioGroup();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void setupRadioGroup() {
@@ -58,14 +67,5 @@ public class ThemeSelectActivity extends AppCompatActivity {
 
     public static Intent makeIntent(Context c) {
         return new Intent(c, ThemeSelectActivity.class);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }
