@@ -21,13 +21,15 @@ import ca.cmpt276.neon_coopachievement.model.GameManager;
  * CategoryConfigActivity Class
  * <p>
  * - Used for add/edit/delete game category configurations.
+ *
  * - A new game category is created when user inputs a game
- * name, good score and bad score, and clicks save.
+ *   name, good score and bad score, and clicks save.
+ *
  * - Editing mode displays the previous name and scores
- * the user entered in the inputs fields. Configurations
- * updated when user changes the fields and clicks save.
- * Or the user may delete the game category by clicking
- * delete.
+ *   the user entered in the inputs fields. Configurations
+ *   updated when user changes the fields and clicks save.
+ *   Or the user may delete the game category by clicking
+ *   delete.
  */
 public class CategoryConfigActivity extends AppCompatActivity {
 
@@ -116,7 +118,7 @@ public class CategoryConfigActivity extends AppCompatActivity {
                 int badScore = getInt(getBadScore);
                 if (editConfig) {
                     currGameManager.setName(name);
-                    currGameManager.isValidScore(goodScore,badScore);
+                    currGameManager.isValidScore(goodScore, badScore);
                     currGameManager.setGreatScoreIndividual(goodScore);
                     currGameManager.setPoorScoreIndividual(badScore);
                     currGameManager.updateEdits(badScore, goodScore);

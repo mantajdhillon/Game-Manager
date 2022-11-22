@@ -1,13 +1,11 @@
 package ca.cmpt276.neon_coopachievement.model;
 
-import androidx.annotation.NonNull;
-
 /**
  * Achievements Class:
  * <p>
  * - Used to store the achievement boundaries of a game type.
  * - Each Game has an achievements variable that gets constructed using
- *   the good score, bad score, and the # of players from the game.
+ * the good score, bad score, and the # of players from the game.
  */
 public class Achievement {
     private static final byte MIN_ACHIEVEMENT_RANK = 1;
@@ -21,13 +19,13 @@ public class Achievement {
 
     // Game variables needed for making score
     private final int numPlayers;
-    private final int low;
-    private final int high;
+    private final int lowScore;
+    private final int highScore;
     private Game.Difficulty difficulty;
 
-    public Achievement(int low, int high, int numPlayers, Game.Difficulty diff) {
+    public Achievement(int lowScore, int highScore, int numPlayers, Game.Difficulty diff) {
         // Error handling for low and high
-        if (low > high) {
+        if (lowScore > highScore) {
             throw new RuntimeException("Low score can not be greater than high score");
         } else if (numPlayers < 0) {
             throw new RuntimeException("Invalid number of players");
@@ -36,17 +34,18 @@ public class Achievement {
         }
 
         // Update variables
-        this.low = low;
-        this.high = high;
+        this.lowScore = lowScore;
+        this.highScore = highScore;
         this.numPlayers = numPlayers;
         this.difficulty = diff;
         this.rankBoundaries = new double[MAX_ACHIEVEMENT_RANK - 1];
         changeAchievementNames();
 
         // Initialize boundaries for different achievements
-        initializeRankBoundaries(low, high, numPlayers, diff);
+        initializeRankBoundaries(lowScore, highScore, numPlayers, diff);
     }
 
+    // Initialize the rank tiers
     private void initializeRankBoundaries(int low, int high, int numPlayers, Game.Difficulty difficulty) {
         final double MULTIPLIER = getDifficultlyMultiplier(difficulty);
 
@@ -83,7 +82,7 @@ public class Achievement {
         // Update achievement ranks if game difficulty has changed
         if (this.difficulty != difficulty) {
             // Initialize boundaries again
-            initializeRankBoundaries(low, high, numPlayers, difficulty);
+            initializeRankBoundaries(lowScore, highScore, numPlayers, difficulty);
 
             // Update game difficulty
             this.difficulty = difficulty;
@@ -115,22 +114,22 @@ public class Achievement {
 
         // Highest achievement rank
         if (rankIdx == MAX_RANK_IDX) {
-            return "Level " + MAX_ACHIEVEMENT_RANK + " (>"
+            return "Rank #" + MAX_ACHIEVEMENT_RANK + " (>"
                     + (int) rankBoundaries[MAX_RANK_IDX - 1] + "): "
                     + achievementNames[MAX_RANK_IDX];
         }
 
         // Lowest achievement rank
         else if (rankIdx == MIN_RANK_IDX) {
-            return "Level " + (rankIdx + 1) + " (<"
+            return "Rank #" + (rankIdx + 1) + " (<"
                     + (int) rankBoundaries[rankIdx] + "): "
                     + achievementNames[rankIdx];
         }
 
         // Other
         else {
-            return "Level " + (rankIdx + 1) + " ("
-                    + (int) rankBoundaries[rankIdx - 1] + " - "
+            return "Rank #" + (rankIdx + 1) + " ("
+                    + (int) (rankBoundaries[rankIdx - 1] + 1) + " - "
                     + (int) rankBoundaries[rankIdx]
                     + "): " + achievementNames[rankIdx];
         }

@@ -21,6 +21,7 @@
     <string name="game_config_good_score">Good Score:</string>
     <string name="game_config_sum_of_scores">Sum of scores:</string>
     <string name="game_config_num_players"># of players:</string>
+    <string name="game_config_empty_state_desc">No players found!\n Click the + to add a new player.</string>
 
     <!--Achievement activity-->
     <string name="achievement_activity_title">Achievements</string>
@@ -52,9 +53,13 @@
     <string name="easy">Easy</string>
     <string name="normal">Normal</string>
     <string name="hard">Hard</string>
+    <string name="clear">clear</string>
+
     <string name="number_of_players">Number of Players: </string>
     <string name="achievement_dialog">Achievement Dialog</string>
     <string name="delete_cap">DELETE</string>
     <string name="great_job">Great job!</string>
     <string name="your_rank_is">Your rank is: </string>
+    <string name="achievements">achievements</string>
+    <string name="achievement_description">Achievement Description</string>
 </resources>

@@ -3,6 +3,8 @@ package ca.cmpt276.neon_coopachievement;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.ColorMatrix;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.InputType;
@@ -23,6 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -40,12 +43,15 @@ import ca.cmpt276.neon_coopachievement.model.ScoreCalculator;
  * GameConfigActivity Class
  * <p>
  * - Used for add/edit/delete game.
+ *
  * - A new game is created when user inputs a number
- * of players. User may input the scores per player and calculate the total score
+ *   of players. User may input the scores per player and calculate the total score
+ *
  * - Editing mode displays the previous number of players and scores that
- * the user entered in the inputs fields.
+ *   the user entered in the inputs fields.
+ *
  * - Details are updated when user changes the fields and clicks save.
- * The user may delete the game by clicking delete.
+ *   The user may delete the game by clicking delete.
  */
 public class GameConfigActivity extends AppCompatActivity {
 
@@ -75,27 +81,11 @@ public class GameConfigActivity extends AppCompatActivity {
         GameCategory gameCategory = GameCategory.getInstance();
         gameManager = gameCategory.getGameManager(getGameManagerIndex());
 
-        setupRadioGroup();
-        setUpAddPlayerBtn();
-        setUpPlayersSlots();
-        setUpEmptyState(scoreCalculator.getNumPlayers());
-        populatePlayerListView();
-        populateAchievementView();
-        registerListClickCallback();
-        setUpSaveBtn();
-        setUpClearBtn();
+        setUpGameConfigActivity();
 
         // Editing a game configuration
         if (getIsEdit()) {
-            currentGame = gameManager.getGame(getGameIndex());
-            currentDifficulty = currentGame.getDifficulty();
-            setupRadioGroup();
-            currentGame.updateAchievements(currentDifficulty);
-            ab.setTitle(R.string.game_config_activity_edit_game);
-            scoreCalculator.setScores(currentGame.getScores());
-            populatePlayerListView();
-            populateAchievementView();
-            setUpEmptyState(scoreCalculator.getNumPlayers());
+            setUpGameConfigActivityEdit(ab);
         }
     }
 
@@ -124,6 +114,30 @@ public class GameConfigActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void setUpGameConfigActivity() {
+        setupRadioGroup();
+        setUpAddPlayerBtn();
+        setUpPlayersSlots();
+        setUpEmptyState(scoreCalculator.getNumPlayers());
+        populatePlayerListView();
+        populateAchievementView();
+        registerListClickCallback();
+        setUpSaveBtn();
+        setUpClearBtn();
+    }
+
+    private void setUpGameConfigActivityEdit(ActionBar ab) {
+        currentGame = gameManager.getGame(getGameIndex());
+        currentDifficulty = currentGame.getDifficulty();
+        setupRadioGroup();
+        currentGame.updateAchievements(currentDifficulty);
+        ab.setTitle(R.string.game_config_activity_edit_game);
+        scoreCalculator.setScores(currentGame.getScores());
+        populatePlayerListView();
+        populateAchievementView();
+        setUpEmptyState(scoreCalculator.getNumPlayers());
     }
 
     private void setUpEmptyState(int numGames) {
@@ -329,13 +343,12 @@ public class GameConfigActivity extends AppCompatActivity {
         // Build the alert dialog (achievement builder)
         android.app.AlertDialog achievementDialog = new android.app.AlertDialog.Builder(this)
                 .setView(v)
-                .setTitle("Great job!")
-//                .setCancelable(false)
+                .setTitle(R.string.great_job)
                 .setPositiveButton(android.R.string.ok, positiveButtonListener)
                 .setOnDismissListener(dismissListener)
                 .create();
 
-        // Get current achievement
+        // Get current achievement for game
         Achievement currAchievement = new Achievement(
                 gameManager.getPoorScoreIndividual(),
                 gameManager.getGreatScoreIndividual(),
@@ -346,9 +359,15 @@ public class GameConfigActivity extends AppCompatActivity {
         int highestRank = currAchievement.getHighestRank(sumScores);
         String achievement = currAchievement.getAchievementName(highestRank);
         String gameRank = getString(R.string.your_rank_is) + " " + achievement;
-
         achievementDialog.setMessage(gameRank);
+
+        // Show dialog
         achievementDialog.show();
+
+        // Update Achievement message with appropriate font
+        TextView textView = (TextView) achievementDialog.findViewById(android.R.id.message);
+        Typeface comicNeueBoldFont = ResourcesCompat.getFont(this, R.font.comic_neue_bold);
+        textView.setTypeface(comicNeueBoldFont);
     }
 
     private void setUpClearBtn() {
@@ -360,15 +379,6 @@ public class GameConfigActivity extends AppCompatActivity {
             populateAchievementView();
             setUpEmptyState(scoreCalculator.getNumPlayers());
         });
-    }
-
-    public static Intent makeIntent(Context c, boolean isEdit, int gameIndex, int gameManagerIndex, int numPlayers) {
-        Intent intent = new Intent(c, GameConfigActivity.class);
-        intent.putExtra(EXTRA_IS_EDIT, isEdit);
-        intent.putExtra(EXTRA_GAME_INDEX, gameIndex);
-        intent.putExtra(EXTRA_GAME_TYPE_INDEX, gameManagerIndex);
-        intent.putExtra(EXTRA_NUM_PLAYERS, numPlayers);
-        return intent;
     }
 
     private int getGameManagerIndex() {
@@ -385,5 +395,14 @@ public class GameConfigActivity extends AppCompatActivity {
 
     private int getNumPlayers() {
         return getIntent().getIntExtra(EXTRA_NUM_PLAYERS, -1);
+    }
+
+    public static Intent makeIntent(Context c, boolean isEdit, int gameIndex, int gameManagerIndex, int numPlayers) {
+        Intent intent = new Intent(c, GameConfigActivity.class);
+        intent.putExtra(EXTRA_IS_EDIT, isEdit);
+        intent.putExtra(EXTRA_GAME_INDEX, gameIndex);
+        intent.putExtra(EXTRA_GAME_TYPE_INDEX, gameManagerIndex);
+        intent.putExtra(EXTRA_NUM_PLAYERS, numPlayers);
+        return intent;
     }
 }
