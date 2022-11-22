@@ -34,8 +34,8 @@
 
     <RadioGroup
         android:id="@+id/rgThemeSelection"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="296dp"
+        android:layout_height="93dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="9dp"
