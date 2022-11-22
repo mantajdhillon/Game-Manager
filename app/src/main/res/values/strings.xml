@@ -60,4 +60,6 @@
     <string name="delete_cap">DELETE</string>
     <string name="great_job">Great job!</string>
     <string name="your_rank_is">Your rank is: </string>
+    <string name="achievements">achievements</string>
+    <string name="achievement_description">Achievement Description</string>
 </resources>

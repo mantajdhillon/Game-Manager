@@ -18,7 +18,7 @@
         android:layout_toEndOf="@+id/achievement_icon"
         android:layout_toRightOf="@+id/achievement_icon"
         android:layout_toLeftOf="@android:id/accessibilityActionPageRight"
-        android:text="Achievement Description"
+        android:text="@string/achievement_description"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="18sp" />
 
