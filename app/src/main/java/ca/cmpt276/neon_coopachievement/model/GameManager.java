@@ -2,7 +2,6 @@ package ca.cmpt276.neon_coopachievement.model;
 
 import androidx.annotation.NonNull;
 
-import java.lang.reflect.Array;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
@@ -134,7 +133,7 @@ public class GameManager {
 
     public String tallyToString(int index){
         try{
-            return "Times Achieved: " + getTally(index);
+            return "\nTimes Achieved: " + getTally(index);
         }
         catch (Exception e){
             throw new InvalidParameterException("Index invalid!");

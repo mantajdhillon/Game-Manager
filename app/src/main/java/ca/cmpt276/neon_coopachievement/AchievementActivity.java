@@ -37,6 +37,7 @@ public class AchievementActivity extends AppCompatActivity {
     private static final String EXTRA_NUM_PLAYERS = "numPlayers";
     private static final String EXTRA_GOOD_SCORE = "goodScore";
     private static final String EXTRA_POOR_SCORE = "poorScore";
+    private static final String EXTRA_INDEX = "index";
 
     private GameCategory instance = GameCategory.getInstance();
 
@@ -95,12 +96,12 @@ public class AchievementActivity extends AppCompatActivity {
         intent.putExtra(EXTRA_NUM_PLAYERS, numPlayers);
         intent.putExtra(EXTRA_GOOD_SCORE, goodScore);
         intent.putExtra(EXTRA_POOR_SCORE, poorScore);
-        intent.putExtra("index", managerIndex);
+        intent.putExtra(EXTRA_INDEX, managerIndex);
         return intent;
     }
 
     private GameManager getManager(){
-        int index = getIntent().getIntExtra("index", -1);
+        int index = getIntent().getIntExtra(EXTRA_INDEX, -1);
         return instance.getGameManager(index);
     }
 
