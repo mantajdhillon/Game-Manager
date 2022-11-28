@@ -139,6 +139,15 @@ public class GameManager {
         }
     }
 
+    public String tallyToString(int index){
+        try{
+            return "Times Achieved: " + getTally(index);
+        }
+        catch (Exception e){
+            throw new InvalidParameterException("Index invalid!");
+        }
+    }
+
     @NonNull
     @Override
     public String toString() {

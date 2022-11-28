@@ -90,21 +90,16 @@ public class AchievementActivity extends AppCompatActivity {
         }
     }
 
-    public static Intent makeIntent(Context c, int numPlayers, int poorScore, int goodScore) {
+    public static Intent makeIntent(Context c, int numPlayers, int poorScore, int goodScore, int managerIndex) {
         Intent intent = new Intent(c, AchievementActivity.class);
         intent.putExtra(EXTRA_NUM_PLAYERS, numPlayers);
         intent.putExtra(EXTRA_GOOD_SCORE, goodScore);
         intent.putExtra(EXTRA_POOR_SCORE, poorScore);
+        intent.putExtra("index", managerIndex);
         return intent;
     }
 
-    public static Intent makeIndexIntent(Context c, int index){
-        Intent intent = new Intent(c, AchievementActivity.class);
-        intent.putExtra("index", index);
-        return intent;
-    }
-
-    private GameManager getGameManager(){
+    private GameManager getManager(){
         int index = getIntent().getIntExtra("index", -1);
         return instance.getGameManager(index);
     }
@@ -141,12 +136,8 @@ public class AchievementActivity extends AppCompatActivity {
     }
 
     private void populateAchievementsList() {
-//        Achievement achievements = new Achievement(getPoorScore(), getGoodScore(),
-//                getNumPlayers(), currentDifficulty);
-        Achievement achievements = new Achievement(getGameManager().getPoorScoreIndividual(),
-                getGameManager().getGreatScoreIndividual(),
-                getGameManager().getSize(),
-                currentDifficulty);
+        Achievement achievements = new Achievement(getPoorScore(), getGoodScore(),
+                getNumPlayers(), currentDifficulty);
 
         // Ensure list is empty before populating
         achievementList = new ArrayList<>();
@@ -154,7 +145,8 @@ public class AchievementActivity extends AppCompatActivity {
         for (int i = 0; i < MAX_ACHIEVEMENTS; i++) {
             String filename = GameCategory.getInstance().getCurrentTheme() + getString(R.string.IconFileName) + (i + 1);
             int id = getResources().getIdentifier(filename, getString(R.string.defType), this.getPackageName());
-            achievementList.add(new AchievementListElement(achievements.getAchievementString(i), id));
+            achievementList.add(new AchievementListElement(achievements.getAchievementString(i)
+                    + "\n" + getManager().tallyToString(i), id));
         }
     }
 
