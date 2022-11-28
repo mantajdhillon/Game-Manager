@@ -301,7 +301,8 @@ public class GameConfigActivity extends AppCompatActivity {
                     gameManager.updateEdits(
                             gameManager.getPoorScoreIndividual(),
                             gameManager.getGreatScoreIndividual());
-                    gameManager.editTally(oldIndex,currentGame.getRank() - 1);
+                    gameManager.decreaseTally(oldIndex);
+                    gameManager.addTally(currentGame.getRank()-1);
 
                     Toast.makeText(this, "Current tally for rank " + currentGame.getRank() +
                             ": " + gameManager.getTally(currentGame.getRank() - 1), Toast.LENGTH_SHORT).show();

@@ -123,13 +123,6 @@ public class GameManager {
         }
     }
 
-    public void editTally(int oldIndex, int newIndex){
-        if(oldIndex != newIndex) {
-            decreaseTally(oldIndex);
-            addTally(newIndex);
-        }
-    }
-
     public int getTally(int index){
         try{
             return achievementTally.get(index);
