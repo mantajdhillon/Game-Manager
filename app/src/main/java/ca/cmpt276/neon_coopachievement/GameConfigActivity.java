@@ -108,7 +108,9 @@ public class GameConfigActivity extends AppCompatActivity {
                 return true;
             case R.id.action_delete:
                 if (getIsEdit()) {
+                    int rank = gameManager.getGame(getGameIndex()).getRank();
                     gameManager.removeGame(getGameIndex());
+                    gameManager.decreaseTally(rank - 1);
                 }
                 finish();
             default:
@@ -289,14 +291,20 @@ public class GameConfigActivity extends AppCompatActivity {
                 int sumScores = scoreCalculator.getSumScores();
 
                 if (getIsEdit()) {
+                    int oldIndex = currentGame.getRank() - 1;
                     currentGame.setNumPlayers(numPlayers);
                     currentGame.setFinalTotalScore(sumScores);
                     currentGame.setScores(scoreCalculator.getScores());
                     currentGame.setDifficulty(currentDifficulty);
                     currentGame.updateAchievements(currentDifficulty);
+                    currentGame.updateRank(sumScores);
                     gameManager.updateEdits(
                             gameManager.getPoorScoreIndividual(),
                             gameManager.getGreatScoreIndividual());
+                    gameManager.editTally(oldIndex,currentGame.getRank() - 1);
+
+                    Toast.makeText(this, "Current tally for rank " + currentGame.getRank() +
+                            ": " + gameManager.getTally(currentGame.getRank() - 1), Toast.LENGTH_SHORT).show();
                 }
 
                 // Make a new game
@@ -306,6 +314,9 @@ public class GameConfigActivity extends AppCompatActivity {
                             gameManager.getGreatScoreIndividual(),
                             scoreCalculator.getScores(), currentDifficulty);
                     gameManager.addGame(newGame);
+                    gameManager.addTally(newGame.getRank() - 1);
+                    Toast.makeText(this, "Current tally for rank " + newGame.getRank() +
+                            ": " + gameManager.getTally(newGame.getRank() - 1), Toast.LENGTH_SHORT).show();
                 }
                 makeAchievementDialog(numPlayers, sumScores);
 
@@ -358,7 +369,7 @@ public class GameConfigActivity extends AppCompatActivity {
         // Set body message for dialog
         int highestRank = currAchievement.getHighestRank(sumScores);
         String achievement = currAchievement.getAchievementName(highestRank);
-        String gameRank = getString(R.string.your_rank_is) + " " + achievement;
+        String gameRank = getString(R.string.your_rank_is) + " " + achievement + "\nAs num: " + highestRank;
         achievementDialog.setMessage(gameRank);
 
         // Show dialog

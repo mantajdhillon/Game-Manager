@@ -2,6 +2,8 @@ package ca.cmpt276.neon_coopachievement.model;
 
 import androidx.annotation.NonNull;
 
+import java.lang.reflect.Array;
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
 /**
@@ -19,12 +21,18 @@ public class GameManager {
     private int greatScoreIndividual;
     private int poorScoreIndividual;
 
+    private ArrayList<Integer> achievementTally;
+
     public GameManager(String name, int goodScore, int poorScore) {
         isValidName(name);
         isValidScore(goodScore, poorScore);
         this.name = name;
         this.greatScoreIndividual = goodScore;
         this.poorScoreIndividual = poorScore;
+        this.achievementTally = new ArrayList<>();
+        for(int i=0; i<10; i++){
+            achievementTally.add(0);
+        }
     }
 
     public String getName() {
@@ -89,6 +97,45 @@ public class GameManager {
                     poorScoreNew, greatScoreNew, oldGame.getScores(), oldGame.getDifficulty());
             newGame.setTime(oldGame.getTime());
             games.set(i, newGame);
+        }
+    }
+
+    public void addTally(int index){
+        try{
+            int oldVal = achievementTally.get(index);
+            achievementTally.set(index,oldVal + 1);
+        }
+        catch (Exception e){
+            throw new InvalidParameterException("Index invalid!");
+        }
+    }
+
+    public void decreaseTally(int index){
+        try {
+            int oldVal = achievementTally.get(index);
+            achievementTally.set(index, oldVal - 1);
+        }
+        catch (Exception e) {
+            throw new InvalidParameterException("Old index invalid!");
+        }
+        if (achievementTally.get(index) < 0) {
+            achievementTally.set(index, 0);
+        }
+    }
+
+    public void editTally(int oldIndex, int newIndex){
+        if(oldIndex != newIndex) {
+            decreaseTally(oldIndex);
+            addTally(newIndex);
+        }
+    }
+
+    public int getTally(int index){
+        try{
+            return achievementTally.get(index);
+        }
+        catch (Exception e){
+            throw new InvalidParameterException("Index invalid!");
         }
     }
 
