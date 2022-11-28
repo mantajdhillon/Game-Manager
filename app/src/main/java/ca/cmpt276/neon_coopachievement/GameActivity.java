@@ -202,8 +202,9 @@ public class GameActivity extends AppCompatActivity {
 
                         GameManager gameManager = gameCategory.getGameManager(getGameManagerIndex());
 
-                        Intent i = AchievementActivity.makeIntent(GameActivity.this,
-                                numPlayers, gameManager.getPoorScoreIndividual(), gameManager.getGreatScoreIndividual());
+//                        Intent i = AchievementActivity.makeIntent(GameActivity.this,
+//                                numPlayers, gameManager.getPoorScoreIndividual(), gameManager.getGreatScoreIndividual());
+                        Intent i = AchievementActivity.makeIndexIntent(GameActivity.this, getGameManagerIndex());
 
                         startActivity(i);
                     }

@@ -24,6 +24,7 @@ import java.util.List;
 import ca.cmpt276.neon_coopachievement.model.Achievement;
 import ca.cmpt276.neon_coopachievement.model.Game;
 import ca.cmpt276.neon_coopachievement.model.GameCategory;
+import ca.cmpt276.neon_coopachievement.model.GameManager;
 
 /**
  * AchievementActivity Class
@@ -36,6 +37,8 @@ public class AchievementActivity extends AppCompatActivity {
     private static final String EXTRA_NUM_PLAYERS = "numPlayers";
     private static final String EXTRA_GOOD_SCORE = "goodScore";
     private static final String EXTRA_POOR_SCORE = "poorScore";
+
+    private GameCategory instance = GameCategory.getInstance();
 
     // Represents an achievement list element consisting of the image io and description
     private static class AchievementListElement {
@@ -95,6 +98,17 @@ public class AchievementActivity extends AppCompatActivity {
         return intent;
     }
 
+    public static Intent makeIndexIntent(Context c, int index){
+        Intent intent = new Intent(c, AchievementActivity.class);
+        intent.putExtra("index", index);
+        return intent;
+    }
+
+    private GameManager getGameManager(){
+        int index = getIntent().getIntExtra("index", -1);
+        return instance.getGameManager(index);
+    }
+
     private int getNumPlayers() {
         return getIntent().getIntExtra(EXTRA_NUM_PLAYERS, -1);
     }
@@ -127,8 +141,12 @@ public class AchievementActivity extends AppCompatActivity {
     }
 
     private void populateAchievementsList() {
-        Achievement achievements = new Achievement(getPoorScore(), getGoodScore(),
-                getNumPlayers(), currentDifficulty);
+//        Achievement achievements = new Achievement(getPoorScore(), getGoodScore(),
+//                getNumPlayers(), currentDifficulty);
+        Achievement achievements = new Achievement(getGameManager().getPoorScoreIndividual(),
+                getGameManager().getGreatScoreIndividual(),
+                getGameManager().getSize(),
+                currentDifficulty);
 
         // Ensure list is empty before populating
         achievementList = new ArrayList<>();
