@@ -25,7 +25,7 @@ public class Game {
     private int numPlayers;
     private int finalTotalScore;
     private final Achievement achievements;
-    private final int rank;
+    private int rank;
     private String time;
     private Difficulty difficulty;
 
@@ -98,6 +98,10 @@ public class Game {
     public void updateAchievements(Difficulty difficulty) {
         achievements.changeAchievementNames();
         achievements.changeDifficulty(difficulty);
+    }
+
+    public void updateRank(int newFinalScore){
+        this.rank = achievements.getHighestRank(newFinalScore);
     }
 
     @NonNull

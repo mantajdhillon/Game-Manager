@@ -24,18 +24,23 @@ import java.util.List;
 import ca.cmpt276.neon_coopachievement.model.Achievement;
 import ca.cmpt276.neon_coopachievement.model.Game;
 import ca.cmpt276.neon_coopachievement.model.GameCategory;
+import ca.cmpt276.neon_coopachievement.model.GameManager;
 
 /**
  * AchievementActivity Class
  * <p>
  * - Displays the list of achievements of a game based on the number of players the user enters.
  * - Accessed through GameActivity.
+ * - Displays times each individual rank is achieved
  */
 public class AchievementActivity extends AppCompatActivity {
     private static final byte MAX_ACHIEVEMENTS = 10;
     private static final String EXTRA_NUM_PLAYERS = "numPlayers";
     private static final String EXTRA_GOOD_SCORE = "goodScore";
     private static final String EXTRA_POOR_SCORE = "poorScore";
+    private static final String EXTRA_INDEX = "index";
+
+    private GameCategory instance = GameCategory.getInstance();
 
     // Represents an achievement list element consisting of the image io and description
     private static class AchievementListElement {
@@ -87,12 +92,18 @@ public class AchievementActivity extends AppCompatActivity {
         }
     }
 
-    public static Intent makeIntent(Context c, int numPlayers, int poorScore, int goodScore) {
+    public static Intent makeIntent(Context c, int numPlayers, int poorScore, int goodScore, int managerIndex) {
         Intent intent = new Intent(c, AchievementActivity.class);
         intent.putExtra(EXTRA_NUM_PLAYERS, numPlayers);
         intent.putExtra(EXTRA_GOOD_SCORE, goodScore);
         intent.putExtra(EXTRA_POOR_SCORE, poorScore);
+        intent.putExtra(EXTRA_INDEX, managerIndex);
         return intent;
+    }
+
+    private GameManager getManager(){
+        int index = getIntent().getIntExtra(EXTRA_INDEX, -1);
+        return instance.getGameManager(index);
     }
 
     private int getNumPlayers() {
@@ -136,7 +147,8 @@ public class AchievementActivity extends AppCompatActivity {
         for (int i = 0; i < MAX_ACHIEVEMENTS; i++) {
             String filename = GameCategory.getInstance().getCurrentTheme() + getString(R.string.IconFileName) + (i + 1);
             int id = getResources().getIdentifier(filename, getString(R.string.defType), this.getPackageName());
-            achievementList.add(new AchievementListElement(achievements.getAchievementString(i), id));
+            achievementList.add(new AchievementListElement(achievements.getAchievementString(i)
+                    + getManager().tallyToString(i), id));
         }
     }
 
