@@ -48,6 +48,10 @@ public class GameManager {
     }
 
     public void setName(String gameName) {
+        if (gameName.isEmpty()) {
+            throw new RuntimeException("Game name can not be empty");
+        }
+
         this.name = gameName;
     }
 
@@ -70,7 +74,7 @@ public class GameManager {
     // Checks whether a given great and poor score are valid
     public void isValidScore(int goodScore, int poorScore) {
         if (goodScore <= poorScore) {
-            throw new RuntimeException("Invalid score entry: ");
+            throw new RuntimeException("Good score must be greater than bad score");
         }
     }
 

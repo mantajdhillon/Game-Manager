@@ -130,6 +130,8 @@ public class CategoryConfigActivity extends AppCompatActivity {
                     instance.addGameManager(newManager);
                 }
                 finish();
+            } catch (NumberFormatException e) {
+                Toast.makeText(this, R.string.score_valid_int_err_msg, Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
