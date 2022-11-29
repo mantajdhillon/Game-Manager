@@ -31,7 +31,7 @@ public class GameManager {
         this.greatScoreIndividual = goodScore;
         this.poorScoreIndividual = poorScore;
         this.achievementTally = new ArrayList<>();
-        for(int i=0; i<10; i++){
+        for(int i = 0; i < 10; i++){
             achievementTally.add(0);
         }
     }
