@@ -133,7 +133,7 @@ public class GameManager {
 
     public String tallyToString(int index){
         try{
-            return "\nTimes Achieved: " + getTally(index);
+            return "\n\nTimes Achieved: " + getTally(index);
         }
         catch (Exception e){
             throw new InvalidParameterException("Index invalid!");

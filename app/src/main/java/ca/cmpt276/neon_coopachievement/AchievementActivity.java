@@ -147,7 +147,7 @@ public class AchievementActivity extends AppCompatActivity {
             String filename = GameCategory.getInstance().getCurrentTheme() + getString(R.string.IconFileName) + (i + 1);
             int id = getResources().getIdentifier(filename, getString(R.string.defType), this.getPackageName());
             achievementList.add(new AchievementListElement(achievements.getAchievementString(i)
-                    + "\n" + getManager().tallyToString(i), id));
+                    + getManager().tallyToString(i), id));
         }
     }
 
