@@ -52,6 +52,7 @@ import ca.cmpt276.neon_coopachievement.model.ScoreCalculator;
  *
  * - Details are updated when user changes the fields and clicks save.
  *   The user may delete the game by clicking delete.
+ *   Achievements tally is updated upon save
  */
 public class GameConfigActivity extends AppCompatActivity {
 

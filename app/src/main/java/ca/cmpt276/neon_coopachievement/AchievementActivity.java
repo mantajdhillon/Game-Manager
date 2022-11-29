@@ -31,6 +31,7 @@ import ca.cmpt276.neon_coopachievement.model.GameManager;
  * <p>
  * - Displays the list of achievements of a game based on the number of players the user enters.
  * - Accessed through GameActivity.
+ * - Displays times each individual rank is achieved
  */
 public class AchievementActivity extends AppCompatActivity {
     private static final byte MAX_ACHIEVEMENTS = 10;

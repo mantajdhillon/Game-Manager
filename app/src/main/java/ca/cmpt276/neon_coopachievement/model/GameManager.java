@@ -12,6 +12,8 @@ import java.util.ArrayList;
  * - Takes the name, and good/poor individual scores for a given game, if the parameters are valid
  * - Holds games in an ArrayList
  * - Can only be accessed through the GameCategory instance
+ * - Holds a tally for achievements; this tally is updated depending on
+ *   the achievement ranks scored by users
  */
 
 public class GameManager {
