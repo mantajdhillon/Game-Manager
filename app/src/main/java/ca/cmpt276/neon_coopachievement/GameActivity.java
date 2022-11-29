@@ -203,7 +203,7 @@ public class GameActivity extends AppCompatActivity {
                         GameManager gameManager = gameCategory.getGameManager(getGameManagerIndex());
 
                         Intent i = AchievementActivity.makeIntent(GameActivity.this,
-                                numPlayers, gameManager.getPoorScoreIndividual(), gameManager.getGreatScoreIndividual());
+                                numPlayers, gameManager.getPoorScoreIndividual(), gameManager.getGreatScoreIndividual(), getGameManagerIndex());
 
                         startActivity(i);
                     }

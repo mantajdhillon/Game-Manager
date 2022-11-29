@@ -52,6 +52,7 @@ import ca.cmpt276.neon_coopachievement.model.ScoreCalculator;
  *
  * - Details are updated when user changes the fields and clicks save.
  *   The user may delete the game by clicking delete.
+ *   Achievements tally is updated upon save
  */
 public class GameConfigActivity extends AppCompatActivity {
 
@@ -108,7 +109,9 @@ public class GameConfigActivity extends AppCompatActivity {
                 return true;
             case R.id.action_delete:
                 if (getIsEdit()) {
+                    int rank = gameManager.getGame(getGameIndex()).getRank();
                     gameManager.removeGame(getGameIndex());
+                    gameManager.decreaseTally(rank - 1);
                 }
                 finish();
             default:
@@ -289,14 +292,18 @@ public class GameConfigActivity extends AppCompatActivity {
                 int sumScores = scoreCalculator.getSumScores();
 
                 if (getIsEdit()) {
+                    int oldIndex = currentGame.getRank() - 1;
                     currentGame.setNumPlayers(numPlayers);
                     currentGame.setFinalTotalScore(sumScores);
                     currentGame.setScores(scoreCalculator.getScores());
                     currentGame.setDifficulty(currentDifficulty);
                     currentGame.updateAchievements(currentDifficulty);
+                    currentGame.updateRank(sumScores);
                     gameManager.updateEdits(
                             gameManager.getPoorScoreIndividual(),
                             gameManager.getGreatScoreIndividual());
+                    gameManager.decreaseTally(oldIndex);
+                    gameManager.addTally(currentGame.getRank()-1);
                 }
 
                 // Make a new game
@@ -306,6 +313,7 @@ public class GameConfigActivity extends AppCompatActivity {
                             gameManager.getGreatScoreIndividual(),
                             scoreCalculator.getScores(), currentDifficulty);
                     gameManager.addGame(newGame);
+                    gameManager.addTally(newGame.getRank() - 1);
                 }
                 makeAchievementDialog(numPlayers, sumScores);
 
