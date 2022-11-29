@@ -62,4 +62,7 @@
     <string name="your_rank_is">Your rank is: </string>
     <string name="achievements">achievements</string>
     <string name="achievement_description">Achievement Description</string>
+    <string name="zero">0</string>
+    <string name="no_players_err_msg">A game must have at least one player</string>
+    <string name="score_valid_int_err_msg">Score must be a valid integer</string>
 </resources>

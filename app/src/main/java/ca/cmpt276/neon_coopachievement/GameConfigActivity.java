@@ -42,15 +42,12 @@ import ca.cmpt276.neon_coopachievement.model.ScoreCalculator;
  * GameConfigActivity Class
  * <p>
  * - Used for add/edit/delete game.
- * <p>
  * - A new game is created when user inputs a number
- * of players. User may input the scores per player and calculate the total score
- * <p>
+ *   of players. User may input the scores per player and calculate the total score
  * - Editing mode displays the previous number of players and scores that
- * the user entered in the inputs fields.
- * <p>
+ *   the user entered in the inputs fields.
  * - Details are updated when user changes the fields and clicks save.
- * The user may delete the game by clicking delete.
+ * - The user may delete the game by clicking delete.
  */
 public class GameConfigActivity extends AppCompatActivity {
 
@@ -186,21 +183,19 @@ public class GameConfigActivity extends AppCompatActivity {
                 etPlayerScore.setText(Integer.toString(scoreCalculator.peekLostScore()));
             }
 
-            // Default value of 0
+            // Default value of 0 if no lost scores are found
             else {
-                etPlayerScore.setText("0");
+                etPlayerScore.setText(R.string.zero);
             }
 
             // Confirm saving a player
             playerDialog.setPositiveButton(android.R.string.ok, (dialog, which) -> {
                 try {
                     scoreCalculator.addScore(Integer.parseInt(etPlayerScore.getText().toString().trim()));
+                    scoreCalculator.popLostScore();     // Remove lost score
                 } catch (Exception e) {
                     Toast.makeText(GameConfigActivity.this, R.string.invalid_input, Toast.LENGTH_SHORT).show();
                 }
-
-                // Remove lost score if it exists
-                scoreCalculator.popLostScore();     // Remove score from "lost" list
 
                 populatePlayerListView();
                 populateAchievementView();
@@ -267,12 +262,12 @@ public class GameConfigActivity extends AppCompatActivity {
 
             final EditText etPlayerScore = new EditText(GameConfigActivity.this);
             etPlayerScore.setInputType(InputType.TYPE_CLASS_NUMBER);
-            etPlayerScore.setText(Integer.toString(scoreCalculator.getScore(position + 1)));
+            etPlayerScore.setText(Integer.toString(scoreCalculator.getScore(position)));
             playerDialog.setView(etPlayerScore);
 
             playerDialog.setPositiveButton(android.R.string.ok, (dialog, which) -> {
                 try {
-                    scoreCalculator.updateScore(position + 1, Integer.parseInt(etPlayerScore.getText().toString().trim()));
+                    scoreCalculator.updateScore(position, Integer.parseInt(etPlayerScore.getText().toString().trim()));
                 } catch (Exception e) {
                     Toast.makeText(GameConfigActivity.this, R.string.invalid_input, Toast.LENGTH_SHORT).show();
                 }
@@ -283,7 +278,7 @@ public class GameConfigActivity extends AppCompatActivity {
             playerDialog.setNeutralButton(android.R.string.cancel, (dialog, which) -> dialog.cancel());
 
             playerDialog.setNegativeButton(R.string.delete_cap, (dialog, which) -> {
-                scoreCalculator.removeScore(position + 1);
+                scoreCalculator.removeScore(position);
                 populatePlayerListView();
                 populateAchievementView();
                 setUpEmptyState(scoreCalculator.getNumPlayers());
@@ -329,9 +324,8 @@ public class GameConfigActivity extends AppCompatActivity {
                 makeAchievementDialog(numPlayers, sumScores);
 
             } else {
-                Toast.makeText(this, R.string.invalid_input, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.no_players_err_msg, Toast.LENGTH_SHORT).show();
             }
-
         });
     }
 

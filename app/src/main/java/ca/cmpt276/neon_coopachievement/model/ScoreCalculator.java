@@ -8,17 +8,18 @@ import java.util.Queue;
  * Score Calculator Class:
  * <p>
  * - Used to calculate the sum of all scores of an individual player in a single game.
+ *
  * - Holds scores of each player, sum scores, and num players.
+ *
+ * - Holds scores for "lost" players when a score is removed.
  */
 public class ScoreCalculator {
 
-//    private int numPlayers;
     private int sumScores;
     private ArrayList<Integer> scoreList;
     private final Queue<Integer> lostScoreList;
 
     public ScoreCalculator() {
-//        this.numPlayers = 0;
         this.sumScores = 0;
         this.scoreList = new ArrayList<>();
         this.lostScoreList = new LinkedList<>();
@@ -30,31 +31,29 @@ public class ScoreCalculator {
             throw new IllegalArgumentException("Invalid score");
         } else {
             scoreList.add(score);
-//            numPlayers++;
             calculateSum();
         }
     }
 
-    public void updateScore(int player, int score) {
-        if (player <= 0 || player > scoreList.size()) {
+    public void updateScore(int playerIdx, int score) {
+        if (playerIdx < 0 || playerIdx > scoreList.size()) {
             throw new IllegalArgumentException("Invalid player");
         } else if (score < 0) {
             throw new IllegalArgumentException("Invalid score");
         } else {
-            scoreList.remove(player - 1);
-            scoreList.add(player - 1, score);
+            scoreList.remove(playerIdx);
+            scoreList.add(playerIdx, score);
             calculateSum();
         }
     }
 
-    public void removeScore(int player) {
-        if (player <= 0 || player > scoreList.size()) {
+    public void removeScore(int playerIdx) {
+        if (playerIdx < 0 || playerIdx > scoreList.size()) {
             throw new IllegalArgumentException("Invalid player");
         } else {
             // Remove player and store lost score
-            int playerToRemove = scoreList.remove(player - 1);
+            int playerToRemove = scoreList.remove(playerIdx);
             lostScoreList.add(playerToRemove);
-//            numPlayers--;
             calculateSum();
         }
     }
@@ -70,7 +69,7 @@ public class ScoreCalculator {
     }
 
     // Remove and return the last lost score
-    public int peekLostScore() {
+    public Integer peekLostScore() {
         return lostScoreList.peek();
     }
 
@@ -98,11 +97,11 @@ public class ScoreCalculator {
         return scoreList.size();
     }
 
-    public int getScore(int player) {
-        if (player <= 0 || player > scoreList.size()) {
+    public int getScore(int playerIdx) {
+        if (playerIdx < 0 || playerIdx > scoreList.size()) {
             throw new IllegalArgumentException("Invalid player");
         } else {
-            return scoreList.get(player - 1);
+            return scoreList.get(playerIdx);
         }
     }
 
@@ -110,22 +109,13 @@ public class ScoreCalculator {
         if (scoresList == null) {
             throw new IllegalArgumentException("Invalid list of scores");
         } else {
-//            this.numPlayers = scoresList.size();
             this.scoreList = new ArrayList<>(scoresList);
-//            for (int i = 0; i < numPlayers; i++) {
-//                this.scoreList.add(scoresList.get(i));
-//            }
             calculateSum();
         }
     }
 
     public void clearAll() {
-//        numPlayers = 0;
         sumScores = 0;
-
-        // TODO: when pressing clear, should I also save the lost scores?
-        //  Ex. If i pressed (+), it would say 11, then 22, then 33, then ___?
-        //  Or would it make more sense if it were a "restart everything I was doing" button
 
         // Add all scores into lost scores
         for (int i = 0; i < scoreList.size(); i++) {
