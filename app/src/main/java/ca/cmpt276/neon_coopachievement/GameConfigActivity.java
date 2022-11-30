@@ -1,13 +1,9 @@
 package ca.cmpt276.neon_coopachievement;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Typeface;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.InputType;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,10 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.res.ResourcesCompat;
 
-import com.daimajia.androidanimations.library.Techniques;
-import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -308,6 +301,8 @@ public class GameConfigActivity extends AppCompatActivity {
 
                 int sumScores = scoreCalculator.getSumScores();
 
+                Intent i;
+
                 // Editing a game, update fields
                 if (getIsEdit()) {
                     // Get indices for tally updates
@@ -329,6 +324,8 @@ public class GameConfigActivity extends AppCompatActivity {
 
                     gameManager.decreaseTally(oldIdx);
                     gameManager.addTally(newIdx);
+
+                    i = CelebrationActivity.makeIntent(GameConfigActivity.this, getGameIndex(), getGameManagerIndex());
                 }
 
                 // Adding a game, create new game
@@ -339,69 +336,20 @@ public class GameConfigActivity extends AppCompatActivity {
                             scoreCalculator.getScoreList(), currentDifficulty);
                     gameManager.addGame(newGame);
                     gameManager.addTally(newGame.getRank() - 1);
+
+                    i = CelebrationActivity.makeIntent(GameConfigActivity.this, gameManager.getSize() - 1, getGameManagerIndex());
                 }
 
                 scoreCalculator.clearLostScores();
-                launchAchievementDialog(numPlayers, sumScores);
+
+                // Launch celebration page
+                startActivity(i);
+                finish();
 
             } else {
                 Toast.makeText(this, R.string.no_players_err_msg, Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    private void launchAchievementDialog(int numPlayers, int sumScores) {
-        // Create view
-        View v = LayoutInflater.from(this).inflate(R.layout.achievement_layout, null);
-
-        // Set up animations
-        YoYo.with(Techniques.Tada).duration(500).repeat(YoYo.INFINITE).playOn(v);
-
-        // Play celebration sound
-        MediaPlayer cheering = MediaPlayer.create(this, R.raw.cheering);
-        cheering.start();
-
-        // Set up listener when ok (positive button) is clicked
-        DialogInterface.OnClickListener positiveButtonListener = (dialogInterface, which) -> {
-            if (which == DialogInterface.BUTTON_POSITIVE) {
-                finish();
-            }
-        };
-
-        // Set up dismiss listener
-        DialogInterface.OnDismissListener dismissListener = (dialogInterface) -> {
-            cheering.stop();
-            this.finish();
-        };
-
-        // Build the alert dialog (achievement builder)
-        android.app.AlertDialog achievementDialog = new android.app.AlertDialog.Builder(this)
-                .setView(v)
-                .setTitle(R.string.great_job)
-                .setPositiveButton(android.R.string.ok, positiveButtonListener)
-                .setOnDismissListener(dismissListener)
-                .create();
-
-        // Get current achievement for game
-        Achievement currAchievement = new Achievement(
-                gameManager.getPoorScoreIndividual(),
-                gameManager.getGreatScoreIndividual(),
-                numPlayers,
-                currentDifficulty);
-
-        // Set body message for dialog
-        int highestRank = currAchievement.getHighestRank(sumScores);
-        String achievement = currAchievement.getAchievementName(highestRank);
-        String gameRank = getString(R.string.your_rank_is) + " " + achievement;
-        achievementDialog.setMessage(gameRank);
-
-        // Show dialog
-        achievementDialog.show();
-
-        // Update Achievement message with appropriate font
-        TextView textView = (TextView) achievementDialog.findViewById(android.R.id.message);
-        Typeface comicNeueFont = ResourcesCompat.getFont(this, R.font.comic_neue);
-        textView.setTypeface(comicNeueFont);
     }
 
     private void setUpClearBtn() {
