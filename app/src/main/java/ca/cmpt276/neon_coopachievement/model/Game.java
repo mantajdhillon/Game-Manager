@@ -100,10 +100,6 @@ public class Game {
         achievements.changeDifficulty(difficulty);
     }
 
-    public void updateRank(int newFinalScore){
-        this.rank = achievements.getHighestRank(newFinalScore);
-    }
-
     @NonNull
     @Override
     public String toString() {

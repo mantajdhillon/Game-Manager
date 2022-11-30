@@ -310,18 +310,25 @@ public class GameConfigActivity extends AppCompatActivity {
 
                 // Editing a game, update fields
                 if (getIsEdit()) {
-                    int oldIndex = currentGame.getRank() - 1;
+                    // Get indices for tally updates
+                    Achievement achievements = new Achievement(
+                            gameManager.getPoorScoreIndividual(),
+                            gameManager.getGreatScoreIndividual(),
+                            numPlayers, currentDifficulty);
+                    int newIdx = achievements.getHighestRank(sumScores) - 1;
+                    int oldIdx = currentGame.getRank() - 1;
+
                     currentGame.setNumPlayers(numPlayers);
                     currentGame.setFinalTotalScore(sumScores);
                     currentGame.setScores(scoreCalculator.getScoreList());
                     currentGame.setDifficulty(currentDifficulty);
                     currentGame.updateAchievements(currentDifficulty);
-                    currentGame.updateRank(sumScores);
                     gameManager.updateEdits(
                             gameManager.getPoorScoreIndividual(),
                             gameManager.getGreatScoreIndividual());
-                    gameManager.decreaseTally(oldIndex);
-                    gameManager.addTally(currentGame.getRank() - 1);
+
+                    gameManager.decreaseTally(oldIdx);
+                    gameManager.addTally(newIdx);
                 }
 
                 // Adding a game, create new game
