@@ -93,7 +93,7 @@ public class ScoreCalculator {
         return sumScores;
     }
 
-    public int getNumPlayers() {
+    public int getNumScores() {
         return scoreList.size();
     }
 

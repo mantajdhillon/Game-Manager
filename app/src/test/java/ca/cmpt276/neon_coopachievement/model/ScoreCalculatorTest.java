@@ -13,7 +13,7 @@ class ScoreCalculatorTest {
         ArrayList<Integer> scoresList = new ArrayList<>();
         ScoreCalculator sc = new ScoreCalculator();
 
-        assertEquals(0, sc.getNumPlayers());
+        assertEquals(0, sc.getNumScores());
         assertEquals(0, sc.getSumScores());
         assertEquals(scoresList, sc.getScoreList());
     }
@@ -30,7 +30,7 @@ class ScoreCalculatorTest {
         ScoreCalculator sc = new ScoreCalculator();
         sc.setScoreList(scoresList);
 
-        assertEquals(5, sc.getNumPlayers());
+        assertEquals(5, sc.getNumScores());
         assertEquals(sumScores, sc.getSumScores());
         assertEquals(scoresList, sc.getScoreList());
     }
@@ -42,7 +42,7 @@ class ScoreCalculatorTest {
         ScoreCalculator sc = new ScoreCalculator();
         sc.setScoreList(scoresList);
 
-        assertEquals(0, sc.getNumPlayers());
+        assertEquals(0, sc.getNumScores());
         assertEquals(0, sc.getSumScores());
         assertEquals(scoresList, sc.getScoreList());
     }
@@ -54,7 +54,7 @@ class ScoreCalculatorTest {
 
         assertThrows(IllegalArgumentException.class,
                 () -> sc.setScoreList(null));
-        assertEquals(0, sc.getNumPlayers());
+        assertEquals(0, sc.getNumScores());
         assertEquals(0, sc.getSumScores());
         assertEquals(scoresList, sc.getScoreList());
     }
@@ -123,8 +123,8 @@ class ScoreCalculatorTest {
         assertEquals(1, sc.getScore(1));
         sc.removeScore(2); // middle score removed: 1, 3, 4
         assertEquals(3, sc.getScore(2));
-        sc.removeScore(sc.getNumPlayers()); // last score removed: 1, 3
-        assertEquals(3, sc.getScore(sc.getNumPlayers()));
+        sc.removeScore(sc.getNumScores()); // last score removed: 1, 3
+        assertEquals(3, sc.getScore(sc.getNumScores()));
 
         assertEquals(4, sc.getSumScores());
     }
@@ -164,7 +164,7 @@ class ScoreCalculatorTest {
 
         scoresList = new ArrayList<>();
 
-        assertEquals(0, sc.getNumPlayers());
+        assertEquals(0, sc.getNumScores());
         assertEquals(0, sc.getSumScores());
         assertEquals(scoresList, sc.getScoreList());
     }
@@ -185,8 +185,8 @@ class ScoreCalculatorTest {
         assertThrows(IllegalArgumentException.class,
                 () -> sc.toString(-1));
         assertThrows(IllegalArgumentException.class,
-                () -> sc.toString(sc.getNumPlayers()));
+                () -> sc.toString(sc.getNumScores()));
         assertThrows(IllegalArgumentException.class,
-                () -> sc.toString(sc.getNumPlayers() + 1));
+                () -> sc.toString(sc.getNumScores() + 1));
     }
 }
