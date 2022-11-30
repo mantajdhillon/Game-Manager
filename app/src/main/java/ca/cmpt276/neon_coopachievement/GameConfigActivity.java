@@ -391,7 +391,7 @@ public class GameConfigActivity extends AppCompatActivity {
 
         // Update Achievement message with appropriate font
         TextView textView = (TextView) achievementDialog.findViewById(android.R.id.message);
-        Typeface comicNeueBoldFont = ResourcesCompat.getFont(this, R.font.comic_neue_bold);
+        Typeface comicNeueBoldFont = ResourcesCompat.getFont(this, R.font.comic_neue);
         textView.setTypeface(comicNeueBoldFont);
     }
 
