@@ -3,7 +3,6 @@ package ca.cmpt276.neon_coopachievement;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.ColorMatrix;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -51,7 +50,8 @@ import ca.cmpt276.neon_coopachievement.model.ScoreCalculator;
  *   the user entered in the inputs fields.
  *
  * - Details are updated when user changes the fields and clicks save.
- *   The user may delete the game by clicking delete.
+ *
+ * - The user may delete the game by clicking delete.
  *   Achievements tally is updated upon save
  */
 public class GameConfigActivity extends AppCompatActivity {
@@ -86,8 +86,11 @@ public class GameConfigActivity extends AppCompatActivity {
 
         // Editing a game configuration
         if (getIsEdit()) {
-            setUpGameConfigActivityEdit(ab);
+            setUpGameConfigActivityEdit();
         }
+
+        updateScreenUI();
+        setUpDifficultyRadioButtons();
     }
 
     @Override
@@ -119,28 +122,32 @@ public class GameConfigActivity extends AppCompatActivity {
         }
     }
 
-    private void setUpGameConfigActivity() {
-        setupRadioGroup();
-        setUpAddPlayerBtn();
-        setUpPlayersSlots();
-        setUpEmptyState(scoreCalculator.getNumPlayers());
+    // Updates the screen UI (to reflect new changes)
+    private void updateScreenUI() {
         populatePlayerListView();
         populateAchievementView();
-        registerListClickCallback();
-        setUpSaveBtn();
-        setUpClearBtn();
+        setUpEmptyState(scoreCalculator.getNumScores());
     }
 
-    private void setUpGameConfigActivityEdit(ActionBar ab) {
-        currentGame = gameManager.getGame(getGameIndex());
-        currentDifficulty = currentGame.getDifficulty();
-        setupRadioGroup();
-        currentGame.updateAchievements(currentDifficulty);
-        ab.setTitle(R.string.game_config_activity_edit_game);
-        scoreCalculator.setScores(currentGame.getScores());
-        populatePlayerListView();
-        populateAchievementView();
-        setUpEmptyState(scoreCalculator.getNumPlayers());
+    private void setUpGameConfigActivity() {
+        // Set up buttons
+        setUpAddPlayerBtn();
+        setUpSaveBtn();
+        setUpClearBtn();
+
+        // Set up list items
+        registerListClickCallback();
+        setDefaultListSlots();
+    }
+
+    private void setUpGameConfigActivityEdit() {
+        getSupportActionBar().setTitle(R.string.game_config_activity_edit_game);
+
+        // Initialize variables necessary for editing
+        this.currentGame = gameManager.getGame(getGameIndex());
+        this.currentDifficulty = currentGame.getDifficulty();
+        this.currentGame.updateAchievements(currentDifficulty);
+        this.scoreCalculator.setScoreList(currentGame.getScores());
     }
 
     private void setUpEmptyState(int numGames) {
@@ -156,11 +163,10 @@ public class GameConfigActivity extends AppCompatActivity {
         }
     }
 
-    private void setupRadioGroup() {
+    private void setUpDifficultyRadioButtons() {
         setRadioButtonListeners(R.id.radioDifficultyEasy, Game.Difficulty.EASY);
         setRadioButtonListeners(R.id.radioDifficultyNormal, Game.Difficulty.NORMAL);
         setRadioButtonListeners(R.id.radioDifficultyHard, Game.Difficulty.HARD);
-
     }
 
     private void setRadioButtonListeners(int btnId, Game.Difficulty difficulty) {
@@ -180,19 +186,30 @@ public class GameConfigActivity extends AppCompatActivity {
             AlertDialog.Builder playerDialog = new AlertDialog.Builder(GameConfigActivity.this);
             playerDialog.setTitle(R.string.player_score_prompt);
 
-            final EditText playerScore = new EditText(GameConfigActivity.this);
-            playerScore.setInputType(InputType.TYPE_CLASS_NUMBER);
-            playerDialog.setView(playerScore);
+            final EditText etPlayerScore = new EditText(GameConfigActivity.this);
+            etPlayerScore.setInputType(InputType.TYPE_CLASS_NUMBER);
+            playerDialog.setView(etPlayerScore);
 
+            // Populate textview if there are any lost scores
+            if (scoreCalculator.hasLostScore()) {
+                etPlayerScore.setText(Integer.toString(scoreCalculator.peekLostScore()));
+            }
+
+            // Default value of 0 if no lost scores are found
+            else {
+                etPlayerScore.setText(R.string.zero);
+            }
+
+            // Confirm saving a player
             playerDialog.setPositiveButton(android.R.string.ok, (dialog, which) -> {
                 try {
-                    scoreCalculator.addScore(Integer.parseInt(playerScore.getText().toString().trim()));
+                    scoreCalculator.addScore(Integer.parseInt(etPlayerScore.getText().toString().trim()));
+                    scoreCalculator.popLostScore();     // Remove lost score
                 } catch (Exception e) {
                     Toast.makeText(GameConfigActivity.this, R.string.invalid_input, Toast.LENGTH_SHORT).show();
                 }
-                populatePlayerListView();
-                populateAchievementView();
-                setUpEmptyState(scoreCalculator.getNumPlayers());
+
+                updateScreenUI();
             });
 
             playerDialog.setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel());
@@ -201,17 +218,17 @@ public class GameConfigActivity extends AppCompatActivity {
         });
     }
 
-    private void setUpPlayersSlots() {
+    private void setDefaultListSlots() {
         ArrayList<Integer> preScoresList = new ArrayList<>();
         for (int i = 0; i < getNumPlayers(); i++) {
             preScoresList.add(0);
         }
-        scoreCalculator.setScores(preScoresList);
+        scoreCalculator.setScoreList(preScoresList);
     }
 
     private void populatePlayerListView() {
         ArrayList<String> players = new ArrayList<>();
-        for (int i = 0; i < scoreCalculator.getNumPlayers(); i++) {
+        for (int i = 0; i < scoreCalculator.getNumScores(); i++) {
             players.add(scoreCalculator.toString(i));
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
@@ -224,8 +241,7 @@ public class GameConfigActivity extends AppCompatActivity {
     }
 
     private void populateAchievementView() {
-
-        int numPlayers = scoreCalculator.getNumPlayers();
+        int numPlayers = scoreCalculator.getNumScores();
         int sumScores = scoreCalculator.getSumScores();
 
         TextView tvAchieveGenerator = findViewById(R.id.tvAchieveGenerator);
@@ -253,14 +269,14 @@ public class GameConfigActivity extends AppCompatActivity {
             AlertDialog.Builder playerDialog = new AlertDialog.Builder(GameConfigActivity.this);
             playerDialog.setTitle(R.string.edit_player_score_prompt);
 
-            EditText playerScore = new EditText(GameConfigActivity.this);
-            playerScore.setInputType(InputType.TYPE_CLASS_NUMBER);
-            playerScore.setText(Integer.toString(scoreCalculator.getScore(position + 1)));
-            playerDialog.setView(playerScore);
+            final EditText etPlayerScore = new EditText(GameConfigActivity.this);
+            etPlayerScore.setInputType(InputType.TYPE_CLASS_NUMBER);
+            etPlayerScore.setText(Integer.toString(scoreCalculator.getScore(position)));
+            playerDialog.setView(etPlayerScore);
 
             playerDialog.setPositiveButton(android.R.string.ok, (dialog, which) -> {
                 try {
-                    scoreCalculator.updateScore(position + 1, Integer.parseInt(playerScore.getText().toString().trim()));
+                    scoreCalculator.updateScore(position, Integer.parseInt(etPlayerScore.getText().toString().trim()));
                 } catch (Exception e) {
                     Toast.makeText(GameConfigActivity.this, R.string.invalid_input, Toast.LENGTH_SHORT).show();
                 }
@@ -268,12 +284,13 @@ public class GameConfigActivity extends AppCompatActivity {
                 populateAchievementView();
             });
 
+            // Cancel
             playerDialog.setNeutralButton(android.R.string.cancel, (dialog, which) -> dialog.cancel());
 
+            // Delete position
             playerDialog.setNegativeButton(R.string.delete_cap, (dialog, which) -> {
-                scoreCalculator.removeScore(position + 1);
-                populatePlayerListView();
-                populateAchievementView();
+                scoreCalculator.removeScore(position);
+                updateScreenUI();
             });
 
             playerDialog.show();
@@ -285,17 +302,18 @@ public class GameConfigActivity extends AppCompatActivity {
 
         saveBtn.setOnClickListener(view -> {
 
-            int numPlayers = scoreCalculator.getNumPlayers();
+            int numPlayers = scoreCalculator.getNumScores();
 
             if (numPlayers != 0) {
 
                 int sumScores = scoreCalculator.getSumScores();
 
+                // Editing a game, update fields
                 if (getIsEdit()) {
                     int oldIndex = currentGame.getRank() - 1;
                     currentGame.setNumPlayers(numPlayers);
                     currentGame.setFinalTotalScore(sumScores);
-                    currentGame.setScores(scoreCalculator.getScores());
+                    currentGame.setScores(scoreCalculator.getScoreList());
                     currentGame.setDifficulty(currentDifficulty);
                     currentGame.updateAchievements(currentDifficulty);
                     currentGame.updateRank(sumScores);
@@ -303,28 +321,29 @@ public class GameConfigActivity extends AppCompatActivity {
                             gameManager.getPoorScoreIndividual(),
                             gameManager.getGreatScoreIndividual());
                     gameManager.decreaseTally(oldIndex);
-                    gameManager.addTally(currentGame.getRank()-1);
+                    gameManager.addTally(currentGame.getRank() - 1);
                 }
 
-                // Make a new game
+                // Adding a game, create new game
                 else {
                     Game newGame = new Game(numPlayers, sumScores,
                             gameManager.getPoorScoreIndividual(),
                             gameManager.getGreatScoreIndividual(),
-                            scoreCalculator.getScores(), currentDifficulty);
+                            scoreCalculator.getScoreList(), currentDifficulty);
                     gameManager.addGame(newGame);
                     gameManager.addTally(newGame.getRank() - 1);
                 }
-                makeAchievementDialog(numPlayers, sumScores);
+
+                scoreCalculator.clearLostScores();
+                launchAchievementDialog(numPlayers, sumScores);
 
             } else {
-                Toast.makeText(this, R.string.invalid_input, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.no_players_err_msg, Toast.LENGTH_SHORT).show();
             }
-
         });
     }
 
-    private void makeAchievementDialog(int numPlayers, int sumScores) {
+    private void launchAchievementDialog(int numPlayers, int sumScores) {
         // Create view
         View v = LayoutInflater.from(this).inflate(R.layout.achievement_layout, null);
 
@@ -374,8 +393,8 @@ public class GameConfigActivity extends AppCompatActivity {
 
         // Update Achievement message with appropriate font
         TextView textView = (TextView) achievementDialog.findViewById(android.R.id.message);
-        Typeface comicNeueBoldFont = ResourcesCompat.getFont(this, R.font.comic_neue_bold);
-        textView.setTypeface(comicNeueBoldFont);
+        Typeface comicNeueFont = ResourcesCompat.getFont(this, R.font.comic_neue);
+        textView.setTypeface(comicNeueFont);
     }
 
     private void setUpClearBtn() {
@@ -383,9 +402,7 @@ public class GameConfigActivity extends AppCompatActivity {
 
         clearBtn.setOnClickListener(view -> {
             scoreCalculator.clearAll();
-            populatePlayerListView();
-            populateAchievementView();
-            setUpEmptyState(scoreCalculator.getNumPlayers());
+            updateScreenUI();
         });
     }
 
