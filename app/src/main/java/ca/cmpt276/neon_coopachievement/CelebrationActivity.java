@@ -32,6 +32,8 @@ public class CelebrationActivity extends AppCompatActivity {
     private GameManager gameManager;
     private Game currentGame;
 
+    private Achievement achievements;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,11 +48,9 @@ public class CelebrationActivity extends AppCompatActivity {
         gameManager = gameCategory.getGameManager(getGameManagerIndex());
         currentGame = gameManager.getGame(getGameIndex());
 
-        populateAchievementView();
-        populateNumPointsForNextRankView();
-        populateAchievementIcon();
+        setUpCelebrationActivity();
 
-        setUpPlayAnimationBtn();
+        // update theme
     }
 
     @Override
@@ -78,15 +78,23 @@ public class CelebrationActivity extends AppCompatActivity {
         }
     }
 
-    private void populateAchievementView() {
-        TextView tvAchieveGenerator = findViewById(R.id.tvCeleAchieveGenerator);
-
-        Achievement achievements = new Achievement(
+    private void setUpCelebrationActivity() {
+        achievements = new Achievement(
                 gameManager.getPoorScoreIndividual(),
                 gameManager.getGreatScoreIndividual(),
                 currentGame.getNumPlayers(),
                 currentGame.getDifficulty()
         );
+
+        populateAchievementView();
+        populateNumPointsTillNextRankView();
+        populateAchievementIcon();
+
+        setUpPlayAnimationBtn();
+    }
+
+    private void populateAchievementView() {
+        TextView tvAchieveGenerator = findViewById(R.id.tvCeleAchieveGenerator);
 
         int rank = currentGame.getRank();
         String rankName = achievements.getAchievementName(rank);
@@ -94,8 +102,15 @@ public class CelebrationActivity extends AppCompatActivity {
         tvAchieveGenerator.setText(rankName);
     }
 
-    private void populateNumPointsForNextRankView() {
-        // get number of points user needs to achieve next rank
+    private void populateNumPointsTillNextRankView() {
+        TextView tvPointsTillNextRank = findViewById(R.id.tvPointsTillNextRankGen);
+
+        int numPoints = achievements.getNumPointsTillNextRank(
+                currentGame.getRank(),
+                currentGame.getFinalTotalScore());
+        String strNumPoints = "" + numPoints;
+
+        tvPointsTillNextRank.setText(strNumPoints);
     }
 
     private void populateAchievementIcon() {
