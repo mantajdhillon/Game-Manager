@@ -1,23 +1,24 @@
 package ca.cmpt276.neon_coopachievement;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import android.Manifest;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
 import ca.cmpt276.neon_coopachievement.model.Game;
 import ca.cmpt276.neon_coopachievement.model.GameCategory;
@@ -25,7 +26,11 @@ import ca.cmpt276.neon_coopachievement.model.GameManager;
 
 public class TakePhotoActivity extends AppCompatActivity {
 
+    private static final int PERMISSION_CODE = 1234;
+    private static final int CAPTURE_CODE = 1001;
     GameCategory gameCategory = GameCategory.getInstance();
+    Uri image_uri;
+    ImageView iv = findViewById(R.id.ivPhoto);
 
     public static final String EXTRA_GAME_INDEX = "Game index";
     public static final String EXTRA_GAME_TYPE_INDEX = "Game type index";
@@ -42,12 +47,6 @@ public class TakePhotoActivity extends AppCompatActivity {
 
         setupButton();
 
-        if (ContextCompat.checkSelfPermission(TakePhotoActivity.this, Manifest.permission.CAMERA)
-            != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(TakePhotoActivity.this, new String[]{
-                    Manifest.permission.CAMERA
-            }, 100);
-        }
     }
 
     private void setupGameImage(Game game, Bitmap bitmap) {
@@ -63,32 +62,21 @@ public class TakePhotoActivity extends AppCompatActivity {
 
     private void setupButton() {
         Button takePic = findViewById(R.id.btnTakePhoto);
-        takePic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                //getResult.launch(intent);
-                //Method in Video is not in Android Studio Tomorrow
+        takePic.setOnClickListener(v -> {
+            if (checkSelfPermission(Manifest.permission.CAMERA)
+                    == PackageManager.PERMISSION_DENIED ||
+                    checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
+                            PackageManager.PERMISSION_DENIED) {
+                String[] permission = {Manifest.permission.CAMERA,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                requestPermissions(permission, PERMISSION_CODE);
+            } else {
+                openCamera();
             }
         });
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == 100) {
-//            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-//            if(getIsManager() == true) {
-//                GameManager gameManager = gameCategory.getGameManager(getGameManagerIndex());
-//                setupManagerImage(gameManager, bitmap);
-//            } else {
-//                Game game = gameCategory.getGameManager(getGameManagerIndex()).getGame(getGameIndex());
-//                setupGameImage(game, bitmap);
-//            }
-//        }
-//    }
-
-    @Override
+        @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             finish();
@@ -117,4 +105,37 @@ public class TakePhotoActivity extends AppCompatActivity {
         return intent;
     }
 
+    private void openCamera() {
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.TITLE, "new image");
+        values.put(MediaStore.Images.Media.DESCRIPTION, "from the camera");
+        image_uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        Intent camIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        camIntent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri);
+        startActivityForResult(camIntent, CAPTURE_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openCamera();
+            } else {
+                Toast.makeText
+                        (TakePhotoActivity.this,
+                                "Allow Permission to use Camera",
+                                Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            iv.setImageURI(image_uri);
+        }
+    }
 }
