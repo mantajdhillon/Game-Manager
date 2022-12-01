@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/take_photo"
+        android:icon="@drawable/ic_baseline_photo_camera_24"
+        android:title="@string/take_photo"
+        app:showAsAction="ifRoom"/>
+
+    <item
         android:id="@+id/action_delete"
         android:icon="@drawable/ic_baseline_delete_24"
         android:title="Delete Game"
@@ -13,4 +19,5 @@
         android:icon="@drawable/ic_baseline_help_24"
         android:title="@string/help_centre"
         app:showAsAction="ifRoom"/>
+
 </menu>
