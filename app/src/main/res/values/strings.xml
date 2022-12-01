@@ -66,4 +66,5 @@
     <string name="no_players_err_msg">A game must have at least one player</string>
     <string name="score_valid_int_err_msg">Score must be a valid integer</string>
     <string name="take_photo">take a photo</string>
+    <string name="take_game_photo_title">Take a Picture of your Game</string>
 </resources>

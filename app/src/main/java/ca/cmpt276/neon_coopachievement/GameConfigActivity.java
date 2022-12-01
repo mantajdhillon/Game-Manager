@@ -107,7 +107,8 @@ public class GameConfigActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.action_help:
-                Intent launchHelpMenu = new Intent(GameConfigActivity.this, HelpActivity.class);
+                Intent launchHelpMenu = new Intent
+                        (GameConfigActivity.this, HelpActivity.class);
                 startActivity(launchHelpMenu);
                 return true;
             case R.id.action_delete:
@@ -118,7 +119,8 @@ public class GameConfigActivity extends AppCompatActivity {
                 }
                 finish();
             case R.id.take_photo:
-                Intent launchPhoto = new Intent(GameConfigActivity.this, TakePhotoActivity.class);
+                Intent launchPhoto = TakePhotoActivity.makeLaunchIntent
+                        (GameConfigActivity.this, getGameManagerIndex(), getGameIndex(), false);
                 startActivity(launchPhoto);
             default:
                 return super.onOptionsItemSelected(item);
