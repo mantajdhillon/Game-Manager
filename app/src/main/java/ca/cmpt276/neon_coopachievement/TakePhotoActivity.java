@@ -8,12 +8,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -23,11 +22,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.FileProvider;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -62,6 +59,8 @@ public class TakePhotoActivity extends AppCompatActivity {
         ab.setTitle(R.string.take_game_photo_title);
         ab.setDisplayHomeAsUpEnabled(true);
 
+        iv = findViewById(R.id.ivPhoto);
+
         gameManager = gameCategory.getGameManager(getGameManagerIndex());
         if(!getIsManager()) {
             game = gameManager.getGame(getGameIndex());
@@ -72,8 +71,6 @@ public class TakePhotoActivity extends AppCompatActivity {
             }
         }
 
-        iv = findViewById(R.id.ivPhoto);
-
         setupButton();
 
 
@@ -81,11 +78,11 @@ public class TakePhotoActivity extends AppCompatActivity {
 
     private void setupGameImage(Game game) throws IOException {
         File imageFile = game.getImageFile();
-        if (imageFile != null) {
-            String filePath = this.getCacheDir().getAbsolutePath() + "/image_" + getGameManagerIndex() + "_" + getGameIndex();
-            filePath += ".png";
-            Toast.makeText(this, filePath, Toast.LENGTH_LONG).show();
-            Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+        if (game.getImagePath() != null) {
+//            String filePath = this.getCacheDir().getAbsolutePath() + "/image_" + getGameManagerIndex() + "_" + getGameIndex();
+//            filePath += ".png";
+//            Toast.makeText(this, filePath, Toast.LENGTH_LONG).show();
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(TakePhotoActivity.this.getContentResolver(), getImageUri(game.getImagePath()));
             iv.setImageBitmap(bitmap);
         }
     }
@@ -169,17 +166,31 @@ public class TakePhotoActivity extends AppCompatActivity {
             Bitmap bitmap = (Bitmap) extras.get("data");
             iv.setImageBitmap(bitmap);
 
+
+
             if (!getIsManager()) {
                 game = gameManager.getGame(getGameIndex());
-                String fileName = "image_" + getGameManagerIndex() + "_" + getGameIndex();
-                try {
-                    game.setImageFile(convertBitmapToFile(bitmap, fileName));
-                } catch (IOException e) {
-                    Toast.makeText(TakePhotoActivity.this, "ERROR SAVING IMAGE TO GAME", Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
-                }
+                game.setImagePath(getImageUriPath(TakePhotoActivity.this, bitmap));
+//                String fileName = "image_" + getGameManagerIndex() + "_" + getGameIndex();
+//                try {
+//                    game.setImageFile(convertBitmapToFile(bitmap, fileName));
+//                } catch (IOException e) {
+//                    Toast.makeText(TakePhotoActivity.this, "ERROR SAVING IMAGE TO GAME", Toast.LENGTH_SHORT).show();
+//                    e.printStackTrace();
+//                }
             }
         }
+    }
+
+    public String getImageUriPath(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return path;
+    }
+
+    public Uri getImageUri(String path) {
+        return Uri.parse(path);
     }
 
     private File convertBitmapToFile(Bitmap bitmap, String fileName) throws IOException {
@@ -198,4 +209,45 @@ public class TakePhotoActivity extends AppCompatActivity {
         fos.close();
         return f;
     }
+
+//    private static File getImagesDirectory() {
+//        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + File.separator + "GAME_PICS");//Environment.getExternalStorageDirectory()
+//        if (!file.mkdirs() && !file.isDirectory()) {
+//            Log.e("mkdir", "Directory not created");
+//        }
+//        return file;
+//    }
+//
+//    public static File generateImagePath(String title, String imgType) {
+//        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
+//        return new File(getImagesDirectory(), title + "_" + sdf.format(new Date()) + "." + imgType);
+//    }
+//
+//    public boolean compressAndSaveImage(File file, Bitmap bitmap) {
+//        boolean result = false;
+//        try {
+//            FileOutputStream fos = new FileOutputStream(file);
+//            if (result = bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)) {
+//                Log.w("image manager", "Compression success");
+//            }
+//            fos.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return result;
+//    }
+
+//    public Uri addImageToGallery(ContentResolver cr, String imgType, File filepath) {
+//        ContentValues values = new ContentValues();
+//        values.put(MediaStore.Images.Media.TITLE, "player");
+//        values.put(MediaStore.Images.Media.DISPLAY_NAME, "player");
+//        values.put(MediaStore.Images.Media.DESCRIPTION, "");
+//        values.put(MediaStore.Images.Media.MIME_TYPE, "image/" + imgType);
+//        values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis());
+//        values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
+//        values.put(MediaStore.Images.Media.DATA, filepath.toString());
+//
+//        return cr.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+//    }
+
 }

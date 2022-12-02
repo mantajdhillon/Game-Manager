@@ -32,6 +32,7 @@ public class Game {
     private int rank;
     private String time;
     private Difficulty difficulty;
+    private String imagePath;
     private File imageFile;
 
     private final ArrayList<Integer> scores;
@@ -43,6 +44,7 @@ public class Game {
         this.rank = achievements.getHighestRank(finalTotalScore);
         this.difficulty = difficulty;
         this.imageFile = null;
+        this.imagePath = null;
 
         // Populate list of scores
         this.scores = new ArrayList<>();
@@ -115,6 +117,14 @@ public class Game {
             return null;
         }
         return imageFile;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public String getImagePath() {
+        return imagePath;
     }
 
     @NonNull
