@@ -21,6 +21,7 @@ public class GameManager {
     private String name;
     private int greatScoreIndividual;
     private int poorScoreIndividual;
+    private String imagePath;
 
     private ArrayList<Integer> achievementTally;
 
@@ -31,6 +32,7 @@ public class GameManager {
         this.greatScoreIndividual = goodScore;
         this.poorScoreIndividual = poorScore;
         this.achievementTally = new ArrayList<>();
+        this.imagePath = null;
         for(int i = 0; i < 10; i++){
             achievementTally.add(0);
         }
@@ -154,5 +156,13 @@ public class GameManager {
         } else {
             return name + ": " + games.size() + " games recorded";
         }
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 }
