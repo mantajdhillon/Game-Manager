@@ -1,7 +1,11 @@
 package ca.cmpt276.neon_coopachievement.model;
 
+import android.media.Image;
+
 import androidx.annotation.NonNull;
 
+import java.io.File;
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -28,6 +32,7 @@ public class Game {
     private int rank;
     private String time;
     private Difficulty difficulty;
+    private File imageFile;
 
     private final ArrayList<Integer> scores;
 
@@ -37,6 +42,7 @@ public class Game {
         this.achievements = new Achievement(lowScore, highScore, numPlayers, difficulty);
         this.rank = achievements.getHighestRank(finalTotalScore);
         this.difficulty = difficulty;
+        this.imageFile = null;
 
         // Populate list of scores
         this.scores = new ArrayList<>();
@@ -98,6 +104,17 @@ public class Game {
     public void updateAchievements(Difficulty difficulty) {
         achievements.changeAchievementNames();
         achievements.changeDifficulty(difficulty);
+    }
+
+    public void setImageFile(File imageFile) {
+        this.imageFile = imageFile;
+    }
+
+    public File getImageFile() {
+        if (imageFile == null) {
+            return null;
+        }
+        return imageFile;
     }
 
     @NonNull
