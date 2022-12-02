@@ -67,4 +67,5 @@
     <string name="score_valid_int_err_msg">Score must be a valid integer</string>
     <string name="num_of_points_till_next_achievement"># of points till next rank:</string>
     <string name="play_animation">Play Animation</string>
+    <string name="next_achievement">Next Achievement:</string>
 </resources>

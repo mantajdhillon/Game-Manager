@@ -13,27 +13,56 @@
         android:text="@string/achievement_display"
         android:textColor="@color/black"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/tvPointsTillNextRank"
+        app:layout_constraintBottom_toTopOf="@+id/tvNextAchievement"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.073"
+        app:layout_constraintHorizontal_bias="0.211"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.537" />
 
     <TextView
         android:id="@+id/tvCeleAchieveGenerator"
         android:layout_width="219dp"
         android:layout_height="37dp"
-        android:layout_marginEnd="24dp"
+        android:textAlignment="center"
+        android:textColor="@color/bright_pink"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/tvNextAchievementGen"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/tvCeleAchievement"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.695" />
+
+    <TextView
+        android:id="@+id/tvNextAchievement"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/next_achievement"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/tvPointsTillNextRank"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.063"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.684" />
+
+    <TextView
+        android:id="@+id/tvNextAchievementGen"
+        android:layout_width="219dp"
+        android:layout_height="37dp"
         android:textAlignment="center"
         android:textColor="@color/bright_pink"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/tvPointsTillNextRank"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/tvCeleAchievement"
+        app:layout_constraintHorizontal_bias="0.058"
+        app:layout_constraintStart_toEndOf="@+id/tvNextAchievement"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.675" />
+        app:layout_constraintVertical_bias="0.81" />
 
     <TextView
         android:id="@+id/tvPointsTillNextRankGen"
@@ -43,11 +72,11 @@
         android:textColor="@color/bright_pink"
         android:textSize="34sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/CelebrationAchievementIcon"
+        app:layout_constraintBottom_toTopOf="@+id/celebrationAchievementIcon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvPointsTillNextRank"
-        app:layout_constraintVertical_bias="0.272" />
+        app:layout_constraintVertical_bias="0.441" />
 
     <TextView
         android:id="@+id/tvPointsTillNextRank"
@@ -58,21 +87,20 @@
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/CelebrationAchievementIcon"
+        app:layout_constraintBottom_toTopOf="@+id/celebrationAchievementIcon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.187" />
+        app:layout_constraintVertical_bias="0.373" />
 
     <ImageView
-        android:id="@+id/CelebrationAchievementIcon"
+        android:id="@+id/celebrationAchievementIcon"
         android:layout_width="343dp"
         android:layout_height="316dp"
+        android:layout_marginBottom="12dp"
         app:layout_constraintBottom_toTopOf="@+id/btnPlayAnimation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.792"
         app:srcCompat="@drawable/one_level_1" />
 
     <Button

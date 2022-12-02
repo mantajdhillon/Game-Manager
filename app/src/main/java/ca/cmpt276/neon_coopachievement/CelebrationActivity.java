@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,6 +30,7 @@ public class CelebrationActivity extends AppCompatActivity {
     private static final String EXTRA_GAME_TYPE_INDEX = "Game-Type-Index";
     private static final String EXTRA_GAME_INDEX = "gameIndex";
 
+    private GameCategory gameCategory;
     private GameManager gameManager;
     private Game currentGame;
 
@@ -44,13 +46,18 @@ public class CelebrationActivity extends AppCompatActivity {
         ab.setDisplayHomeAsUpEnabled(true);
 
         // Get current game manager
-        GameCategory gameCategory = GameCategory.getInstance();
+        gameCategory = GameCategory.getInstance();
         gameManager = gameCategory.getGameManager(getGameManagerIndex());
         currentGame = gameManager.getGame(getGameIndex());
 
         setUpCelebrationActivity();
+    }
 
-        // update theme
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        setUpCelebrationActivity();
     }
 
     @Override
@@ -87,6 +94,7 @@ public class CelebrationActivity extends AppCompatActivity {
         );
 
         populateAchievementView();
+        populateNextAchievementView();
         populateNumPointsTillNextRankView();
         populateAchievementIcon();
 
@@ -102,6 +110,19 @@ public class CelebrationActivity extends AppCompatActivity {
         tvAchieveGenerator.setText(rankName);
     }
 
+    private void populateNextAchievementView() {
+        TextView tvNextAchievementGen = findViewById(R.id.tvNextAchievementGen);
+
+        int rank = currentGame.getRank();
+        String nextRankName;
+        try {
+            nextRankName = achievements.getAchievementName(rank + 1);
+        } catch (Exception e) {
+            nextRankName = "-";
+        }
+        tvNextAchievementGen.setText(nextRankName);
+    }
+
     private void populateNumPointsTillNextRankView() {
         TextView tvPointsTillNextRank = findViewById(R.id.tvPointsTillNextRankGen);
 
@@ -114,7 +135,10 @@ public class CelebrationActivity extends AppCompatActivity {
     }
 
     private void populateAchievementIcon() {
-        // change the icon
+        String filename = gameCategory.getCurrentTheme() + getString(R.string.IconFileName) + currentGame.getRank();
+        int id = getResources().getIdentifier(filename, getString(R.string.defType), this.getPackageName());
+        ImageView icon = findViewById(R.id.celebrationAchievementIcon);
+        icon.setImageResource(id);
     }
 
     private void setUpPlayAnimationBtn() {
@@ -131,13 +155,6 @@ public class CelebrationActivity extends AppCompatActivity {
             MediaPlayer cheering = MediaPlayer.create(this, R.raw.cheering);
             cheering.start();
 
-            // Set up listener when ok (positive button) is clicked
-            DialogInterface.OnClickListener positiveButtonListener = (dialogInterface, which) -> {
-                if (which == DialogInterface.BUTTON_POSITIVE) {
-                    finish();
-                }
-            };
-
             // Set up dismiss listener
             DialogInterface.OnDismissListener dismissListener = (dialogInterface) -> {
                 cheering.stop();
@@ -147,7 +164,6 @@ public class CelebrationActivity extends AppCompatActivity {
             android.app.AlertDialog achievementDialog = new android.app.AlertDialog.Builder(this)
                     .setView(v)
                     .setTitle(R.string.great_job)
-                    .setPositiveButton(android.R.string.ok, positiveButtonListener)
                     .setOnDismissListener(dismissListener)
                     .create();
 

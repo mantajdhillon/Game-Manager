@@ -107,7 +107,7 @@ public class Achievement {
         return highestRank;
     }
 
-    // rank = 9, score =
+    // Return the number of points needed to earn the next rank
     public int getNumPointsTillNextRank(int rank, int totalScore) {
         int numPoints = 0;
         if (rank < MAX_ACHIEVEMENT_RANK) {
