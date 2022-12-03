@@ -38,6 +38,13 @@ public class GameManager {
         }
     }
 
+    public GameManager() {
+        this.achievementTally = new ArrayList<>();
+        for(int i = 0; i < 10; i++){
+            achievementTally.add(0);
+        }
+    }
+
     public String getName() {
         return name;
     }
@@ -59,10 +66,7 @@ public class GameManager {
     }
 
     public void setName(String gameName) {
-        if (gameName.isEmpty()) {
-            throw new RuntimeException("Game name can not be empty");
-        }
-
+        isValidName(gameName);
         this.name = gameName;
     }
 
@@ -70,7 +74,6 @@ public class GameManager {
         this.greatScoreIndividual = score;
     }
 
-    // Checks whether a given great score is valid
     public void setPoorScoreIndividual(int score) {
         this.poorScoreIndividual = score;
     }
@@ -78,7 +81,7 @@ public class GameManager {
     // Checks whether a given name is valid
     public void isValidName(String gameName) {
         if (gameName == null || gameName.isEmpty()) {
-            throw new RuntimeException("Invalid name: " + gameName);
+            throw new RuntimeException("Game name is invalid");
         }
     }
 

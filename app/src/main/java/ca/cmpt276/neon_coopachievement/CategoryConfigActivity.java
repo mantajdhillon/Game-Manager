@@ -67,6 +67,9 @@ public class CategoryConfigActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
+                if (!editConfig) {
+                    instance.removeGameManager(instance.size() - 1);
+                }
                 return true;
             case R.id.action_help:
                 Intent i = new Intent(CategoryConfigActivity.this, HelpActivity.class);
@@ -74,9 +77,16 @@ public class CategoryConfigActivity extends AppCompatActivity {
                 return true;
 
             case R.id.take_photo:
-                Intent launchPhoto = TakePhotoActivity.makeLaunchIntent
-                        (CategoryConfigActivity.this, currGameIndex, -1, true);
+                Intent launchPhoto;
+                if (editConfig) {
+                    launchPhoto = TakePhotoActivity.makeLaunchIntent
+                            (CategoryConfigActivity.this, currGameIndex, -1, true);
+                } else {
+                    launchPhoto = TakePhotoActivity.makeLaunchIntent
+                            (CategoryConfigActivity.this, instance.size() - 1, -1, true);
+                }
                 startActivity(launchPhoto);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -100,6 +110,8 @@ public class CategoryConfigActivity extends AppCompatActivity {
         else {
             ab.setTitle(R.string.category_config_activity_add_game);
             hideDeleteButton();
+            currGameManager = new GameManager();
+            instance.addGameManager(currGameManager);
         }
     }
 
@@ -131,8 +143,13 @@ public class CategoryConfigActivity extends AppCompatActivity {
 
                 // Add Configuration: Create new game manager
                 else {
-                    GameManager newManager = new GameManager(name, goodScore, badScore);
-                    instance.addGameManager(newManager);
+                    currGameManager.setName(name);
+                    currGameManager.isValidScore(goodScore, badScore);
+                    currGameManager.setPoorScoreIndividual(badScore);
+                    currGameManager.setGreatScoreIndividual(goodScore);
+
+//                    GameManager newManager = new GameManager(name, goodScore, badScore);
+//                    instance.addGameManager(newManager);
                 }
                 finish();
             } catch (NumberFormatException e) {
