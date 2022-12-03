@@ -333,6 +333,8 @@ public class GameConfigActivity extends AppCompatActivity {
 
                 int sumScores = scoreCalculator.getSumScores();
 
+                Intent i;
+
                 // Editing a game, update fields
                 if (getIsEdit()) {
                     // Get indices for tally updates
@@ -351,6 +353,8 @@ public class GameConfigActivity extends AppCompatActivity {
 
                     gameManager.decreaseTally(oldIdx);
                     gameManager.addTally(newIdx);
+
+                    i = CelebrationActivity.makeIntent(GameConfigActivity.this, getGameIndex(), getGameManagerIndex());
                 }
 
                 // Adding a game, create new game
@@ -370,10 +374,14 @@ public class GameConfigActivity extends AppCompatActivity {
                     currentGame.setRank(achievements.getHighestRank(sumScores));
 
                     gameManager.addTally(newIdx);
+                    i = CelebrationActivity.makeIntent(GameConfigActivity.this, gameManager.getSize() - 1, getGameManagerIndex());
                 }
 
                 scoreCalculator.clearLostScores();
-                launchAchievementDialog(numPlayers, sumScores);
+
+                // Launch celebration page
+                startActivity(i);
+                finish();
 
             } else {
                 Toast.makeText(this, R.string.no_players_err_msg, Toast.LENGTH_SHORT).show();

@@ -107,6 +107,16 @@ public class Achievement {
         return highestRank;
     }
 
+    // Return the number of points needed to earn the next rank
+    public int getNumPointsTillNextRank(int rank, int totalScore) {
+        int numPoints = 0;
+        if (rank < MAX_ACHIEVEMENT_RANK) {
+            double nextRankBoundaries = rankBoundaries[rank - 1];
+            numPoints = (int) nextRankBoundaries - totalScore + 1;
+        }
+        return numPoints;
+    }
+
     // Print the Achievement at a given index
     public String getAchievementString(int rankIdx) {
         final int MIN_RANK_IDX = 0;                           // Min rank (index = 0)
