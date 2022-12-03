@@ -51,6 +51,7 @@ public class CelebrationActivity extends AppCompatActivity {
         currentGame = gameManager.getGame(getGameIndex());
 
         setUpCelebrationActivity();
+        playAnimation();
     }
 
     @Override
@@ -145,36 +146,41 @@ public class CelebrationActivity extends AppCompatActivity {
         Button playAnimation = findViewById(R.id.btnPlayAnimation);
 
         playAnimation.setOnClickListener(view -> {
-            // Create view
-            View v = LayoutInflater.from(this).inflate(R.layout.achievement_layout, null);
 
-            // Set up animations
-            YoYo.with(Techniques.Tada).duration(500).repeat(YoYo.INFINITE).playOn(v);
-
-            // Play celebration sound
-            MediaPlayer cheering = MediaPlayer.create(this, R.raw.cheering);
-            cheering.start();
-
-            DialogInterface.OnClickListener positiveButtonListener = (dialogInterface, which) -> {
-                // does nothing, just for looks
-            };
-
-            // Set up dismiss listener
-            DialogInterface.OnDismissListener dismissListener = (dialogInterface) -> {
-                cheering.stop();
-            };
-
-            // Build the alert dialog (achievement builder)
-            android.app.AlertDialog achievementDialog = new android.app.AlertDialog.Builder(this)
-                    .setView(v)
-                    .setTitle(R.string.great_job)
-                    .setPositiveButton(android.R.string.ok, positiveButtonListener)
-                    .setOnDismissListener(dismissListener)
-                    .create();
-
-            // Show dialog
-            achievementDialog.show();
+            playAnimation();
         });
+    }
+
+    private void playAnimation() {
+        // Create view
+        View v = LayoutInflater.from(this).inflate(R.layout.achievement_layout, null);
+
+        // Set up animations
+        YoYo.with(Techniques.Tada).duration(500).repeat(YoYo.INFINITE).playOn(v);
+
+        // Play celebration sound
+        MediaPlayer cheering = MediaPlayer.create(this, R.raw.cheering);
+        cheering.start();
+
+        DialogInterface.OnClickListener positiveButtonListener = (dialogInterface, which) -> {
+            // does nothing, just for looks
+        };
+
+        // Set up dismiss listener
+        DialogInterface.OnDismissListener dismissListener = (dialogInterface) -> {
+            cheering.stop();
+        };
+
+        // Build the alert dialog (achievement builder)
+        android.app.AlertDialog achievementDialog = new android.app.AlertDialog.Builder(this)
+                .setView(v)
+                .setTitle(R.string.great_job)
+                .setPositiveButton(android.R.string.ok, positiveButtonListener)
+                .setOnDismissListener(dismissListener)
+                .create();
+
+        // Show dialog
+        achievementDialog.show();
     }
 
     private int getGameManagerIndex() {
