@@ -142,6 +142,19 @@ public class GameManager {
         }
     }
 
+    public void updateTallyArray(){
+        for(int i = 0; i < achievementTally.size(); i++){
+            achievementTally.set(i, 0);
+        }
+
+        for(int i = 0; i < games.size(); i++){
+            int idx = games.get(i).getRank() - 1;
+            int val = achievementTally.get(idx);
+            achievementTally.set(idx, val + 1);
+        }
+
+    }
+
     public String tallyToString(int index){
         try{
             return "\n\nTimes Achieved: " + getTally(index);

@@ -139,6 +139,7 @@ public class CategoryConfigActivity extends AppCompatActivity {
                     currGameManager.setGreatScoreIndividual(goodScore);
                     currGameManager.setPoorScoreIndividual(badScore);
                     currGameManager.updateEdits(badScore, goodScore);
+                    currGameManager.updateTallyArray();
                 }
 
                 // Add Configuration: Create new game manager
