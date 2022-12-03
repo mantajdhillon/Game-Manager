@@ -14,10 +14,11 @@
         android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/tvNextAchievement"
-        app:layout_constraintEnd_toStartOf="@+id/tvCeleAchieveGenerator"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.114"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.511" />
 
     <TextView
         android:id="@+id/tvCeleAchieveGenerator"
@@ -29,10 +30,9 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/tvNextAchievementGen"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.924"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvCeleAchievement"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.529" />
+        app:layout_constraintVertical_bias="0.527" />
 
     <TextView
         android:id="@+id/tvNextAchievement"
@@ -42,11 +42,11 @@
         android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/tvPointsTillNextRank"
-        app:layout_constraintEnd_toStartOf="@+id/tvNextAchievementGen"
-        app:layout_constraintHorizontal_bias="0.015"
+        app:layout_constraintEnd_toStartOf="@+id/tvCeleAchieveGenerator"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.657" />
+        app:layout_constraintVertical_bias="0.515" />
 
     <TextView
         android:id="@+id/tvNextAchievementGen"
@@ -58,10 +58,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/tvPointsTillNextRank"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.927"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.472"
+        app:layout_constraintStart_toEndOf="@+id/tvNextAchievement"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.632" />
+        app:layout_constraintVertical_bias="0.529" />
 
     <TextView
         android:id="@+id/tvPointsTillNextRankGen"
@@ -89,10 +89,9 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/celebrationAchievementIcon"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.776" />
+        app:layout_constraintVertical_bias="0.645" />
 
     <ImageView
         android:id="@+id/celebrationAchievementIcon"
@@ -114,8 +113,7 @@
         android:text="@string/play_animation"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.065"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.971" />
+        app:layout_constraintVertical_bias="0.985" />
 </androidx.constraintlayout.widget.ConstraintLayout>
