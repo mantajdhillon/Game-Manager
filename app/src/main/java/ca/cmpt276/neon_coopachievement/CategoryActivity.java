@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -20,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -27,11 +27,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.cmpt276.neon_coopachievement.model.Achievement;
-import ca.cmpt276.neon_coopachievement.model.Game;
 import ca.cmpt276.neon_coopachievement.model.GameCategory;
 import ca.cmpt276.neon_coopachievement.model.GameManager;
-import ca.cmpt276.neon_coopachievement.model.Theme;
 
 /**
  * CategoryActivity Class
@@ -108,29 +105,14 @@ public class CategoryActivity extends AppCompatActivity {
     // Initialize screen elements
     private void setUpScreen() {
         try {
-            populateGamesList();
+            populateCategoryList();
         } catch (IOException e) {
             e.printStackTrace();
+            Toast.makeText(this, "COULD NOT POPULATE CATEGORY LIST", Toast.LENGTH_SHORT).show();
         }
-        generateGamesList();
+        generateCategoryList();
         setUpEmptyState();
         setupAddCategoryBtn();
-        //registerListClickCallback();
-    }
-
-    private void populateCategoryListView() {
-        ArrayList<String> gameTypes = new ArrayList<>();
-        for (int i = 0; i < gameCategory.size(); i++) {
-            gameTypes.add(gameCategory.getGameManager(i).toString());
-        }
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                this,
-                R.layout.items,
-                gameTypes);
-
-        ListView categoryListView = findViewById(R.id.categoryList);
-        categoryListView.setAdapter(adapter);
     }
 
     private void setUpEmptyState() {
@@ -158,18 +140,7 @@ public class CategoryActivity extends AppCompatActivity {
         });
     }
 
-    private void registerListClickCallback() {
-        ListView categories = findViewById(R.id.categoryList);
-        categories.setOnItemClickListener((parent, viewClicked, position, id) -> {
-            Intent i = GameActivity.makeIntent(
-                    CategoryActivity.this,
-                    position);
-            startActivity(i);
-        });
-    }
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-    private void generateGamesList() {
+    private void generateCategoryList() {
         ArrayAdapter<CategoryActivity.CategoryListElement> adapter = new CategoryActivity.MyListAdapter();
         ListView playedGames = findViewById(R.id.categoryList);
         playedGames.setAdapter(adapter);
@@ -221,8 +192,7 @@ public class CategoryActivity extends AppCompatActivity {
         }
     }
 
-
-    private void populateGamesList() throws IOException {
+    private void populateCategoryList() throws IOException {
         listGames.clear();
         for (int i = 0; i < gameCategory.size(); i++) {
             GameManager gameManager = gameCategory.getGameManager(i);
