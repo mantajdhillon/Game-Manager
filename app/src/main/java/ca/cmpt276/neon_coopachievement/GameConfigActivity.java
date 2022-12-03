@@ -1,9 +1,13 @@
 package ca.cmpt276.neon_coopachievement;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,9 +24,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import ca.cmpt276.neon_coopachievement.model.Achievement;
@@ -80,6 +89,9 @@ public class GameConfigActivity extends AppCompatActivity {
         // Editing a game configuration
         if (getIsEdit()) {
             setUpGameConfigActivityEdit();
+        } else {
+            currentGame = new Game();
+            gameManager.addGame(currentGame);
         }
 
         updateScreenUI();
@@ -97,19 +109,39 @@ public class GameConfigActivity extends AppCompatActivity {
         // add delete game config
         switch (item.getItemId()) {
             case android.R.id.home:
+                if (!getIsEdit()) {
+                    gameManager.removeGame(gameManager.getSize() - 1);
+                }
                 finish();
                 return true;
             case R.id.action_help:
-                Intent i = new Intent(GameConfigActivity.this, HelpActivity.class);
-                startActivity(i);
+                Intent launchHelpMenu = new Intent
+                        (GameConfigActivity.this, HelpActivity.class);
+                startActivity(launchHelpMenu);
                 return true;
             case R.id.action_delete:
                 if (getIsEdit()) {
                     int rank = gameManager.getGame(getGameIndex()).getRank();
                     gameManager.removeGame(getGameIndex());
                     gameManager.decreaseTally(rank - 1);
+                } else {
+                    gameManager.removeGame(gameManager.getSize() - 1);
                 }
                 finish();
+                return true;
+            case R.id.take_photo:
+                Intent launchPhoto;
+                if (getIsEdit()) {
+                    launchPhoto = TakePhotoActivity.makeLaunchIntent
+                            (GameConfigActivity.this, getGameManagerIndex(),
+                                    getGameIndex(), false);
+                } else {
+                    launchPhoto = TakePhotoActivity.makeLaunchIntent
+                            (GameConfigActivity.this, getGameManagerIndex(),
+                                    gameManager.getSize() - 1, false);
+                }
+                startActivity(launchPhoto);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -313,10 +345,7 @@ public class GameConfigActivity extends AppCompatActivity {
                     int newIdx = achievements.getHighestRank(sumScores) - 1;
                     int oldIdx = currentGame.getRank() - 1;
 
-                    currentGame.setNumPlayers(numPlayers);
-                    currentGame.setFinalTotalScore(sumScores);
-                    currentGame.setScores(scoreCalculator.getScoreList());
-                    currentGame.setDifficulty(currentDifficulty);
+                    setGameVariables(numPlayers, sumScores);
                     currentGame.updateAchievements(currentDifficulty);
                     gameManager.updateEdits(
                             gameManager.getPoorScoreIndividual(),
@@ -330,13 +359,21 @@ public class GameConfigActivity extends AppCompatActivity {
 
                 // Adding a game, create new game
                 else {
-                    Game newGame = new Game(numPlayers, sumScores,
+                    setGameVariables(numPlayers, sumScores);
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Game.DATE_FORMAT);
+                    currentGame.setTime(LocalDateTime.now().format(formatter));
+                    currentGame.setAchievements(numPlayers, gameManager.getPoorScoreIndividual(),
+                            gameManager.getGreatScoreIndividual(), currentDifficulty);
+
+                    Achievement achievements = new Achievement(
                             gameManager.getPoorScoreIndividual(),
                             gameManager.getGreatScoreIndividual(),
-                            scoreCalculator.getScoreList(), currentDifficulty);
-                    gameManager.addGame(newGame);
-                    gameManager.addTally(newGame.getRank() - 1);
+                            numPlayers, currentDifficulty);
+                    int newIdx = achievements.getHighestRank(sumScores) - 1;
 
+                    currentGame.setRank(achievements.getHighestRank(sumScores));
+
+                    gameManager.addTally(newIdx);
                     i = CelebrationActivity.makeIntent(GameConfigActivity.this, gameManager.getSize() - 1, getGameManagerIndex());
                 }
 
@@ -350,6 +387,67 @@ public class GameConfigActivity extends AppCompatActivity {
                 Toast.makeText(this, R.string.no_players_err_msg, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void setGameVariables(int numPlayers, int sumScores) {
+        currentGame.setNumPlayers(numPlayers);
+        currentGame.setFinalTotalScore(sumScores);
+        currentGame.setScores(scoreCalculator.getScoreList());
+        currentGame.setDifficulty(currentDifficulty);
+    }
+
+    private void launchAchievementDialog(int numPlayers, int sumScores) {
+        // Create view
+        View v = LayoutInflater.from(this).inflate(R.layout.achievement_layout, null);
+
+        // Set up animations
+        YoYo.with(Techniques.Tada).duration(500).repeat(YoYo.INFINITE).playOn(v);
+
+        // Play celebration sound
+        MediaPlayer cheering = MediaPlayer.create(this, R.raw.cheering);
+        cheering.start();
+
+        // Set up listener when ok (positive button) is clicked
+        DialogInterface.OnClickListener positiveButtonListener = (dialogInterface, which) -> {
+            if (which == DialogInterface.BUTTON_POSITIVE) {
+                finish();
+            }
+        };
+
+        // Set up dismiss listener
+        DialogInterface.OnDismissListener dismissListener = (dialogInterface) -> {
+            cheering.stop();
+            this.finish();
+        };
+
+        // Build the alert dialog (achievement builder)
+        android.app.AlertDialog achievementDialog = new android.app.AlertDialog.Builder(this)
+                .setView(v)
+                .setTitle(R.string.great_job)
+                .setPositiveButton(android.R.string.ok, positiveButtonListener)
+                .setOnDismissListener(dismissListener)
+                .create();
+
+        // Get current achievement for game
+        Achievement currAchievement = new Achievement(
+                gameManager.getPoorScoreIndividual(),
+                gameManager.getGreatScoreIndividual(),
+                numPlayers,
+                currentDifficulty);
+
+        // Set body message for dialog
+        int highestRank = currAchievement.getHighestRank(sumScores);
+        String achievement = currAchievement.getAchievementName(highestRank);
+        String gameRank = getString(R.string.your_rank_is) + " " + achievement;
+        achievementDialog.setMessage(gameRank);
+
+        // Show dialog
+        achievementDialog.show();
+
+        // Update Achievement message with appropriate font
+        TextView textView = (TextView) achievementDialog.findViewById(android.R.id.message);
+        Typeface comicNeueFont = ResourcesCompat.getFont(this, R.font.comic_neue);
+        textView.setTypeface(comicNeueFont);
     }
 
     private void setUpClearBtn() {

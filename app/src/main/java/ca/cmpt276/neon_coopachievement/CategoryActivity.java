@@ -1,14 +1,25 @@
 package ca.cmpt276.neon_coopachievement;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -16,9 +27,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import ca.cmpt276.neon_coopachievement.model.GameCategory;
+import ca.cmpt276.neon_coopachievement.model.GameManager;
 
 /**
  * CategoryActivity Class
@@ -31,6 +45,8 @@ public class CategoryActivity extends AppCompatActivity {
 
     private GameCategory gameCategory;
     private static CategorySaver saveState;
+
+    List<CategoryActivity.CategoryListElement> listGames = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,25 +108,15 @@ public class CategoryActivity extends AppCompatActivity {
 
     // Initialize screen elements
     private void setUpScreen() {
-        populateCategoryListView();
+        try {
+            populateCategoryList();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "COULD NOT POPULATE CATEGORY LIST", Toast.LENGTH_SHORT).show();
+        }
+        generateCategoryList();
         setUpEmptyState();
         setupAddCategoryBtn();
-        registerListClickCallback();
-    }
-
-    private void populateCategoryListView() {
-        ArrayList<String> gameTypes = new ArrayList<>();
-        for (int i = 0; i < gameCategory.size(); i++) {
-            gameTypes.add(gameCategory.getGameManager(i).toString());
-        }
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                this,
-                R.layout.items,
-                gameTypes);
-
-        ListView categoryListView = findViewById(R.id.categoryList);
-        categoryListView.setAdapter(adapter);
     }
 
     private void setUpEmptyState() {
@@ -138,13 +144,70 @@ public class CategoryActivity extends AppCompatActivity {
         });
     }
 
-    private void registerListClickCallback() {
-        ListView categories = findViewById(R.id.categoryList);
-        categories.setOnItemClickListener((parent, viewClicked, position, id) -> {
-            Intent i = GameActivity.makeIntent(
-                    CategoryActivity.this,
-                    position);
-            startActivity(i);
-        });
+    private void generateCategoryList() {
+        ArrayAdapter<CategoryActivity.CategoryListElement> adapter = new CategoryActivity.MyListAdapter();
+        ListView playedGames = findViewById(R.id.categoryList);
+        playedGames.setAdapter(adapter);
+    }
+
+    private class MyListAdapter extends ArrayAdapter<CategoryActivity.CategoryListElement> {
+        public MyListAdapter() {
+            super(CategoryActivity.this, R.layout.complex_listview_layout, listGames);
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            View categoryView = convertView;
+            if (categoryView == null) {
+                categoryView = getLayoutInflater().inflate
+                        (R.layout.complex_listview_layout, parent, false);
+            }
+
+            categoryView.setOnClickListener(v -> {
+                Intent i = GameActivity.makeIntent(CategoryActivity.this, position);
+                startActivity(i);
+            });
+
+            CategoryActivity.CategoryListElement currentElement = listGames.get(position);
+
+            ImageView icon = categoryView.findViewById(R.id.achievement_icon);
+
+            icon.setImageBitmap(currentElement.image);
+
+            TextView description = categoryView.findViewById(R.id.tvAchievementsDescription);
+            description.setText(currentElement.description);
+
+            return categoryView;
+        }
+    }
+
+    public Uri getImageUri(String path) {
+        return Uri.parse(path);
+    }
+
+    private static class CategoryListElement {
+        public String description;
+        public Bitmap image;
+
+        public CategoryListElement(String description, Bitmap bitmap) {
+            this.description = description;
+            this.image = bitmap;
+        }
+    }
+
+    private void populateCategoryList() throws IOException {
+        listGames.clear();
+        for (int i = 0; i < gameCategory.size(); i++) {
+            GameManager gameManager = gameCategory.getGameManager(i);
+            Bitmap bitmap;
+            String imagePath = gameManager.getImagePath();
+            if (imagePath == null) {
+                bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.default_image);
+            } else {
+                bitmap = MediaStore.Images.Media.getBitmap(CategoryActivity.this.getContentResolver(), getImageUri(imagePath));
+            }
+            listGames.add(new CategoryActivity.CategoryListElement(gameManager.toString(), bitmap));
+        }
     }
 }

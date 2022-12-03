@@ -70,4 +70,9 @@
     <string name="next_achievement">Next Achievement:</string>
     <string name="achievement_celebration">Achievement Celebration</string>
     <string name="dash">-</string>
+    <string name="take_photo">take a photo</string>
+    <string name="take_game_photo_title">Take a Picture of your Game</string>
+    <string name="photo_data">data</string>
+    <string name="permission_not_allowed_prompt">Allow Permission to use Camera</string>
+    <string name="photo_file_not_found">FILE NOT FOUND, TAKE NEW PHOTO</string>
 </resources>

@@ -9,12 +9,6 @@
         app:showAsAction="ifRoom"/>
 
     <item
-        android:id="@+id/action_delete"
-        android:icon="@drawable/ic_baseline_delete_24"
-        android:title="Delete Game"
-        app:showAsAction="ifRoom"/>
-
-    <item
         android:id="@+id/action_help"
         android:icon="@drawable/ic_baseline_help_24"
         android:title="@string/help_centre"

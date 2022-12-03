@@ -21,6 +21,7 @@ public class GameManager {
     private String name;
     private int greatScoreIndividual;
     private int poorScoreIndividual;
+    private String imagePath;
 
     private ArrayList<Integer> achievementTally;
 
@@ -30,6 +31,14 @@ public class GameManager {
         this.name = name;
         this.greatScoreIndividual = goodScore;
         this.poorScoreIndividual = poorScore;
+        this.achievementTally = new ArrayList<>();
+        this.imagePath = null;
+        for(int i = 0; i < 10; i++){
+            achievementTally.add(0);
+        }
+    }
+
+    public GameManager() {
         this.achievementTally = new ArrayList<>();
         for(int i = 0; i < 10; i++){
             achievementTally.add(0);
@@ -57,10 +66,7 @@ public class GameManager {
     }
 
     public void setName(String gameName) {
-        if (gameName.isEmpty()) {
-            throw new RuntimeException("Game name can not be empty");
-        }
-
+        isValidName(gameName);
         this.name = gameName;
     }
 
@@ -68,7 +74,6 @@ public class GameManager {
         this.greatScoreIndividual = score;
     }
 
-    // Checks whether a given great score is valid
     public void setPoorScoreIndividual(int score) {
         this.poorScoreIndividual = score;
     }
@@ -76,7 +81,7 @@ public class GameManager {
     // Checks whether a given name is valid
     public void isValidName(String gameName) {
         if (gameName == null || gameName.isEmpty()) {
-            throw new RuntimeException("Invalid name: " + gameName);
+            throw new RuntimeException("Game name is invalid");
         }
     }
 
@@ -99,7 +104,7 @@ public class GameManager {
         for (int i = 0; i < games.size(); i++) {
             Game oldGame = games.get(i);
             Game newGame = new Game(oldGame.getNumPlayers(), oldGame.getFinalTotalScore(),
-                    poorScoreNew, greatScoreNew, oldGame.getScores(), oldGame.getDifficulty());
+                    poorScoreNew, greatScoreNew, oldGame.getScores(), oldGame.getDifficulty(), oldGame.getImagePath());
             newGame.setTime(oldGame.getTime());
             games.set(i, newGame);
         }
@@ -154,5 +159,13 @@ public class GameManager {
         } else {
             return name + ": " + games.size() + " games recorded";
         }
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 }
