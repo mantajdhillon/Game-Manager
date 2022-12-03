@@ -28,10 +28,10 @@
         android:textColor="@color/bright_pink"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/tvNextAchievementGen"
+        app:layout_constraintBottom_toBottomOf="@+id/tvCeleAchievement"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tvCeleAchievement"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvCeleAchievement"
         app:layout_constraintVertical_bias="0.527" />
 
     <TextView
@@ -56,11 +56,11 @@
         android:textColor="@color/bright_pink"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/tvPointsTillNextRank"
+        app:layout_constraintBottom_toBottomOf="@+id/tvNextAchievement"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.472"
         app:layout_constraintStart_toEndOf="@+id/tvNextAchievement"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvNextAchievement"
         app:layout_constraintVertical_bias="0.529" />
 
     <TextView
