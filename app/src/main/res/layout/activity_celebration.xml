@@ -14,11 +14,10 @@
         android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/tvNextAchievement"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.211"
+        app:layout_constraintEnd_toStartOf="@+id/tvCeleAchieveGenerator"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.537" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvCeleAchieveGenerator"
@@ -30,10 +29,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/tvNextAchievementGen"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/tvCeleAchievement"
+        app:layout_constraintHorizontal_bias="0.924"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.695" />
+        app:layout_constraintVertical_bias="0.529" />
 
     <TextView
         android:id="@+id/tvNextAchievement"
@@ -43,11 +42,11 @@
         android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/tvPointsTillNextRank"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.063"
+        app:layout_constraintEnd_toStartOf="@+id/tvNextAchievementGen"
+        app:layout_constraintHorizontal_bias="0.015"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.684" />
+        app:layout_constraintVertical_bias="0.657" />
 
     <TextView
         android:id="@+id/tvNextAchievementGen"
@@ -59,10 +58,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/tvPointsTillNextRank"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.058"
-        app:layout_constraintStart_toEndOf="@+id/tvNextAchievement"
+        app:layout_constraintHorizontal_bias="0.927"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.81" />
+        app:layout_constraintVertical_bias="0.632" />
 
     <TextView
         android:id="@+id/tvPointsTillNextRankGen"
@@ -74,9 +73,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/celebrationAchievementIcon"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvPointsTillNextRank"
-        app:layout_constraintVertical_bias="0.441" />
+        app:layout_constraintVertical_bias="0.432" />
 
     <TextView
         android:id="@+id/tvPointsTillNextRank"
@@ -89,18 +89,21 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/celebrationAchievementIcon"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.373" />
+        app:layout_constraintVertical_bias="0.776" />
 
     <ImageView
         android:id="@+id/celebrationAchievementIcon"
-        android:layout_width="343dp"
-        android:layout_height="316dp"
-        android:layout_marginBottom="12dp"
+        android:layout_width="231dp"
+        android:layout_height="203dp"
         app:layout_constraintBottom_toTopOf="@+id/btnPlayAnimation"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.92"
         app:srcCompat="@drawable/one_level_1" />
 
     <Button

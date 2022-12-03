@@ -155,6 +155,10 @@ public class CelebrationActivity extends AppCompatActivity {
             MediaPlayer cheering = MediaPlayer.create(this, R.raw.cheering);
             cheering.start();
 
+            DialogInterface.OnClickListener positiveButtonListener = (dialogInterface, which) -> {
+                // does nothing, just for looks
+            };
+
             // Set up dismiss listener
             DialogInterface.OnDismissListener dismissListener = (dialogInterface) -> {
                 cheering.stop();
@@ -164,6 +168,7 @@ public class CelebrationActivity extends AppCompatActivity {
             android.app.AlertDialog achievementDialog = new android.app.AlertDialog.Builder(this)
                     .setView(v)
                     .setTitle(R.string.great_job)
+                    .setPositiveButton(android.R.string.ok, positiveButtonListener)
                     .setOnDismissListener(dismissListener)
                     .create();
 
