@@ -199,7 +199,7 @@ public class CategoryActivity extends AppCompatActivity {
             Bitmap bitmap;
             String imagePath = gameManager.getImagePath();
             if (imagePath == null) {
-                bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.empty_state);
+                bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.default_image);
             } else {
                 bitmap = MediaStore.Images.Media.getBitmap(CategoryActivity.this.getContentResolver(), getImageUri(imagePath));
             }
