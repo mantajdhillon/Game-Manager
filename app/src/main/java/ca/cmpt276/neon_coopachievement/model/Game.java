@@ -24,11 +24,11 @@ public class Game {
         EASY, NORMAL, HARD
     }
 
-    private static final String DATE_FORMAT = "MMM dd @ hh:mm a";
+    public static final String DATE_FORMAT = "MMM dd @ hh:mm a";
 
     private int numPlayers;
     private int finalTotalScore;
-    private final Achievement achievements;
+    private Achievement achievements;
     private int rank;
     private String time;
     private Difficulty difficulty;
@@ -36,13 +36,13 @@ public class Game {
 
     private final ArrayList<Integer> scores;
 
-    public Game(int numPlayers, int finalTotalScore, int lowScore, int highScore, ArrayList<Integer> scoresList, Difficulty difficulty) {
+    public Game(int numPlayers, int finalTotalScore, int lowScore, int highScore, ArrayList<Integer> scoresList, Difficulty difficulty, String imagePath) {
         this.numPlayers = numPlayers;
         this.finalTotalScore = finalTotalScore;
         this.achievements = new Achievement(lowScore, highScore, numPlayers, difficulty);
         this.rank = achievements.getHighestRank(finalTotalScore);
         this.difficulty = difficulty;
-        this.imagePath = null;
+        this.imagePath = imagePath;
 
         // Populate list of scores
         this.scores = new ArrayList<>();
@@ -52,6 +52,10 @@ public class Game {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
         this.time = LocalDateTime.now().format(formatter);
+    }
+
+    public Game() {
+        this.scores = new ArrayList<>();
     }
 
     public int getFinalTotalScore() {
@@ -92,6 +96,10 @@ public class Game {
         return this.rank;
     }
 
+    public void setAchievements(int numPlayers, int lowScore, int highScore, Difficulty difficulty) {
+        this.achievements = new Achievement(lowScore, highScore, numPlayers, difficulty);
+    }
+
     public Difficulty getDifficulty() {
         return this.difficulty;
     }
@@ -112,6 +120,10 @@ public class Game {
 
     public String getImagePath() {
         return imagePath;
+    }
+
+    public void setRank(int rank) {
+        this.rank = rank;
     }
 
     @NonNull

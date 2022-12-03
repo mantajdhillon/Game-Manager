@@ -58,7 +58,7 @@ public class CategoryConfigActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_category_config, menu);
         return true;
     }
 
@@ -72,6 +72,11 @@ public class CategoryConfigActivity extends AppCompatActivity {
                 Intent i = new Intent(CategoryConfigActivity.this, HelpActivity.class);
                 startActivity(i);
                 return true;
+
+            case R.id.take_photo:
+                Intent launchPhoto = TakePhotoActivity.makeLaunchIntent
+                        (CategoryConfigActivity.this, currGameIndex, -1, true);
+                startActivity(launchPhoto);
             default:
                 return super.onOptionsItemSelected(item);
         }

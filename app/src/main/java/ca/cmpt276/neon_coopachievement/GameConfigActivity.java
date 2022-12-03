@@ -30,6 +30,8 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import ca.cmpt276.neon_coopachievement.model.Achievement;
@@ -87,6 +89,9 @@ public class GameConfigActivity extends AppCompatActivity {
         // Editing a game configuration
         if (getIsEdit()) {
             setUpGameConfigActivityEdit();
+        } else {
+            currentGame = new Game();
+            gameManager.addGame(currentGame);
         }
 
         updateScreenUI();
@@ -104,6 +109,9 @@ public class GameConfigActivity extends AppCompatActivity {
         // add delete game config
         switch (item.getItemId()) {
             case android.R.id.home:
+                if (!getIsEdit()) {
+                    gameManager.removeGame(gameManager.getSize() - 1);
+                }
                 finish();
                 return true;
             case R.id.action_help:
@@ -118,10 +126,20 @@ public class GameConfigActivity extends AppCompatActivity {
                     gameManager.decreaseTally(rank - 1);
                 }
                 finish();
+                return true;
             case R.id.take_photo:
-                Intent launchPhoto = TakePhotoActivity.makeLaunchIntent
-                        (GameConfigActivity.this, getGameManagerIndex(), getGameIndex(), false);
+                Intent launchPhoto;
+                if (getIsEdit()) {
+                    launchPhoto = TakePhotoActivity.makeLaunchIntent
+                            (GameConfigActivity.this, getGameManagerIndex(),
+                                    getGameIndex(), false);
+                } else {
+                    launchPhoto = TakePhotoActivity.makeLaunchIntent
+                            (GameConfigActivity.this, getGameManagerIndex(),
+                                    gameManager.getSize() - 1, false);
+                }
                 startActivity(launchPhoto);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -338,12 +356,29 @@ public class GameConfigActivity extends AppCompatActivity {
 
                 // Adding a game, create new game
                 else {
-                    Game newGame = new Game(numPlayers, sumScores,
+                    currentGame.setNumPlayers(numPlayers);
+                    currentGame.setFinalTotalScore(sumScores);
+                    currentGame.setScores(scoreCalculator.getScoreList());
+                    currentGame.setDifficulty(currentDifficulty);
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Game.DATE_FORMAT);
+                    currentGame.setTime(LocalDateTime.now().format(formatter));
+                    currentGame.setAchievements(numPlayers, gameManager.getPoorScoreIndividual(),
+                            gameManager.getGreatScoreIndividual(), currentDifficulty);
+
+//                    Game newGame = new Game(numPlayers, sumScores,
+//                            gameManager.getPoorScoreIndividual(),
+//                            gameManager.getGreatScoreIndividual(),
+//                            scoreCalculator.getScoreList(), currentDifficulty);
+
+                    Achievement achievements = new Achievement(
                             gameManager.getPoorScoreIndividual(),
                             gameManager.getGreatScoreIndividual(),
-                            scoreCalculator.getScoreList(), currentDifficulty);
-                    gameManager.addGame(newGame);
-                    gameManager.addTally(newGame.getRank() - 1);
+                            numPlayers, currentDifficulty);
+                    int newIdx = achievements.getHighestRank(sumScores) - 1;
+
+                    currentGame.setRank(achievements.getHighestRank(sumScores));
+
+                    gameManager.addTally(newIdx);
                 }
 
                 scoreCalculator.clearLostScores();

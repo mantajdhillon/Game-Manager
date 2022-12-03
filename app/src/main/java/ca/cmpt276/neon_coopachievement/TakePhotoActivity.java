@@ -57,6 +57,9 @@ public class TakePhotoActivity extends AppCompatActivity {
                 setupGameImage(game);
             } catch (IOException e) {
                 e.printStackTrace();
+                Toast.makeText(this, "FILE NOT FOUND, TAKE NEW PHOTO",
+                        Toast.LENGTH_SHORT).show();
+                game.setImagePath(null);
             }
         } else {
             try {
@@ -98,7 +101,7 @@ public class TakePhotoActivity extends AppCompatActivity {
         });
     }
 
-        @Override
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             finish();
@@ -106,7 +109,6 @@ public class TakePhotoActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -136,14 +138,15 @@ public class TakePhotoActivity extends AppCompatActivity {
             Bitmap bitmap = (Bitmap) extras.get("data");
             iv.setImageBitmap(bitmap);
 
-
-
             if (!getIsManager()) {
                 game = gameManager.getGame(getGameIndex());
                 game.setImagePath(getImageUriPath(TakePhotoActivity.this, bitmap));
+            } else {
+                gameManager.setImagePath(getImageUriPath(TakePhotoActivity.this, bitmap));
             }
         }
     }
+
 
     public String getImageUriPath(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
