@@ -67,4 +67,7 @@
     <string name="score_valid_int_err_msg">Score must be a valid integer</string>
     <string name="take_photo">take a photo</string>
     <string name="take_game_photo_title">Take a Picture of your Game</string>
+    <string name="photo_data">data</string>
+    <string name="permission_not_allowed_prompt">Allow Permission to use Camera</string>
+    <string name="photo_file_not_found">FILE NOT FOUND, TAKE NEW PHOTO</string>
 </resources>

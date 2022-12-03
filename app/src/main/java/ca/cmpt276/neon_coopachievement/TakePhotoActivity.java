@@ -51,14 +51,18 @@ public class TakePhotoActivity extends AppCompatActivity {
         iv = findViewById(R.id.ivPhoto);
 
         gameManager = gameCategory.getGameManager(getGameManagerIndex());
+        setupImages();
+        setupButton();
+    }
+
+    private void setupImages() {
         if(!getIsManager()) {
             game = gameManager.getGame(getGameIndex());
             try {
                 setupGameImage(game);
             } catch (IOException e) {
                 e.printStackTrace();
-                Toast.makeText(this, "FILE NOT FOUND, TAKE NEW PHOTO",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.photo_file_not_found, Toast.LENGTH_SHORT).show();
                 game.setImagePath(null);
             }
         } else {
@@ -68,7 +72,6 @@ public class TakePhotoActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-        setupButton();
     }
 
     private void setupGameImage(Game game) throws IOException {
@@ -88,17 +91,21 @@ public class TakePhotoActivity extends AppCompatActivity {
     private void setupButton() {
         Button takePic = findViewById(R.id.btnTakePhoto);
         takePic.setOnClickListener(v -> {
-            if (checkSelfPermission(Manifest.permission.CAMERA)
-                    == PackageManager.PERMISSION_DENIED ||
-                    checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
-                            PackageManager.PERMISSION_DENIED) {
-                String[] permission = {Manifest.permission.CAMERA,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE};
-                requestPermissions(permission, PERMISSION_CODE);
-            } else {
-                dispatchTakePictureIntent();
-            }
+            askPermissionIfNeeded();
         });
+    }
+
+    private void askPermissionIfNeeded() {
+        if (checkSelfPermission(Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_DENIED ||
+                checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
+                        PackageManager.PERMISSION_DENIED) {
+            String[] permission = {Manifest.permission.CAMERA,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE};
+            requestPermissions(permission, PERMISSION_CODE);
+        } else {
+            dispatchTakePictureIntent();
+        }
     }
 
     @Override
@@ -124,7 +131,7 @@ public class TakePhotoActivity extends AppCompatActivity {
             } else {
                 Toast.makeText
                         (TakePhotoActivity.this,
-                                "Allow Permission to use Camera",
+                                getString(R.string.permission_not_allowed_prompt),
                                 Toast.LENGTH_SHORT).show();
             }
         }
@@ -135,7 +142,7 @@ public class TakePhotoActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAPTURE_CODE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
-            Bitmap bitmap = (Bitmap) extras.get("data");
+            Bitmap bitmap = (Bitmap) extras.get(getString(R.string.photo_data));
             iv.setImageBitmap(bitmap);
 
             if (!getIsManager()) {
@@ -147,12 +154,10 @@ public class TakePhotoActivity extends AppCompatActivity {
         }
     }
 
-
     public String getImageUriPath(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-        return path;
+        return MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
     }
 
     public Uri getImageUri(String path) {
