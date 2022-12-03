@@ -68,4 +68,6 @@
     <string name="num_of_points_till_next_achievement"># of points till next rank:</string>
     <string name="play_animation">Play Animation</string>
     <string name="next_achievement">Next Achievement:</string>
+    <string name="achievement_celebration">Achievement Celebration</string>
+    <string name="dash">-</string>
 </resources>

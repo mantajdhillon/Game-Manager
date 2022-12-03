@@ -42,7 +42,7 @@ public class CelebrationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_celebration);
 
         ActionBar ab = getSupportActionBar();
-        ab.setTitle("Achievement Celebration");
+        ab.setTitle(R.string.achievement_celebration);
         ab.setDisplayHomeAsUpEnabled(true);
 
         // Get current game manager
@@ -118,7 +118,7 @@ public class CelebrationActivity extends AppCompatActivity {
         try {
             nextRankName = achievements.getAchievementName(rank + 1);
         } catch (Exception e) {
-            nextRankName = "-";
+            nextRankName = getString(R.string.dash);
         }
         tvNextAchievementGen.setText(nextRankName);
     }
