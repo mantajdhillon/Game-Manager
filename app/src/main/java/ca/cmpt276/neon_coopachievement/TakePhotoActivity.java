@@ -77,14 +77,14 @@ public class TakePhotoActivity extends AppCompatActivity {
     private void setupGameImage(Game game) throws IOException {
         if (game.getImagePath() != null) {
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(TakePhotoActivity.this.getContentResolver(), getImageUri(game.getImagePath()));
-            iv.setImageBitmap(bitmap);
+            iv.setImageBitmap(resizeBitmap(bitmap, iv));
         }
     }
 
     private void setupManagerImage(GameManager gameManager) throws IOException {
         if (gameManager.getImagePath() != null) {
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(TakePhotoActivity.this.getContentResolver(), getImageUri(gameManager.getImagePath()));
-            iv.setImageBitmap(bitmap);
+            iv.setImageBitmap(resizeBitmap(bitmap, iv));
         }
     }
 
@@ -143,7 +143,7 @@ public class TakePhotoActivity extends AppCompatActivity {
         if (requestCode == CAPTURE_CODE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap bitmap = (Bitmap) extras.get(getString(R.string.photo_data));
-            iv.setImageBitmap(bitmap);
+            iv.setImageBitmap(resizeBitmap(bitmap, iv));
 
             if (!getIsManager()) {
                 game = gameManager.getGame(getGameIndex());
@@ -182,6 +182,22 @@ public class TakePhotoActivity extends AppCompatActivity {
         intent.putExtra(EXTRA_GAME_INDEX, gameIndex);
         intent.putExtra(EXTRA_GAME_TYPE_INDEX, gameManagerIndex);
         return intent;
+    }
+
+    private Bitmap resizeBitmap(Bitmap bitMap, ImageView imageView) {
+
+        int currentBitmapWidth = bitMap.getWidth();
+        int currentBitmapHeight = bitMap.getHeight();
+
+        int ivWidth = imageView.getWidth();
+        int ivHeight = imageView.getHeight();
+        int newWidth = ivWidth;
+
+        int newHeight = (int) Math.floor((double) currentBitmapHeight * ((double) newWidth / (double) currentBitmapWidth));
+
+        Bitmap newBitMap = Bitmap.createScaledBitmap(bitMap, newWidth, newHeight, true);
+
+        return newBitMap;
     }
 
 }
