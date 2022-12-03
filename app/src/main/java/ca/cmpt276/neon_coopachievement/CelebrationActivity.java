@@ -119,7 +119,7 @@ public class CelebrationActivity extends AppCompatActivity {
         try {
             nextRankName = achievements.getAchievementName(rank + 1);
         } catch (Exception e) {
-            nextRankName = getString(R.string.dash);
+            nextRankName = getString(R.string.highest_achievement_msg);
         }
         tvNextAchievementGen.setText(nextRankName);
     }

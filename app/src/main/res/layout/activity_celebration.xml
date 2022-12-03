@@ -10,13 +10,13 @@
         android:id="@+id/tvCeleAchievement"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
         android:text="@string/achievement_display"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="15sp"
         app:layout_constraintBottom_toTopOf="@+id/tvNextAchievement"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.114"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tvNextAchievement"
+        app:layout_constraintStart_toStartOf="@+id/tvNextAchievement"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.511" />
 
@@ -26,27 +26,27 @@
         android:layout_height="37dp"
         android:textAlignment="center"
         android:textColor="@color/bright_pink"
-        android:textSize="20sp"
+        android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/tvCeleAchievement"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.464"
         app:layout_constraintStart_toEndOf="@+id/tvCeleAchievement"
         app:layout_constraintTop_toTopOf="@+id/tvCeleAchievement"
-        app:layout_constraintVertical_bias="0.527" />
+        app:layout_constraintVertical_bias="0.571" />
 
     <TextView
         android:id="@+id/tvNextAchievement"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
         android:text="@string/next_achievement"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="15sp"
         app:layout_constraintBottom_toTopOf="@+id/tvPointsTillNextRank"
-        app:layout_constraintEnd_toStartOf="@+id/tvCeleAchieveGenerator"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.515" />
+        app:layout_constraintVertical_bias="0.513" />
 
     <TextView
         android:id="@+id/tvNextAchievementGen"
@@ -54,7 +54,7 @@
         android:layout_height="37dp"
         android:textAlignment="center"
         android:textColor="@color/bright_pink"
-        android:textSize="20sp"
+        android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/tvNextAchievement"
         app:layout_constraintEnd_toEndOf="parent"

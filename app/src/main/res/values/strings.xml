@@ -28,7 +28,7 @@
 
     <!--Help Screen-->
     <string name="help_activity_title">Help Centre</string>
-    <string name="help_message">Welcome to the Help Centre!\nWin2Gether is designed to generate the co-operative achievement ranks of game categories you\'ve saved, as well as track the history and results of your played games.\n\n<b>Game Category:</b>\nDisplays the different game categories you\'ve entered into the system. Click the + to add a new game category.\n\n<b>Game Manager:</b>\nDisplays the game history of one game category and the results of each game. Click on the + to add a new game. Click on an individual played game to edit/delete the game. Click on the pencil icon to edit the game configuration. Click on ACHIEVEMENTS and enter valid number of players to view possible achievements.\n\n<b>Achievements:</b>\nDisplays the different possible achievements of one game category based on the number of players you\'ve entered. Images from: <a href="https://openmoji.org/">openmoji.org</a> and <a href="https://pngtree.com/">pngtree.com</a>. Sound from: <a href="https://mixkit.co/free-sound-effects/applause/">mixkit.co</a>.\n\n<b>Authors:</b> \nAmanda: Has a single letter for her middle name. \nMekdim: SMALL DESCRIPTION. \nMantaj: SMALL DESCRIPTION \nOlive: SMALL DESCRIPTION.</string>
+    <string name="help_message"><b>Welcome to the Help Centre!</b>\nWin2Gether is designed to generate the co-operative achievement ranks of game categories you\'ve saved, as well as track the history and results of your played games.\n\n<b>Game Category:</b>\nDisplays the different game categories you\'ve entered into the system. Click the + to add a new game category. Click the camera button in the top right to take a photo.\n\n<b>Game Manager:</b>\nDisplays the game history of one game category and the results of each game. Click on the + to add a new game. Click on an individual played game to edit/delete the game. Click on the pencil icon to edit the game configuration. Click on ACHIEVEMENTS and enter valid number of players to view possible achievements. Click the camera button in the top right to take a photo.\n\n<b>Achievements:</b>\nDisplays the different possible achievements of one game category based on the number of players you\'ve entered. Images from: <a href="https://openmoji.org/">openmoji.org</a>, <a href="https://www.sfu.ca/computing/people/faculty/brianfraser.html">sfu.ca</a> and <a href="https://pngtree.com/">pngtree.com</a>. Sound from: <a href="https://mixkit.co/free-sound-effects/applause/">mixkit.co</a>.\n\n<b>Authors for group NEON:</b> \nAmanda: Has a single letter for her middle name. \nMekdim: sleep = name.length \nMantaj: Likes physics¿\nOlive: SMALL DESCRIPTION (intentional)</string>
 
     <!--Other-->
     <string name="save">save</string>
@@ -69,7 +69,7 @@
     <string name="play_animation">Play Animation</string>
     <string name="next_achievement">Next Achievement:</string>
     <string name="achievement_celebration">Achievement Celebration</string>
-    <string name="dash">-</string>
+    <string name="highest_achievement_msg">None!</string>
     <string name="take_photo">take a photo</string>
     <string name="take_game_photo_title">Take a Picture of your Game</string>
     <string name="photo_data">data</string>
