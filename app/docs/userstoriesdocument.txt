@@ -1,14 +1,16 @@
+All Code Reviews were done as a group during meetings
+
 User Stories:
 
-Changing Difficulty: implement ability to change/set game difficulty, amount of work: 4-5 hours
+Photos: implement ability to take photos in game config and category config., amount of work: 4-5 hours
 
-Achievement Theme: implement ability to change app theme, amount of work: 3-4 hours
+Achievement Statistics: keep track of how many times an achievement was earned, amount of work: 4 hours
 
-Achievement Dialog: implement achievement alert dialog upon game save, amount of work: 2-3 hours
+Achievement Celebration Screen: After saving a game have a new screen that shows next achievement and current, amount of work: 3 hours
 
-Friendly UI: change game font and colours to make it more appealing, amount of work: 3 hours
+Score Calculator Updates: Keep track of deleted scores and have dynamic number of players, amount of work: 2-3 hours
 
-Score Calculator: calculates score of all individual scores, amount of work: 5 hours
+About Screen: Add about the author section and resources used, amount of work: 0.5 hours
 
 
 

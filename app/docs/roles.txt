@@ -4,3 +4,5 @@ Scrum Master - Mantaj
 Product Owner - Amanda
 Repo Manager - Mekdim
 Team Member - Olivia
+
+All Code Reviews were done as a group during meetings
